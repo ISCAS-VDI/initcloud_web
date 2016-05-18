@@ -1,0 +1,160 @@
+{% load i18n %}
+<!DOCTYPE html>
+
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js" data-ng-app="CloudApp"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js" data-ng-app="CloudApp"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" data-ng-app="CloudApp">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <title data-ng-bind="site_config.BRAND + ' | ' + $state.current.data.pageTitle"></title>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="initcloud-web" name="description"/>
+    <meta content="ydd322@gmail.com" name="author"/>
+
+    {% include "partial_header_styles.html" %}
+</head>
+<!-- END HEAD -->
+
+<!-- BEGIN BODY -->
+
+<body ng-controller="AppController"
+      class="page-header-fixed page-sidebar-closed-hide-logo page-quick-sidebar-over-content page-on-load"
+      ng-class="{'page-container-bg-solid': settings.layout.pageBodySolid, 'page-sidebar-closed': settings.layout.pageSidebarClosed}">
+
+<!-- BEGIN PAGE SPINNER -->
+<div ng-spinner-bar class="page-spinner-bar">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+</div>
+<!-- END PAGE SPINNER -->
+
+<!-- BEGIN HEADER -->
+<div data-ng-include="'{{ STATIC_URL }}cloud/layout/header.html'" data-ng-controller="HeaderController"
+     class="page-header navbar navbar-fixed-top">
+</div>
+<!-- END HEADER -->
+
+<div class="clearfix">
+</div>
+
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <div data-ng-include="'{{ STATIC_URL }}cloud/layout/sidebar.html'" data-ng-controller="SidebarController"
+         class="page-sidebar-wrapper">
+    </div>
+    <!-- END SIDEBAR -->
+
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!-- BEGIN STYLE CUSTOMIZER(optional) -->
+            <!--div data-ng-include="'{{ STATIC_URL }}cloud/tpl/theme-panel.html'" data-ng-controller="ThemePanelController" class="theme-panel hidden-xs hidden-sm">
+            </div-->
+            <!-- END STYLE CUSTOMIZER -->
+
+            <!-- BEGIN ACTUAL CONTENT -->
+            <div ui-view class="fade-in-up">
+            </div>
+            <!-- END ACTUAL CONTENT -->
+        </div>
+    </div>
+    <!-- END CONTENT -->
+
+    <!-- BEGIN QUICK SIDEBAR -->
+    <!--a href="javascript:;" class="page-quick-sidebar-toggler"><i class="icon-close"></i>12313</a-->
+    <!--div data-ng-include="'{{ STATIC_URL }}cloud/tpl/quick-sidebar.html'" data-ng-controller="QuickSidebarController" class="page-quick-sidebar-wrapper"></div-->
+    <!-- END QUICK SIDEBAR -->
+</div>
+<!-- END CONTAINER -->
+
+<!-- BEGIN FOOTER -->
+<div data-ng-include="'{{ STATIC_URL }}cloud/layout/footer.html'" data-ng-controller="FooterController"
+     class="page-footer">
+</div>
+<!-- END FOOTER -->
+
+<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+
+<!-- BEGIN CORE JQUERY PLUGINS -->
+<!--[if lt IE 9]>
+<script src="{{ STATIC_URL }}assets/global/plugins/respond.min.js"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/excanvas.min.js"></script>
+<![endif]-->
+<script src="{{ STATIC_URL }}assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+        type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/jquery-slimscroll/jquery.slimscroll.js"
+        type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/jquery-validation/js/jquery.validate.min.js"
+        type="text/javascript"></script>
+
+<script src="{{ STATIC_URL }}assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js"
+        type="text/javascript"></script>
+
+<script src="{{ STATIC_URL }}assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+<!-- END CORE JQUERY PLUGINS -->
+
+<!-- BEGIN CORE ANGULARJS PLUGINS -->
+<script src="{{ STATIC_URL }}assets/global/plugins/angularjs/angular.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/angularjs/angular-cookies.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/angularjs/angular-sanitize.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/angularjs/angular-touch.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/angularjs/plugins/angular-ui-router.min.js"
+        type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/angularjs/plugins/ocLazyLoad.min.js"
+        type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/angularjs/plugins/ui-bootstrap-tpls.min.js"
+        type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/angularjs/plugins/ng-lodash.min.js"
+        type="text/javascript"></script>
+
+<script src="{{ STATIC_URL }}assets/global/plugins/angularjs/plugins/angular-resource.js"
+        type="text/javascript"></script>
+
+<script src="{{ STATIC_URL }}assets/global/plugins/angularjs/plugins/i18next.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/angularjs/plugins/ng-i18next.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/ng-table/ng-table.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/angularjs/plugins/ngBootbox.min.js" type="text/javascript"></script>
+<!-- END CORE ANGULARJS PLUGINS -->
+
+<!-- BEGIN APP LEVEL ANGULARJS SCRIPTS -->
+<script src="{{ STATIC_URL }}assets/global/scripts/services.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/scripts/resources.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/scripts/directives.js" type="text/javascript"></script>
+<script src="{% url "site_config" %}" type="text/javascript"></script>
+<script src="{% url 'state_service' %}" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}cloud/app.js" type="text/javascript"></script>
+<!-- END APP LEVEL ANGULARJS SCRIPTS -->
+
+<!-- BEGIN APP LEVEL JQUERY SCRIPTS -->
+<script src="{{ STATIC_URL }}assets/global/scripts/metronic.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+<!-- END APP LEVEL JQUERY SCRIPTS -->
+<!-- JQUERY UI PLUGINS -->
+<script src="{{ STATIC_URL }}assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js"
+        type="text/javascript"></script>
+<script src="{{ STATIC_URL }}assets/global/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"
+        type="text/javascript"></script>
+<!-- BEGIN EVERCLOUD -->
+<!-- END EVERCLOUD-->
+
+{% include "partial_jquery.html" %}
+<!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+</html>

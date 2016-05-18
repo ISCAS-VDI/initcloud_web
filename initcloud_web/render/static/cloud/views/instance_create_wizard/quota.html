@@ -1,0 +1,47 @@
+<form class="horizontal-form" action="#">
+    <div class="form-body">
+        <h4 class="form-section">{[{ 'constant.quota' | i18next }]}</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">{[{ 'constant.instance' | i18next }]}({[{ resource_persent_desc('instance') }]})</label>
+                    <div class="progress" style="margin-bottom:0px;">
+                        <div class="progress-bar progress-bar-success" role="progressbar"
+                             aria-valuemin="0" aria-valuemax="100"
+                             ng-style="{'width': resource_persent('instance')}"
+                             ng-class="{'progress-bar-danger': calcuate_resource_persent('instance')>100 }"
+                                >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">{[{ 'constant.vcpu' | i18next }]}({[{ resource_persent_desc('vcpu') }]})</label>
+                    <div class="progress" style="margin-bottom:0px;">
+                        <div class="progress-bar progress-bar-success" role="progressbar"
+                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                             ng-style="{'width': resource_persent('vcpu')}"
+                             ng-class="{'progress-bar-danger': calcuate_resource_persent('vcpu')>100 }"
+                                >
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">{[{ 'constant.memory' | i18next }]}({[{ resource_persent_desc('memory') }]})</label>
+                    <div class="progress" style="margin-bottom:0px;">
+                        <div class="progress-bar progress-bar-success" role="progressbar"
+                             aria-valuemin="0" aria-valuemax="100"
+                             ng-style="{'width': resource_persent('memory')}"
+                             ng-class="{'progress-bar-danger': calcuate_resource_persent('memory')>100 }">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

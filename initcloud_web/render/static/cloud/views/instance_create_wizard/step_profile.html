@@ -1,0 +1,118 @@
+<div class="row scroller" id="profile_div" style="height:300px;">
+    <div class="col-md-12">
+        <div class="list-group">
+            <div class="form-group">
+                <label class="control-label col-md-3">
+                    {[{ 'instance.name' | i18next }]} <span class="required"> * </span>
+                </label>
+
+                <div class="col-md-7">
+                    <input type="text" class="form-control input-inline" name="name" maxlength="24"
+                           ng-model="instance_config.name" value=""
+                           onpaste="return false;" ondragenter="return false;"
+                           oncontextmenu="return false;" style="ime-mode:disabled"/>
+                    <eon-help data-tooltip="{[{ 'instance.name_prompt' | i18next }]}"
+                              data-tooltip-placement="right"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3">
+                    {[{ 'count' | i18next }]} <span class="required"> * </span>
+                </label>
+
+                <div class="col-md-6">
+                    <div data-ng-if="site_config.BATCH_INSTANCE_LIMIT > 1" style="float:left;">
+                        <div style="width:150px;" class="input-group">
+                            <div class="spinner-buttons input-group-btn">
+                                <button class="btn spinner-down red" type="button" ng-click="instance_counter(-1)">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <input type="text" readonly class="spinner-input form-control"
+                                   ng-model="instance_config.instance">
+
+                            <div class="spinner-buttons input-group-btn" ng-click="instance_counter(1)">
+                                <button class="btn spinner-up blue" type="button">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float:left;" data-ng-if="site_config.BATCH_INSTANCE_LIMIT <= 1">
+                        <input type="text" class="form-control" readonly
+                               data-ng-model="instance_config.instance"/>
+                    </div>
+                    <div style="float: left; padding-top: 10px;margin-left: 10px;">
+                        <eon-help data-tooltip="{[{ 'instance.batch_launch_prompt' | i18next: {'num': 10} }]}"
+                                  data-tooltip-placement="bottom"/>
+                    </div>
+                </div>
+            </div>
+            <!--div class="form-group">
+                <label class="control-label col-md-3">{[{ 'instance.login_type' | i18next
+                    }]} <span class="required">
+                                                                * </span>
+                </label>
+
+                <div class="col-md-6">
+                    <div class="radio-list">
+                        <label class="radio-inline">
+                            <input type="radio" name="login_type"
+                                   value="password" checked
+                                   ng-model="instance_config.login_type"> {[{
+                            'instance.password' | i18next
+                            }]} </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="login_type"
+                                   value="ssh" disabled ng-model="instance_config.login_type">
+                            SSH Key </label>
+                    </div>
+                </div>
+            </div-->
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label class="control-label col-md-3">{[{ 'instance.login_name' | i18next }]}
+                </label>
+
+                <div class="col-md-7">
+                    <input type="text" class="form-control" name="login_name" value="root"
+                           readonly ng-model="instance_config.select_image.login_name"/>
+                    <!--span class="help-block">{[{ 'instance.login_name_prompt' | i18next }]}</span-->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3">{[{ 'instance.password' | i18next }]} <span
+                        class="required">* </span>
+                </label>
+
+                <div class="col-md-7">
+                    <input id="login_password" type="password" class="form-control input-inline"
+                           name="password" ng-model="instance_config.password" value=""/>
+                    <eon-help data-tooltip="{[{ 'instance.password_prompt' | i18next }]}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3">{[{ 'instance.confirm_password' | i18next }]} <span
+                        class="required"> * </span>
+                </label>
+                <div class="col-md-7">
+                    <input type="password" class="form-control input-inline" name="confirm_password"
+                           value="" ng-model="instance_config.confirm_password"/>
+                    <eon-help data-tooltip="{[{ 'instance.confirm_password_prompt' | i18next }]}"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/ng-template" id="instance_num_tip.html">
+    <p data-ng-i18next="[html:i18next]({num: site_config.BATCH_INSTANCE_LIMIT})instance.batch_launch_prompt"></p>
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#profile_div").slimScroll({});
+    });
+</script>

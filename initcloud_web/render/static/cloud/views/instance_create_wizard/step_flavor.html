@@ -1,0 +1,100 @@
+<div class="row  scroller" id="flavor_div" style="height:300px;">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="col-md-2 control-label">CPU</label>
+            <div class="col-md-10">
+                <div class="input-group">
+                    <button ng-repeat="vcpu in cpu_list" class="btn btn-default" type="button"
+                            ng-class="{'btn-primary': instance_config.vcpu == vcpu}"
+                            ng-click="cpu_click(vcpu)"
+                            style="margin: 5px;">
+                        {[{ vcpu }]} CPU
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">{[{ 'instance.memory' | i18next }]}</label>
+
+            <div class="col-md-10">
+                <div class="input-group">
+                    <button ng-repeat="memory in memory_list" class="btn btn-default" type="button" style="margin: 5px;"
+                            ng-class="{'btn-primary': instance_config.memory == memory, 'disabled': instance_config.cpu_memory.indexOf(memory) == -1}"
+                            ng-click="instance_config.memory = memory;">
+                        <span ng-if="memory/1024 >= 1"> {[{ memory/1024 }]} GB</span>
+                        <span ng-if="memory/1024 < 1"> {[{ memory }]} MB</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">{[{ 'instance.os_disk' | i18next }]}</label>
+
+            <div class="col-md-10">
+                <div class="note note-info" style="margin-bottom: 0px;">
+                    <strong>{[{ instance_config.select_image.disk_size }]}GB {[{'instance.os_disk_free' | i18next }]}</strong>
+                </div>
+            </div>
+        </div>
+
+        <!--
+        <div class="form-group">
+            <label class="col-md-2 control-label">{[{ 'instance.network' | i18next }]}</label>
+
+            <div class="col-md-10">
+                <select class="form-control" data-ng-if="network_list.length > 0"
+                        ng-options="network as network.name for network in network_list"
+                        ng-model="instance_config.network">
+                </select>
+
+                <div class="note note-warning" data-ng-if="network_list.length <= 0">
+                    <strong> {[{ 'instance.default_network_alert' | i18next }]}</strong>
+                </div>
+            </div>
+        </div>
+        -->
+        <!--
+        <div class="form-group">
+            <label class="col-md-2 control-label">{[{ 'billing.pay_type' | i18next }]}</label>
+            <div class="col-md-3">
+                <select name="pay_type" class="form-control"
+                        data-ng-model="instance_config.pay_type"
+                        data-ng-click="instance_config.pay_num=1"
+                        disabled>
+                    <option value="year">{[{ 'billing.pay_type_year' | i18next }]}</option>
+                    <option value="month">{[{ 'billing.pay_type_month' | i18next }]}</option>
+                    <option value="hour">{[{ 'billing.pay_type_hour' | i18next }]}</option>
+                </select>
+            </div>
+            <div class="col-md-3" data-ng-if="instance_config.pay_type != 'hour'">
+                <input name="pay_quantity" class="form-control"
+                        data-ng-model="instance_config.pay_num"
+                        data-rule-required="true"
+                        data-rule-digits="true"
+                        data-rule-min="1">
+            </div>
+          -->
+            <!--
+            <div class="col-md-3" data-ng-if="instance_config.pay_type == 'month'">
+                <select name="pay_quantity" class="form-control"
+                        data-ng-model="instance_config.pay_num"
+                        data-ng-options="opt.value as opt.label for opt in month_options"> </select>
+            </div>
+            <div class="col-md-3" data-ng-if="instance_config.pay_type == 'year'">
+                <select name="pay_quantity" class="form-control"
+                        data-ng-model="instance_config.pay_num"
+                        data-ng-options="opt.value as opt.label for opt in year_options"> </select>
+            </div>
+            -->
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#flavor_div").slimScroll({});
+    });
+</script>

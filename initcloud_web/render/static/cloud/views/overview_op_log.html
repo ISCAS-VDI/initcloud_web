@@ -1,0 +1,38 @@
+<div class="portlet">
+    <div class="portlet-title">
+        <div class="caption font-green-sharp">
+            <i class="icon-settings font-green-sharp"></i>
+            <span class="caption-subject bold uppercase">最近操作</span>
+            <span class="caption-helper"><a href="#/operation/">查看全部</a></span>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="timeline">
+            <!-- TIMELINE ITEM -->
+            <div class="timeline-item" ng-repeat="op in operation_list">
+                <div class="timeline-badge">
+                    <div class="timeline-icon">
+                        <i class="font-green-haze"
+                        ng-class="operation_icon(op)">
+                        </i>
+                    </div>
+                </div>
+                <div class="timeline-body">
+                    <div class="timeline-body-arrow"></div>
+                    <div class="timeline-body-head">
+                        <div class="timeline-body-head-caption">
+                            <a class="timeline-body-title font-blue-madison" href="#">{[{ op.resource_i18n }]}</a>
+                            <span class="timeline-body-time font-grey-cascade">{[{ op.create_date }]}</span>
+                        </div>
+                    </div>
+                    <div class="timeline-body-content">
+                        <span class="font-grey-cascade">
+                            {[{ op.desc }]}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!-- END TIMELINE ITEM -->
+        </div>
+    </div>
+</div>

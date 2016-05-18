@@ -1,0 +1,161 @@
+<h1 class="page-title">
+    {[{ 'sidebar.overview' | i18next }]}
+</h1>
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat blue-madison">
+                <div class="visual">
+                    <i class="fa fa-desktop"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {[{ summary.instance_num }]}
+                    </div>
+                    <div class="desc">
+                        {[{'management.overview.instance_num' | i18next}]}
+                    </div>
+                </div>
+                <a href="#" class="more">
+                    View more <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat red-intense">
+                <div class="visual">
+                    <i class="fa fa-users"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {[{ summary.user_num }]}
+                    </div>
+                    <div class="desc">
+                        {[{'management.overview.account_num' | i18next }]}
+                    </div>
+                </div>
+                <a href="#/users/" class="more">
+                    View more <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <!--
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat green-haze">
+                <div class="visual">
+                    <i class="fa fa-file-word-o"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {[{ summary.contract_num }]}
+                    </div>
+                    <div class="desc">
+                        {[{ 'management.overview.contract_num' | i18next }]}
+                    </div>
+                </div>
+                <a href="#/contract/" class="more">
+                    View more <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        -->
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat purple-plum">
+                <div class="visual">
+                    <i class="fa fa-globe"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {[{ summary.data_center_num }]}
+                    </div>
+                    <div class="desc">
+                        {[{'management.overview.data_center_num' | i18next }]}
+                    </div>
+                </div>
+                <a href="#/data-center/" class="more">
+                    View more <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-6">
+            <div class="portlet light ">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-cursor font-purple-intense hide"></i>
+                        <span class="caption-subject font-purple-intense bold uppercase">{[{ "management.overview.hypervisor_stats" | i18next }]}</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-3 text-center ">
+                            <div class="angular">
+                                <span class="chart" easypiechart
+                                      percent="cpu_percent"
+                                      options="options">
+                                    <span class="percent" ng-bind="cpu_percent"></span>
+                                </span>
+                            </div>
+                            <div class="angular">
+                                <label>
+                                    {[{ "management.overview.used" | i18next }]}({[{ stats.vcpus_used }]}/{[{
+                                    stats.vcpus }]})
+                                </label>
+                            </div>
+                            <div class="angular">
+                                <lable>
+                                    {[{ "management.overview.cpu_usage" | i18next }]}
+                                </lable>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center ">
+                            <div class="angular">
+                                <span class="chart" easypiechart
+                                      options="options"
+                                      percent="memory_percent">
+                                    <span class="percent" ng-bind="memory_percent"></span>
+                                </span>
+                            </div>
+                            <div class="angular">
+                                <label>
+                                    {[{ "management.overview.used" | i18next }]}({[{ stats.memory_mb_used/1024 | number:0 }]}/{[{ stats.memory_mb/1024 | number:0 }]}GB)
+                                </label>
+                            </div>
+                            <div class="angular">
+                                <lable>
+                                    {[{ "management.overview.memory_usage" | i18next }]}
+                                </lable>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center ">
+                            <div class="angular">
+                                <span class="chart" easypiechart
+                                      options="options"
+                                      percent="disk_percent">
+                                    <span class="percent" ng-bind="disk_percent"></span>
+                                </span>
+                            </div>
+                            <div class="angular">
+                                <label>
+                                    {[{ "management.overview.used" | i18next }]}({[{ stats.local_gb_used }]}/{[{ stats.local_gb }]}GB)
+                                </label>
+                            </div>
+                            <div class="angular">
+                                <lable>
+                                    {[{ "management.overview.disk_usage" | i18next }]}
+                                </lable>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MAIN CONTENT -->

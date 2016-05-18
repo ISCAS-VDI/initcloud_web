@@ -1,0 +1,115 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption font-green-sharp">
+                    <a class="btn btn-icon-only btn-default" href="#" data-ng-click="price_table.reload()">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                    <a class="btn btn-primary" href="#"
+                       data-ng-click="openPriceCreateModal()" role="button"
+                       data-ng-hide="hideAddBtn">
+                        <i class="fa fa-plus"></i>
+                        {[{ 'action.add' | i18next }]}
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div id="" class="dataTables_wrapper no-footer">
+                    <table data-ng-table="price_table"
+                           class="table table-striped table-bordered table-advance table-hover">
+                        <tbody>
+                            <tr data-ng-repeat="rule in $data">
+                                <td width="30" header="'checkbox-header.html'">
+                                    <input type="checkbox" data-ng-model="rule.checked"/>
+                                </td>
+                                <td data-title="'price_rule.resource_type' | i18next">
+                                    <span> {[{ rule.resource_type_text }]} </span>
+                                </td>
+                                <td data-title="flavor_name | i18next">
+                                    {[{ rule.resource_flavor_start }]}
+                                </td>
+                                <td data-title="'price_rule.price' | i18next">
+                                    <span> {[{ rule.hour_price }]} </span>
+                                </td>
+                                <td data-title="'actions' | i18next">
+                                    <div class="btn-group">
+                                        <button class="btn btn-default"
+                                                type="button" data-ng-click="openPriceUpdateModal(rule)">
+                                            <i class="fa fa-edit"></i>
+                                            {[{ 'edit' | i18next }]}
+                                        </button>
+                                        <button data-toggle="dropdown"
+                                                class="btn btn-default dropdown-toggle"
+                                                type="button" aria-expanded="false">
+                                            <i class="fa fa-angle-down"></i>
+                                        </button>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li>
+                                                <a href="javascript:void(0);" data-ng-click="delete(rule)">
+                                                    <i class="fa fa-trash"></i>
+                                                    {[{ 'action.delete' | i18next }]} </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MAIN CONTENT -->
+
+
+<!-- BEGIN TEMPLATE CREATE-->
+<script type="text/ng-template" id="create_traffic_price.html">
+    <div class="modal-header">
+       <div id="updateTitle" class="modal-title"> {[{ title | i18next }]}</div>
+    </div>
+    <div class="modal-body">
+        <form id="priceForm" role="form" class="form-horizontal form-bordered">
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="hour_price">
+                    {[{ 'price_rule.price' | i18next }]}
+                    <span class="required" aria-required="true"> * </span>
+                </label>
+                <div class="col-md-3">
+                    <input id="hour_price" name="hour_price"
+                           data-ng-model="rule.hour_price"
+                           class="form-control input-small"
+                           data-rule-required="true"
+                           data-rule-number="true">
+                </div>
+            </div>
+            <div class="form-group" >
+                <label class="control-label col-md-3">
+                    {[{ flavor_name | i18next }]}
+                    <span class="required" aria-required="true"> * </span>
+                </label>
+                <div class="col-md-5">
+                    <div class="input-group input-large">
+                        <input id="resource_flavor" name="resource_flavor" type="number"
+                               class="form-control input-small" disabled="true"
+                               data-ng-model="rule.resource_flavor_start">
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
+            {[{ 'cancel' | i18next }]}
+        </a>
+        <a class="btn btn-primary"
+           data-ng-click="create(rule)" data-nap-after-click> {[{ 'submit' | i18next }]}</a>
+    </div>
+</script>
+<!-- END TEMPLATE CREATE-->
+
+<script type="text/ng-template" id="checkbox-header.html">
+    <input type="checkbox"  data-ng-model="checkboxGroup.checked" data-ng-change="checkboxGroup.toggleAll()"/>
+</script>

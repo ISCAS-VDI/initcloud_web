@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="note note-success ng-scope">
+            <p>{[{ 'price_rule.page_desc_1'|i18next }]}</p>
+            <p>{[{ 'price_rule.page_desc_2'|i18next }]}</p>
+            <p>{[{ 'price_rule.page_desc_3'|i18next }]}</p>
+            <p>{[{ 'price_rule.page_desc_4'|i18next }]}</p>
+        </div>
+    <tabset>
+        <tab heading="{[{ 'price_rule.cpu' | i18next }]}">
+            <div data-ng-include="'/static/management/views/price_rule_template.html'"
+                 data-ng-controller="CPUPriceRuleController"></div>
+        </tab>
+        <tab heading="{[{ 'price_rule.memory' | i18next }]}">
+            <div data-ng-include="'/static/management/views/price_rule_template.html'"
+                 data-ng-controller="MemoryPriceRuleController"></div>
+        </tab>
+        <tab heading="{[{ 'price_rule.volume' | i18next }]}">
+            <div data-ng-include="'/static/management/views/price_rule_template.html'"
+                 data-ng-controller="VolumePriceRuleController"></div>
+        </tab>
+        <tab heading="{[{ 'price_rule.floating_ip' | i18next }]}">
+            <div data-ng-include="'/static/management/views/price_rule_template.html'"
+                 data-ng-controller="FloatingIPPriceRuleController"></div>
+        </tab>
+        <tab heading="{[{ 'price_rule.bandwidth' | i18next }]}">
+            <div data-ng-include="'/static/management/views/price_rule_template.html'"
+                 data-ng-controller="BandwidthPriceRuleController"></div>
+        </tab>
+        <!--
+        <tab heading="{[{ 'price_rule.traffic' | i18next }]}">
+            <div data-ng-include="'/static/management/views/price/traffic.html'"
+                 data-ng-controller="TrafficPriceRuleController"></div>
+        </tab>
+        -->
+    </tabset>
+
+    </div>
+</div>
+<!-- END MAIN CONTENT -->
