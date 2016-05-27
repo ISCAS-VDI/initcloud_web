@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block page_title %}
+<title> {{ BRAND }} | Signup </title>
+{% endblock %}
+
+{% block page_content %}
+   <form class="register-form" style="display:block;"  action="/signup/" method="post">
+        {% csrf_token %}
+        <h3>{% trans "Sign Up" %}</h3>
+        {% if errors %}
+        <div class="alert alert-danger">
+            <button class="close" data-close="alert"></button>
+            <div id="errorMsg">
+                <ul>
+                {% for field in form %}
+                    {% if field.errors %}
+                    <li> {{ field.label }}: {{ field.errors|first }} </li>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{% trans "Login Name" %}</label>
+            <input class="form-control placeholder-no-fix" type="text" placeholder="{% trans 'Login Name' %}"
+                   name="username" value="{{ form.username.value }}"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{% trans "Password" %}</label>
+            <input class="form-control placeholder-no-fix" type="password" placeholder="{% trans 'Password' %}"
+                   name="password1" id="password1"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{% trans "Repassword" %}</label>
+            <input class="form-control placeholder-no-fix" type="password" placeholder="{% trans 'Confirm Password' %}"
+                   name="password2"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{% trans "Email" %}</label>
+            <input class="form-control placeholder-no-fix" type="text"
+                   value="{{ form.email.value }}"
+                   placeholder="{% trans 'Email' %}" name="email"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{% trans "Mobile" %}</label>
+            <input class="form-control placeholder-no-fix" type="text"
+                   value="{{ form.mobile.value }}"
+                   placeholder="{% trans 'Mobile' %}" name="mobile"/>
+        </div>
+        {% if CAPTCHA_ENABLED %}
+        <div class="form-group">
+            {{ form.captcha }}
+        </div>
+        {% endif %}
+
+        {% comment %}
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{% trans 'User Type' %}</label>
+            <select name="user_type" class="form-control">
+                <option value="" selected>{% trans 'User Type' %}</option>
+                {% for k,v in USER_TYPE.items %}
+                    <option value="{{k}}">{{v}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <p class="hint">
+            {% trans 'Enter your company details below' %}
+        </p>
+
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{% trans 'Company Name' %}</label>
+            <input class="form-control placeholder-no-fix" type="text" placeholder="{% trans 'Company Name' %}"
+                   name="company_name"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{% trans 'Company Address' %}</label>
+            <input class="form-control placeholder-no-fix" type="text" placeholder="{% trans 'Company Address' %}"
+                   name="company_address"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{% trans 'Company MCC' %}</label>
+            <select name="mcc" class="form-control">
+                <option value="" selected>{% trans 'MCC' %}</option>
+                {% for k,v in MCC.items %}
+                    <option value="{{k}}">{{v}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{% trans 'Source' %}</label>
+            <select name="source" class="form-control">
+                <option value="" selected>{% trans 'Source' %}</option>
+                {% for k,v in SOURCE.items %}
+                    <option value="{{k}}">{{v}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endcomment %}
+        <div class="form-group margin-top-20 margin-bottom-20">
+            <label class="check">
+                <input id="tnc_agree" type="checkbox" name="tnc"/> {% trans 'I agree to the' %}<a href="#">{% trans 'Terms of Service'%} </a>
+            </label>
+            <div id="register_tnc_error">
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" id="register-submit-btn" class="btn green disabled">{% trans 'Sign Up' %}</button>
+            <a href="/login/" class="btn btn-default pull-right">{% trans 'Login' %}</a>
+        </div>
+    </form>
+{% endblock %}
+
+{% block page_script %}
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        Metronic.init();
+        Layout.init();
+        Login.init();
+    });
+
+    // init background slide images
+    $.backstretch([
+                "{{ STATIC_URL }}assets/admin/pages/media/bg/2.jpg"
+            ], {
+                fade: 1000,
+                duration: 8000
+            }
+    );
+
+    $('.captcha-refresh').click(function(){
+        var parent = $(this).parent();
+        $.getJSON("/captcha/refresh/", {}, function(json) {
+            parent.find('input[name="captcha_0"]').val(json.key);
+            parent.find('img.captcha').attr('src', json.image_url);
+        });
+        return false;
+    });
+</script>
+{% endblock %}
+

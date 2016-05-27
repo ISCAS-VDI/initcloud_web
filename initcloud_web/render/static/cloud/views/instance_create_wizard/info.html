@@ -1,0 +1,63 @@
+<form action="#" class="form-horizontal" method="">
+    <div class="form-wizard">
+        <div class="form-body">
+            <div class="tab-content">
+                <div class="tab-pane active" id="">
+                    <h4>{[{ 'instance.config_info' | i18next }]} </h4>
+                    <table class="table table-hover table-striped table-bordered">
+                        <tr>
+                            <td>
+                                {[{ 'instance.image' | i18next }]}
+                            </td>
+                            <td>
+                                {[{ instance_config.select_image.name }]}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {[{ 'instance.cpu' | i18next }]}
+                            </td>
+                            <td>
+                                {[{ instance_config.vcpu }]} {[{ 'instance.cpu_unit' | i18next }]}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {[{ 'instance.memory' | i18next }]}
+                            </td>
+                            <td>
+                                <span ng-if="instance_config.memory/1024 >= 1"> {[{ instance_config.memory/1024 }]} GB</span>
+                                <span ng-if="instance_config.memory/1024 < 1"> {[{ instance_config.memory }]} MB</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {[{ 'instance.network' | i18next }]}
+                            </td>
+                            <td>
+                                <span ng-if="instance_config.network">{[{ instance_config.network.name }]} </span>
+                                <span ng-if="!instance_config.network">{[{ 'instance.default_network_alert' | i18next }]} </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {[{ 'instance.name' | i18next }]}
+                            </td>
+                            <td>
+                                {[{ instance_config.name }]}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {[{ 'count' | i18next }]}
+                            </td>
+                            <td>
+                                {[{ instance_config.instance }]}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

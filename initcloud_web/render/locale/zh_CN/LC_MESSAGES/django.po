@@ -1,0 +1,228 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-09-21 15:08+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: templates/login.html:11 templates/resend_activate_email.html:9
+msgid "Account"
+msgstr "账户"
+
+#: templates/login.html:12 templates/login.html.py:37
+#: templates/resend_activate_email.html:10
+#: templates/resend_activate_email.html:24 templates/signup.html:32
+#: templates/signup.html.py:33
+msgid "Password"
+msgstr "密码"
+
+#: templates/login.html:14 templates/login.html.py:50 templates/login.html:53
+#: templates/signup.html:114
+msgid "Login"
+msgstr "登录"
+
+#: templates/login.html:27
+msgid ""
+"The password you entered is incorrect. Please try again (make sure your caps "
+"lock is off)."
+msgstr "您输入的密码不对，请再次输入"
+
+#: templates/login.html:32 templates/resend_activate_email.html:19
+msgid "Username"
+msgstr "用户名"
+
+#: templates/login.html:44
+msgid "Login Via LDAP"
+msgstr "通过LDAP登录"
+
+#: templates/login.html:51 templates/signup.html:11
+#: templates/signup.html.py:113
+msgid "Sign Up"
+msgstr "注册"
+
+#: templates/login.html:85 templates/resend_activate_email.html:52
+msgid "Enter any username and password."
+msgstr "请输入用户名和密码。"
+
+#: templates/no_udc.html:5
+msgid "No Data Center Assigned"
+msgstr "没有分配数据中心"
+
+#: templates/no_udc.html:12
+msgid ""
+"You don't have any data center assigned, please contact your administrator "
+"to finish your initialization."
+msgstr "您还没有被分配数据中心，请联系管理员初始化您的帐号"
+
+#: templates/no_udc.html:14
+msgid ""
+"You don't have any data center assigned, maybe an error happened during your "
+"initialization, please contact your administrator to fix it."
+msgstr ""
+"您还没有被分配数据中心，可能是在初始化您的数据时发生了错误，请联系管理员解决"
+"这个问题"
+
+#: templates/partial_jquery.html:4
+msgid "This field is required."
+msgstr "字段不允许为空。"
+
+#: templates/partial_jquery.html:5
+msgid "Please fix this field."
+msgstr "字段格式错误。"
+
+#: templates/partial_jquery.html:6
+msgid "Please enter a valid email address."
+msgstr "请正确的输入email地址。"
+
+#: templates/partial_jquery.html:7
+msgid "Please enter a valid URL."
+msgstr "请输入正确的URL。"
+
+#: templates/partial_jquery.html:8
+msgid "Please enter a valid date."
+msgstr "请输入正确的日期格式。"
+
+#: templates/partial_jquery.html:9
+msgid "Please enter a valid date (ISO)."
+msgstr "请输入ISO格式的日期。"
+
+#: templates/partial_jquery.html:10
+msgid "Please enter a valid number."
+msgstr "请输入数字。"
+
+#: templates/partial_jquery.html:11
+msgid "Please enter only digits."
+msgstr "请输入数字。"
+
+#: templates/partial_jquery.html:12
+msgid "Please enter a valid credit card number."
+msgstr "请输入一个正确的信用卡账号。"
+
+#: templates/partial_jquery.html:13
+msgid "Please enter the same value again."
+msgstr "两次输入的内容不一致。"
+
+#: templates/partial_jquery.html:14
+msgid "Please enter a value with a valid extension."
+msgstr "后缀名不支持。"
+
+#: templates/partial_jquery.html:15
+#, python-brace-format
+msgid "Please enter no more than {0} characters."
+msgstr "请输入最多{0}个字符。"
+
+#: templates/partial_jquery.html:16
+#, python-brace-format
+msgid "Please enter at least {0} characters."
+msgstr "请输入最少{0}个字符。"
+
+#: templates/partial_jquery.html:17
+#, python-brace-format
+msgid "Please enter a value between {0} and {1}."
+msgstr "请输入内容在{0}-{1}之间。"
+
+#: templates/partial_jquery.html:18
+#, python-brace-format
+msgid "Please enter a value less than or equal to {0}."
+msgstr "请输入的内容小于{0}。"
+
+#: templates/partial_jquery.html:19
+#, python-brace-format
+msgid "Please enter a value greater than or equal to {0}."
+msgstr "请输入的内容大于{0}。"
+
+#: templates/partial_jquery.html:25
+msgid "Please enter a valid IP."
+msgstr "请输入正确的IP地址"
+
+#: templates/partial_jquery.html:27
+msgid "Use strong passwords that combine upper and lowercase letters, numbers."
+msgstr "请使用含有大小写字母和数字的强密码"
+
+#: templates/resend_activate_email.html:5
+msgid "Resend Activate Email"
+msgstr "重发激活邮件"
+
+#: templates/resend_activate_email.html:32
+msgid "Resend"
+msgstr "重发"
+
+#: templates/signup.html:27 templates/signup.html.py:28
+msgid "Login Name"
+msgstr "登录名"
+
+#: templates/signup.html:37
+msgid "Repassword"
+msgstr "密码"
+
+#: templates/signup.html:38
+msgid "Confirm Password"
+msgstr "确认密码"
+
+#: templates/signup.html:42 templates/signup.html.py:45
+msgid "Email"
+msgstr "电子邮箱"
+
+#: templates/signup.html:48 templates/signup.html.py:51
+msgid "Mobile"
+msgstr "手机号"
+
+#: templates/signup.html:107
+msgid "I agree to the"
+msgstr "我已经阅读并同意"
+
+#: templates/signup.html:107
+msgid "Terms of Service"
+msgstr "服务协议"
+
+#~ msgid "Please enter a value between {0} and {1} characters long."
+#~ msgstr "字符长度需要在{0}-{1}之间。"
+
+#~ msgid "User Type"
+#~ msgstr "用户类别"
+
+#~ msgid "Enter your company details below"
+#~ msgstr "请填写公司基本信息"
+
+#~ msgid "Company Name"
+#~ msgstr "公司名称"
+
+#~ msgid "Company Address"
+#~ msgstr "公司地址"
+
+#~ msgid "Company MCC"
+#~ msgstr "公司行业"
+
+#~ msgid "MCC"
+#~ msgstr "公司行业"
+
+#~ msgid "Source"
+#~ msgstr "了解途径"
+
+#~ msgid "Signup Success"
+#~ msgstr "恭喜，注册成功，点击登录继续操作"
+
+#~ msgid "Forgot Password"
+#~ msgstr "找回密码"
+
+#~ msgid "Create an account"
+#~ msgstr "创建用户"
+
+#~ msgid "Enter your personal details below"
+#~ msgstr "请填写用户基本信息"
+
+#~ msgid "I'm company."
+#~ msgstr "我是企业用户"

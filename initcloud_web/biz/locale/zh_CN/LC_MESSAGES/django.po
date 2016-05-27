@@ -1,0 +1,2357 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-30 10:01+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: account/models.py:25
+msgid "Mobile"
+msgstr "手机号"
+
+#: account/models.py:26
+msgid "User Type"
+msgstr "用户类型"
+
+#: account/models.py:35 account/models.py:36
+msgid "UserProfile"
+msgstr "用户设置"
+
+#: account/models.py:115
+msgid "Contract name"
+msgstr "合同名称"
+
+#: account/models.py:116
+msgid "Customer name"
+msgstr "客户名称"
+
+#: account/models.py:117
+msgid "Start Date"
+msgstr "开始日期"
+
+#: account/models.py:118
+msgid "End Date"
+msgstr "结束日期"
+
+#: account/models.py:119 account/models.py:144 backup/models.py:38
+#: backup/models.py:117 firewall/models.py:15 firewall/models.py:45
+#: floating/models.py:38 forum/models.py:11 forum/models.py:28
+#: instance/models.py:52 lbaas/models.py:25 lbaas/models.py:60
+#: lbaas/models.py:102 lbaas/models.py:150 network/models.py:20
+#: network/models.py:88 network/models.py:114 network/models.py:153
+#: volume/models.py:20
+msgid "Deleted"
+msgstr "已删除"
+
+#: account/models.py:120 account/models.py:145 account/models.py:168
+#: backup/models.py:36 backup/models.py:114 firewall/models.py:14
+#: firewall/models.py:46 floating/models.py:36 forum/models.py:12
+#: forum/models.py:29 image/models.py:25 instance/models.py:34
+#: instance/models.py:153 lbaas/models.py:24 lbaas/models.py:59
+#: lbaas/models.py:101 lbaas/models.py:149 network/models.py:21
+#: network/models.py:89 network/models.py:115 volume/models.py:19
+msgid "Create Date"
+msgstr "创建日期"
+
+#: account/models.py:121 account/models.py:146
+msgid "Update Date"
+msgstr "修改日期"
+
+#: account/models.py:135 account/models.py:136 account/settings.py:30
+msgid "Contract"
+msgstr "合同"
+
+#: account/models.py:141
+msgid "Resouce"
+msgstr "资源"
+
+#: account/models.py:143
+msgid "Limit"
+msgstr "配额"
+
+#: account/models.py:155 account/models.py:156
+msgid "Quota"
+msgstr "配额"
+
+#: account/models.py:163 backup/models.py:109 floating/models.py:30
+msgid "Resource"
+msgstr "资源"
+
+#: account/models.py:164 backup/models.py:107
+msgid "Resource ID"
+msgstr "资源 ID"
+
+#: account/models.py:165
+msgid "Resource Name"
+msgstr "资源名称"
+
+#: account/models.py:166
+msgid "Action"
+msgstr "操作"
+
+#: account/models.py:167
+msgid "Result"
+msgstr "结果"
+
+#: account/models.py:204 account/models.py:205
+msgid "Operation"
+msgstr "操作日志"
+
+#: account/models.py:223
+msgid "just now"
+msgstr "刚刚"
+
+#: account/models.py:226
+#, python-format
+msgid "%(minutes)d minutes ago"
+msgstr "%(minutes)d分钟前"
+
+#: account/models.py:229
+#, python-format
+msgid "%(hours)d hours ago"
+msgstr "%(hours)d小时前"
+
+#: account/models.py:232
+#, python-format
+msgid "%(days)d days ago"
+msgstr "%(days)d天前"
+
+#: account/models.py:235
+#, python-format
+msgid "%(years)d years ago"
+msgstr "%(years)d年前"
+
+#: account/models.py:239
+msgid "Notification"
+msgstr "通知"
+
+#: account/models.py:240
+msgid "Notifications"
+msgstr "通知"
+
+#: account/models.py:307
+msgid "Feed"
+msgstr "种子"
+
+#: account/models.py:308
+msgid "Feeds"
+msgstr "种子"
+
+#: account/models.py:328
+msgid "Activate Url"
+msgstr ""
+
+#: account/models.py:329
+msgid "Activate Urls"
+msgstr ""
+
+#: account/settings.py:7
+msgid "Personal"
+msgstr "个人"
+
+#: account/settings.py:8
+msgid "Company"
+msgstr "企业"
+
+#: account/settings.py:12 account/settings.py:22 backup/models.py:30
+#: billing/settings.py:40 instance/models.py:59 instance/models.py:60
+#: workflow/models.py:92 workflow/settings.py:22
+msgid "Instance"
+msgstr "云主机"
+
+#: account/settings.py:13 billing/settings.py:18
+msgid "CPU"
+msgstr "CPU"
+
+#: account/settings.py:14
+msgid "Memory(MB)"
+msgstr "内存(MB)"
+
+#: account/settings.py:15
+msgid "Volume(GB)"
+msgstr "磁盘(GB)"
+
+#: account/settings.py:16
+msgid "Volume Count"
+msgstr "磁盘数量"
+
+#: account/settings.py:17 billing/settings.py:21 billing/settings.py:41
+#: workflow/settings.py:23
+msgid "Floating IP"
+msgstr "公网IP"
+
+#: account/settings.py:23 account/settings.py:27 billing/settings.py:20
+#: billing/settings.py:42 volume/models.py:30 volume/models.py:31
+#: workflow/settings.py:24
+msgid "Volume"
+msgstr "磁盘"
+
+#: account/settings.py:24 instance/models.py:43 network/models.py:25
+#: network/models.py:26 network/models.py:152
+msgid "Network"
+msgstr "私有网络"
+
+#: account/settings.py:25 network/models.py:93 network/models.py:94
+msgid "Subnet"
+msgstr "子网"
+
+#: account/settings.py:26 network/models.py:120 network/models.py:121
+msgid "Router"
+msgstr "路由器"
+
+#: account/settings.py:28
+msgid "Firewall"
+msgstr "防火墙"
+
+#: account/settings.py:29
+msgid "FirewallRules"
+msgstr "防火墙规则"
+
+#: account/settings.py:31
+msgid "BackupItem"
+msgstr "备份项"
+
+#: account/settings.py:36
+msgid "reboot"
+msgstr "重启"
+
+#: account/settings.py:37
+msgid "power_on"
+msgstr "开机"
+
+#: account/settings.py:38
+msgid "power_off"
+msgstr "关机"
+
+#: account/settings.py:39
+msgid "vnc_console"
+msgstr "VNC登录"
+
+#: account/settings.py:40
+msgid "bind_floating"
+msgstr "绑定公网IP"
+
+#: account/settings.py:41
+msgid "unbind_floating"
+msgstr "解绑公网IP"
+
+#: account/settings.py:42
+msgid "change_firewall"
+msgstr "更新防火墙"
+
+#: account/settings.py:43
+msgid "attach_volume"
+msgstr "挂载磁盘"
+
+#: account/settings.py:44
+msgid "detach_volume"
+msgstr "卸载磁盘"
+
+#: account/settings.py:45
+msgid "terminate"
+msgstr "删除"
+
+#: account/settings.py:46
+msgid "launch"
+msgstr "创建"
+
+#: account/settings.py:47
+msgid "create"
+msgstr "创建"
+
+#: account/settings.py:48
+msgid "update"
+msgstr "更新"
+
+#: account/settings.py:49
+msgid "delete"
+msgstr "删除"
+
+#: account/settings.py:50
+msgid "attach router"
+msgstr "连接路由器"
+
+#: account/settings.py:51
+msgid "detach router"
+msgstr "离开路由器"
+
+#: account/settings.py:52
+msgid "backup"
+msgstr "备份"
+
+#: account/settings.py:53
+msgid "restore"
+msgstr "恢复"
+
+#: account/settings.py:66
+msgid "Information"
+msgstr "操作日志"
+
+#: account/settings.py:67
+msgid "Success"
+msgstr "成功"
+
+#: account/settings.py:68 volume/settings.py:33 volume/settings.py:56
+msgid "Error"
+msgstr "错误"
+
+#: account/settings.py:69
+msgid "Warning"
+msgstr "警告"
+
+#: account/settings.py:70
+msgid "Danger"
+msgstr "危险"
+
+#: account/views.py:131
+msgid "Contract is created successfully!"
+msgstr "合同创建成功！"
+
+#: account/views.py:135
+msgid "Contract data is not valid!"
+msgstr "合同数据不对！"
+
+#: account/views.py:141
+msgid "Failed to create contract for unknown reason."
+msgstr "未知错误导致合同创建失败."
+
+#: account/views.py:163
+msgid "Contract is updated successfully!"
+msgstr "合同更新成功！"
+
+#: account/views.py:169
+msgid "Failed to update contract for unknown reason."
+msgstr "未知错误导致合同更新失败."
+
+#: account/views.py:189
+msgid "Contracts have been deleted!"
+msgstr "合同删除成功！"
+
+#: account/views.py:195
+msgid "Failed to delete contracts for unknown reason."
+msgstr "未知错误导致合同删除失败．"
+
+#: account/views.py:236
+msgid "User has been deactivated!"
+msgstr "用户已禁用，将不能登录"
+
+#: account/views.py:248
+msgid "User has been activated!"
+msgstr "用户已激活，可以正常使用"
+
+#: account/views.py:261
+msgid "The new password doesn't match confirm password!"
+msgstr "两次密码输入密码不匹配"
+
+#: account/views.py:265
+msgid "The original password is not correct!"
+msgstr "原始密码不对！"
+
+#: account/views.py:271 account/views.py:294
+msgid "Password has been changed! Please login in again."
+msgstr "密码修改成功"
+
+#: account/views.py:282
+msgid "This email has already been used."
+msgstr "该Email地址已被他人使用"
+
+#: account/views.py:285
+msgid "This mobile has already been used."
+msgstr "该手机号已被他人使用"
+
+#: account/views.py:347
+msgid "Quotas have been saved successfully!"
+msgstr "配额已保存成功！"
+
+#: account/views.py:352
+msgid "Failed to save quotas for unknown reason."
+msgstr "未知错误导致配额保存失败．"
+
+#: account/views.py:372
+msgid "Quota have been saved successfully!"
+msgstr "配额保存成功！"
+
+#: account/views.py:378
+msgid "Failed to save quota for unknown reason."
+msgstr "未知错误导致配额保存失败．"
+
+#: account/views.py:387
+msgid "Quota have been deleted successfully!"
+msgstr "配额删除成功"
+
+#: account/views.py:393
+msgid "Failed to create quota for unknown reason."
+msgstr "配额创建失败"
+
+#: account/views.py:411 account/views.py:424
+msgid "Notification is sent successfully!"
+msgstr "消息发布成功！"
+
+#: account/views.py:435
+msgid "Announcement is sent successfully!"
+msgstr "消息发布成功！"
+
+#: account/views.py:490
+msgid "Initialization is successful."
+msgstr "初始化成功！"
+
+#: account/views.py:499 lbaas/views.py:58 lbaas/views.py:86 lbaas/views.py:146
+msgid "Data is not valid"
+msgstr "数据有错误！"
+
+#: account/views.py:518
+msgid "User is created successfully!"
+msgstr "用户创建成功"
+
+#: account/views.py:528
+#, python-format
+msgid "User %(name)s can approve workflow now!"
+msgstr "用户%(name)s可以审批工作流了"
+
+#: account/views.py:539
+#, python-format
+msgid ""
+"Cannot revoke workflow approve permission from %(name)s, this user is now an "
+"approver of some workflows."
+msgstr "不能取消用户%(name)s的审批权限，这位用户当前是某个工作流的审批者"
+
+#: account/views.py:547
+#, python-format
+msgid "User %(name)s cannot approve workflow any more!"
+msgstr "已取消用户%(name)s的工作流审批权限"
+
+#: backup/models.py:23 backup/models.py:94 backup/models.py:279
+#: idc/models.py:14 instance/models.py:149 lbaas/models.py:80
+msgid "Name"
+msgstr "名称"
+
+#: backup/models.py:24
+msgid "Back Type"
+msgstr "备份类型"
+
+#: backup/models.py:28
+msgid "Volumes"
+msgstr "磁盘"
+
+#: backup/models.py:37 backup/models.py:115 floating/models.py:37
+msgid "Delete Date"
+msgstr "删除日期"
+
+#: backup/models.py:39 backup/models.py:118 floating/models.py:25
+#: instance/models.py:32 lbaas/models.py:23 lbaas/models.py:58
+#: lbaas/models.py:99 network/models.py:15 network/models.py:83
+#: network/models.py:111 volume/models.py:18
+msgid "Status"
+msgstr "状态"
+
+#: backup/models.py:87 backup/models.py:88
+msgid "Backup"
+msgstr "备份"
+
+#: backup/models.py:95
+msgid "RBD Image"
+msgstr "镜像 "
+
+#: backup/models.py:101
+msgid "Default Backup"
+msgstr "默认"
+
+#: backup/models.py:103
+msgid "Progress"
+msgstr "上行"
+
+#: backup/models.py:108
+msgid "Backend UUID"
+msgstr "后端　UUID"
+
+#: backup/models.py:123 backup/models.py:124
+msgid "Backup Item"
+msgstr "备份项"
+
+#: backup/models.py:292 backup/models.py:293
+msgid "Backup Log"
+msgstr "备份日志"
+
+#: backup/settings.py:9
+msgid "BACKUP_TYPE_FULL"
+msgstr "全量备份"
+
+#: backup/settings.py:10
+msgid "BACKUP_TYPE_INCREMENT"
+msgstr "增量备份"
+
+#: backup/settings.py:27 backup/settings.py:40
+msgid "Backup Waiting"
+msgstr "等待备份"
+
+#: backup/settings.py:28 backup/settings.py:41
+msgid "Backup Available"
+msgstr "可用"
+
+#: backup/settings.py:29 backup/settings.py:42
+msgid "Backup Error"
+msgstr "错误"
+
+#: backup/settings.py:30 backup/settings.py:43
+msgid "Backup Deleted"
+msgstr "已删除"
+
+#: backup/settings.py:31 backup/settings.py:44
+msgid "Backup Backuping"
+msgstr "备份中"
+
+#: backup/settings.py:32 backup/settings.py:45
+msgid "Backup Restoring"
+msgstr "恢复中"
+
+#: backup/settings.py:33 backup/settings.py:46
+msgid "Backup Pending Delete"
+msgstr "待删除"
+
+#: backup/settings.py:34 backup/settings.py:47
+msgid "Backup Pending Restore"
+msgstr "待恢复"
+
+#: backup/settings.py:35 backup/settings.py:48
+msgid "Backup Deleting"
+msgstr "删除中"
+
+#: backup/views.py:42
+#, python-format
+msgid "Instance %(name)s has one backup task now."
+msgstr "云主机\"%(name)s\"有一个备份或恢复任务在进行中"
+
+#: backup/views.py:46
+#, python-format
+msgid ""
+"Instance %(name)s has one error backup node on default backup chain. Please "
+"delete it first"
+msgstr "云主机%(name)s有一个错误备份项在默认备份链上，请先删除该备份项。"
+
+#: backup/views.py:52 backup/views.py:88
+#, python-format
+msgid "Volume %(name)s has one backup task now."
+msgstr "磁盘\"%(name)s\"有一个备份或恢复任务在进行中"
+
+#: backup/views.py:56
+#, python-format
+msgid ""
+"Volume %(name)s has one error backup node on default backup chain. Please "
+"delet it first"
+msgstr "磁盘%(name)s有一个错误备份项, 请先删除该备份项。"
+
+#: backup/views.py:73 backup/views.py:101
+msgid "Backup is in process."
+msgstr "备份进行中"
+
+#: backup/views.py:92
+#, python-format
+msgid ""
+"Volume %(name)s has one error backup node on default backup chain. Please "
+"delete it first"
+msgstr "磁盘%(name)s有一个错误备份项, 请先删除该备份项"
+
+#: backup/views.py:138
+#, python-format
+msgid "Resource %(name)s has one backup task now."
+msgstr "资源%(name)s有一个备份或恢复任务在进行中"
+
+#: backup/views.py:142
+msgid "This backup item is available."
+msgstr "这个备份项不可用"
+
+#: backup/views.py:148 backup/views.py:157
+msgid "Cannot restore, because target resource has already been deleted"
+msgstr "不能恢复，目标资源已被删除。"
+
+#: backup/views.py:152
+msgid "Cannot restore, because target instance is running"
+msgstr "不能恢复,目标主机在运行"
+
+#: backup/views.py:161
+msgid ""
+"Cannot restore, because target volume is attached to a running instance, "
+"stop the instance or detach the volume"
+msgstr ""
+"不能恢复，目标磁盘被挂在在一个运行的主机中，请先关闭主机或者卸载该磁盘。"
+
+#: backup/views.py:170
+msgid "Restoring"
+msgstr "恢复中"
+
+#: backup/views.py:186
+msgid "Backup item Deleted."
+msgstr "已删除"
+
+#: backup/views.py:189
+msgid "There is one task running on this chain."
+msgstr "该备份链上有一个任务在运行"
+
+#: backup/views.py:201 volume/settings.py:31 volume/settings.py:54
+msgid "Deleting"
+msgstr "删除中"
+
+#: billing/models.py:23 billing/models.py:239
+msgid "Resource Type"
+msgstr "资源类型"
+
+#: billing/models.py:26
+msgid "Price Type"
+msgstr "价格类型"
+
+#: billing/models.py:30
+msgid "Hour Price"
+msgstr "小时价"
+
+#: billing/models.py:31
+msgid "Month Price"
+msgstr "包月价"
+
+#: billing/models.py:32
+msgid "Hour Differential Price"
+msgstr "小时差值"
+
+#: billing/models.py:34
+msgid "Month Differential Price"
+msgstr "包月差值"
+
+#: billing/models.py:36
+msgid "Resource Flavor Start"
+msgstr "规格区间起始"
+
+#: billing/models.py:38
+msgid "Resource Flavor End"
+msgstr "规格区间结束"
+
+#: billing/models.py:45
+msgid "Price Rule"
+msgstr "价格"
+
+#: billing/models.py:46
+msgid "Price Rules"
+msgstr "价格"
+
+#: billing/models.py:109
+msgid "Order"
+msgstr "订单"
+
+#: billing/models.py:110
+msgid "Orders"
+msgstr "订单"
+
+#: billing/models.py:242
+msgid "Resource Flavor"
+msgstr "资源规格"
+
+#: billing/models.py:247
+msgid "Bill Item"
+msgstr "计费项"
+
+#: billing/models.py:248
+msgid "Bill Items"
+msgstr "计费项"
+
+#: billing/models.py:270 billing/models.py:271
+msgid "Bill"
+msgstr "账单"
+
+#: billing/models.py:396
+msgid "Bill Log"
+msgstr "计费日志"
+
+#: billing/models.py:397
+msgid "Bill Logs"
+msgstr "计费日志"
+
+#: billing/settings.py:19 instance/models.py:37
+msgid "Memory"
+msgstr "内存"
+
+#: billing/settings.py:22
+msgid "Band Width"
+msgstr "带宽"
+
+#: billing/settings.py:23
+msgid "Traffic"
+msgstr "流量"
+
+#: billing/settings.py:74
+msgid "Normal"
+msgstr "普通"
+
+#: billing/settings.py:75
+msgid "Differential"
+msgstr "阶梯计价"
+
+#: billing/settings.py:76
+msgid "Linear"
+msgstr "线性"
+
+#: billing/settings.py:87
+msgid "Charge By Hour"
+msgstr "按量收费"
+
+#: billing/settings.py:88
+msgid "Charge By Month"
+msgstr "包月"
+
+#: billing/settings.py:89
+msgid "Charge By Year"
+msgstr "包年"
+
+#: billing/views.py:41 billing/views.py:56 firewall/views.py:37
+#: lbaas/views.py:253 volume/views.py:73
+msgid "Data is not valid."
+msgstr "数据有错误！"
+
+#: billing/views.py:45 billing/views.py:60
+msgid "Price is created."
+msgstr "价格已保存"
+
+#: billing/views.py:67
+msgid "Prices have been deleted!"
+msgstr "价格已删除"
+
+#: common/utils.py:28
+msgid "Operation failed. Unknown error happened!"
+msgstr "操作失败！ 未知错误"
+
+#: firewall/models.py:8
+msgid "Firewall Name"
+msgstr "防火墙名称"
+
+#: firewall/models.py:9
+msgid "OS Firewall UUID"
+msgstr "Firewall UUID"
+
+#: firewall/models.py:10
+msgid "Firewall desc"
+msgstr "防火墙描述"
+
+#: firewall/models.py:11 firewall/models.py:42 network/models.py:17
+#: network/models.py:116
+msgid "Default"
+msgstr "默认"
+
+#: firewall/models.py:33
+msgid "OS Firewall Rules UUID"
+msgstr ""
+
+#: firewall/models.py:34
+msgid "Direction"
+msgstr "流向"
+
+#: firewall/models.py:35
+msgid "Ether type"
+msgstr ""
+
+#: firewall/models.py:36
+msgid "Port range min"
+msgstr ""
+
+#: firewall/models.py:37
+msgid "Port range max"
+msgstr ""
+
+#: firewall/models.py:38 lbaas/models.py:88
+msgid "Protocol"
+msgstr ""
+
+#: firewall/models.py:39
+msgid "remote group id UUID"
+msgstr ""
+
+#: firewall/models.py:40
+msgid "remote ip prefix"
+msgstr ""
+
+#: firewall/settings.py:9
+msgid "Ingress"
+msgstr "下行"
+
+#: firewall/settings.py:10
+msgid "Egress"
+msgstr "上行"
+
+#: firewall/settings.py:17
+msgid "IPv4"
+msgstr "IPv4"
+
+#: firewall/settings.py:18
+msgid "IPv6"
+msgstr "IPv6"
+
+#: firewall/views.py:49
+msgid "Creating firewall"
+msgstr "创建防火墙"
+
+#: firewall/views.py:58
+#, python-format
+msgid "Firewall %(name)s is the default firewall, cannot be deleted."
+msgstr "%(name)s 是默认防火墙，不能删除"
+
+#: firewall/views.py:62
+#, python-format
+msgid "Firewall %(name)s is being used."
+msgstr "防火墙%(name)s在使用中,不允许删除"
+
+#: firewall/views.py:75
+#, python-format
+msgid "Firewall %(name)s is deleted"
+msgstr "防火墙%(name)s已删除"
+
+#: firewall/views.py:94
+msgid "no selected security group"
+msgstr "选择安全组"
+
+#: firewall/views.py:101
+msgid "Valid firewall rule nopass"
+msgstr "规则格式错误"
+
+#: firewall/views.py:113
+msgid "Create firewall rule error"
+msgstr "创建规则失败"
+
+#: firewall/views.py:116
+msgid "Create firewall rule success"
+msgstr "创建规则成功"
+
+#: firewall/views.py:126
+msgid "Firewall rule not exists."
+msgstr "防火墙规则不存在"
+
+#: firewall/views.py:132
+msgid "Firewall Rule is deleted."
+msgstr "防火墙规则已删除"
+
+#: firewall/views.py:149
+msgid "Instance is not found"
+msgstr "没有云主机"
+
+#: firewall/views.py:154
+msgid "Firewall is not found"
+msgstr "没有防火墙"
+
+#: firewall/views.py:165
+#, python-format
+msgid "Instance %(name)s's firewall is changed."
+msgstr "云主机\"%(name)s\"防火墙已改变"
+
+#: floating/models.py:21 instance/models.py:50
+msgid "Public IP"
+msgstr "公网IP"
+
+#: floating/models.py:27
+msgid "Bandwidth MB"
+msgstr "带宽 MB"
+
+#: floating/models.py:31
+msgid "Resource type"
+msgstr "资源类型"
+
+#: floating/models.py:43 floating/models.py:44
+msgid "Floating"
+msgstr "公网IP"
+
+#: floating/models.py:65
+#, python-format
+msgid "Floating IP: %d Mbps"
+msgstr "公网IP: %dMpbs"
+
+#: floating/models.py:108
+#, python-format
+msgid "Your application for %(bandwidth)d Mbps floating IP is approved! "
+msgstr "您申请的%(bandwidth)dMpbs公网IP已通过审核！"
+
+#: floating/models.py:116
+msgid "Error happened to your application for floating IP"
+msgstr "有错误发生在您的公网IP申请流程"
+
+#: floating/models.py:118
+#, python-format
+msgid ""
+"Your application for %(bandwidth)d Mbps floating ip is approved, but an "
+"error happened when creating it."
+msgstr "您申请的%(bandwidth)dMpbs公网IP已通过审核，但在创建时发生了错误．"
+
+#: floating/models.py:128
+#, python-format
+msgid "Your application for %(bandwidth)d floating IP is rejected! "
+msgstr "您的%(bandwidth)dMpbs公网IP申请被驳回！"
+
+#: floating/settings.py:17 floating/settings.py:33
+msgid "Floating ERROR"
+msgstr "错误"
+
+#: floating/settings.py:18 floating/settings.py:34
+msgid "Floating Allocate"
+msgstr "分配中"
+
+#: floating/settings.py:19 floating/settings.py:35 instance/settings.py:49
+#: instance/settings.py:74 volume/settings.py:40 volume/settings.py:63
+msgid "Applying"
+msgstr "申请中"
+
+#: floating/settings.py:20 floating/settings.py:36 instance/settings.py:50
+#: instance/settings.py:75 volume/settings.py:41 volume/settings.py:64
+msgid "Rejected"
+msgstr "申请被拒绝"
+
+#: floating/settings.py:21 floating/settings.py:37
+msgid "Floating Avaiable"
+msgstr "可用"
+
+#: floating/settings.py:22 floating/settings.py:38
+msgid "Floating Binded"
+msgstr "已绑定"
+
+#: floating/settings.py:23 floating/settings.py:39
+msgid "Floating Binding"
+msgstr "绑定中"
+
+#: floating/settings.py:24 floating/settings.py:40
+msgid "Floating Released"
+msgstr "已释放"
+
+#: floating/settings.py:25 floating/settings.py:41
+msgid "Floating Releasing"
+msgstr "释放中"
+
+#: floating/settings.py:61
+msgid "allocate"
+msgstr "分配"
+
+#: floating/settings.py:62
+msgid "release"
+msgstr "释放"
+
+#: floating/settings.py:63
+msgid "associate"
+msgstr "绑定云主机"
+
+#: floating/settings.py:64
+msgid "disassociate"
+msgstr "解绑云主机"
+
+#: floating/views.py:58
+#, python-format
+msgid ""
+"Your application for %(bandwidth)d Mbps floating ip is successful, please "
+"waiting for approval result!"
+msgstr "您的%(bandwidth)d Mpbs公网IP申请已生成，请等待审核结果！"
+
+#: floating/views.py:61
+msgid "Your operation is successful, please wait for allocation."
+msgstr "您的操作已成功，请等待资源分配．"
+
+#: forum/models.py:7
+msgid "title"
+msgstr "标题"
+
+#: forum/models.py:8 forum/models.py:26
+msgid "content"
+msgstr "内容"
+
+#: forum/models.py:13
+msgid "Close Status"
+msgstr "关闭"
+
+#: forum/views.py:29 forum/views.py:30
+msgid "Creating Forum error"
+msgstr "创建工单失败"
+
+#: forum/views.py:46
+msgid "Creating Forum reply success"
+msgstr "回复成功"
+
+#: forum/views.py:50
+msgid "Creating Forum reply error"
+msgstr "回复失败"
+
+#: forum/views.py:64
+msgid "Close forum success"
+msgstr "关闭工单成功"
+
+#: forum/views.py:66
+msgid "No selected forum"
+msgstr "选择工单"
+
+#: forum/views.py:69
+msgid "Close Forum error"
+msgstr "关闭工单失败"
+
+#: idc/models.py:15
+msgid "openstack host"
+msgstr ""
+
+#: idc/models.py:15
+msgid "IP of Compute Center"
+msgstr ""
+
+#: idc/models.py:16
+msgid "default project"
+msgstr "默认项目"
+
+#: idc/models.py:17
+msgid "Project Name of Data Center,recommended: admin"
+msgstr ""
+
+#: idc/models.py:18
+msgid "default project user"
+msgstr "默认用户"
+
+#: idc/models.py:19
+msgid "User who can visit the project"
+msgstr ""
+
+#: idc/models.py:20
+msgid "default user password"
+msgstr "默认密码"
+
+#: idc/models.py:21
+msgid "usually http://host:5000/v2.0"
+msgstr ""
+
+#: idc/models.py:22
+msgid "External Network Name"
+msgstr "外部网络名称"
+
+#: idc/models.py:36 idc/models.py:37
+msgid "DataCenter"
+msgstr "数据中心"
+
+#: idc/models.py:49
+msgid "Tenant"
+msgstr "项目"
+
+#: idc/models.py:50
+msgid "Tenant UUID"
+msgstr ""
+
+#: idc/models.py:51
+msgid "User"
+msgstr ""
+
+#: idc/models.py:52
+msgid "Password"
+msgstr ""
+
+#: idc/models.py:60 idc/models.py:61
+msgid "UserDataCenter"
+msgstr "用户数据中心"
+
+#: idc/views.py:59
+msgid "Data Center is created successfully!"
+msgstr "数据中心创建成功！"
+
+#: idc/views.py:63
+msgid "Data Center data is not valid!"
+msgstr "提交的数据有错误！"
+
+#: idc/views.py:69 idc/views.py:94
+msgid "Failed to create data center for unknown reason."
+msgstr "未知错误导致数据中心创建失败．"
+
+#: idc/views.py:80
+msgid "This host has been used by other data center."
+msgstr "该节点ＩＰ已被其他数据中心使用."
+
+#: idc/views.py:89
+msgid "Data Center is updated successfully!"
+msgstr "数据中心更新成功！"
+
+#: idc/views.py:103
+msgid "Data centers have been deleted!"
+msgstr "数据中心删除成功！"
+
+#: idc/views.py:108
+msgid "Failed to delete data centers for unknown reason."
+msgstr "数据中心删除失败"
+
+#: image/models.py:8
+msgid "Windows"
+msgstr "Windows"
+
+#: image/models.py:9
+msgid "Linux"
+msgstr "Linux"
+
+#: image/models.py:17
+msgid "Image Name"
+msgstr "名称"
+
+#: image/models.py:18
+msgid "UUID"
+msgstr "UUID"
+
+#: image/models.py:18
+msgid "Openstack Image UUID"
+msgstr "Openstack 镜像 UUID"
+
+#: image/models.py:19
+msgid "Login Name"
+msgstr "登录用户名"
+
+#: image/models.py:20
+msgid "Image OS Type"
+msgstr "镜像类型"
+
+#: image/models.py:21
+msgid "Free Disk"
+msgstr ""
+
+#: image/models.py:45 image/models.py:46
+msgid "Image"
+msgstr "镜像 "
+
+#: image/views.py:45
+msgid "Image is created successfully!"
+msgstr "镜像创建成功"
+
+#: image/views.py:48 image/views.py:69
+msgid "Image data is not valid!"
+msgstr "镜像数据有错误！"
+
+#: image/views.py:53
+msgid "Failed to create image for unknown reason."
+msgstr "镜像创建失败"
+
+#: image/views.py:66
+msgid "Image is updated successfully!"
+msgstr "镜像更新成功"
+
+#: image/views.py:74
+msgid "Failed to update image for unknown reason."
+msgstr "镜像更新失败"
+
+#: image/views.py:84
+msgid "Images have been deleted!"
+msgstr "镜像已删除"
+
+#: instance/models.py:24
+msgid "Linux Image"
+msgstr "Linux系统"
+
+#: instance/models.py:25
+msgid "Windows Image"
+msgstr "Windows系统"
+
+#: instance/models.py:31
+msgid "Instance Name"
+msgstr ""
+
+#: instance/models.py:35
+msgid "Terminate Date"
+msgstr ""
+
+#: instance/models.py:36 instance/models.py:150
+msgid "Cpu Cores"
+msgstr ""
+
+#: instance/models.py:38
+msgid "System Disk"
+msgstr ""
+
+#: instance/models.py:40
+msgid "OS FlavorID"
+msgstr ""
+
+#: instance/models.py:49
+msgid "Private IP"
+msgstr ""
+
+#: instance/models.py:87
+#, python-format
+msgid "Instance: %(name)s / %(cpu)s CPU/ %(memory)s MB/ %(sys_disk)d GB"
+msgstr "云主机: %(name)s / %(cpu)s CPU/ %(memory)s MB/ %(sys_disk)d GB"
+
+#: instance/models.py:118
+#, python-format
+msgid "Your application for instance \"%(instance_name)s\" is approved! "
+msgstr "您申请的云主机\"%(instance_name)s\"已通过审核！"
+
+#: instance/models.py:126
+#, python-format
+msgid "Error happened to your application for %(instance_name)s"
+msgstr "您的云主机%(instance_name)s申请发生错误！"
+
+#: instance/models.py:129
+#, python-format
+msgid ""
+"Your application for instance \"%(instance_name)s\" is approved, but an "
+"error happened when creating instance."
+msgstr ""
+"您申请的云主机\"%(instance_name)s\"已通过审核，但在创建过程中发生了错误"
+
+#: instance/models.py:139
+#, python-format
+msgid "Your application for instance \"%(instance_name)s\" is rejected! "
+msgstr "您申请的云主机\"%(instance_name)s\"被驳回！"
+
+#: instance/models.py:151
+msgid "Memory MB"
+msgstr ""
+
+#: instance/models.py:152
+msgid "Price"
+msgstr ""
+
+#: instance/models.py:162 instance/models.py:163
+msgid "Flavor"
+msgstr "规格"
+
+#: instance/settings.py:32 instance/settings.py:57
+msgid "Instance Waiting"
+msgstr "等待调度"
+
+#: instance/settings.py:33 instance/settings.py:58
+msgid "Instance Running"
+msgstr "运行中"
+
+#: instance/settings.py:34 instance/settings.py:59
+msgid "Instance Booting"
+msgstr "启动中"
+
+#: instance/settings.py:35 instance/settings.py:60
+msgid "Instance Rebooting"
+msgstr "重启中"
+
+#: instance/settings.py:36 instance/settings.py:61
+msgid "Instance Paused"
+msgstr "暂停中"
+
+#: instance/settings.py:37 instance/settings.py:62 instance/settings.py:92
+#: instance/settings.py:115
+msgid "Instance Power Off"
+msgstr "已关机"
+
+#: instance/settings.py:38 instance/settings.py:63
+msgid "Instance Shutting Down"
+msgstr "正在关机"
+
+#: instance/settings.py:39 instance/settings.py:64
+msgid "Instance Deploying"
+msgstr "部署中"
+
+#: instance/settings.py:40 instance/settings.py:65
+msgid "Instance Deploy Failed"
+msgstr "部署失败"
+
+#: instance/settings.py:41 instance/settings.py:66
+msgid "Instance Locked"
+msgstr "已锁定"
+
+#: instance/settings.py:42 instance/settings.py:67
+msgid "Instance Delete"
+msgstr "已删除"
+
+#: instance/settings.py:43 instance/settings.py:68
+msgid "Instance Error"
+msgstr "错误"
+
+#: instance/settings.py:44 instance/settings.py:69
+msgid "Instance Backuping"
+msgstr "备份中"
+
+#: instance/settings.py:45 instance/settings.py:70
+msgid "Instance Restoring"
+msgstr "恢复中"
+
+#: instance/settings.py:46 instance/settings.py:71
+msgid "Instance Resizing"
+msgstr "调整规格"
+
+#: instance/settings.py:47 instance/settings.py:72
+msgid "Instance Expired"
+msgstr "已过期"
+
+#: instance/settings.py:48 instance/settings.py:73
+msgid "Instance Deleting"
+msgstr "删除中"
+
+#: instance/settings.py:90
+msgid "Instance Active"
+msgstr "开机"
+
+#: instance/settings.py:91
+msgid "Instance Build"
+msgstr "构建"
+
+#: instance/settings.py:93
+msgid "Instance Pause"
+msgstr "暂停"
+
+#: instance/settings.py:94
+msgid "Instance Lock"
+msgstr "锁定"
+
+#: instance/settings.py:95
+msgid "Instance Resize"
+msgstr "调整规则"
+
+#: instance/settings.py:96 instance/settings.py:113
+msgid "Instance Reboot"
+msgstr "重启"
+
+#: instance/settings.py:97
+msgid "Instance Restore"
+msgstr "恢复"
+
+#: instance/settings.py:114
+msgid "Instance Power On"
+msgstr "开机"
+
+#: instance/settings.py:116
+msgid "Instance VNC"
+msgstr "VNC远程桌面"
+
+#: instance/settings.py:117
+msgid "Instance Bind Floating"
+msgstr "绑定公网IP"
+
+#: instance/settings.py:118
+msgid "Instance Unbind Floating"
+msgstr "解绑公网IP"
+
+#: instance/settings.py:119
+msgid "Instance Change Firewall"
+msgstr "修改防火墙"
+
+#: instance/settings.py:120
+msgid "Instance Attach Volume"
+msgstr "挂载磁盘"
+
+#: instance/settings.py:121
+msgid "Instance Detach Volume"
+msgstr "卸载磁盘"
+
+#: instance/settings.py:122
+msgid "Instance Terminate"
+msgstr "删除"
+
+#: instance/settings.py:123
+msgid "Instance Launch"
+msgstr "创建云主机"
+
+#: instance/settings.py:170
+msgid "Second"
+msgstr "秒"
+
+#: instance/settings.py:171
+msgid "Minute"
+msgstr "分"
+
+#: instance/settings.py:172
+msgid "Hourly"
+msgstr "时"
+
+#: instance/settings.py:173
+msgid "Daily"
+msgstr "天"
+
+#: instance/settings.py:174
+msgid "Weekly"
+msgstr "周"
+
+#: instance/settings.py:175
+msgid "Monthly"
+msgstr "月"
+
+#: instance/settings.py:176
+msgid "Yearly"
+msgstr "年"
+
+#: instance/utils.py:84
+msgid "Cannot operate this instance because it's in restore process."
+msgstr "不能操作恢复过程中的主机"
+
+#: instance/utils.py:93
+msgid ""
+"Cannot operate this instance because one volume attached to it is in restore "
+"process."
+msgstr "不能操作该主机，以为它的一块磁盘正在恢复中"
+
+#: instance/utils.py:104
+msgid "This instance have backup chains, please delete these first."
+msgstr "这个云主机还有备份链，请先删除这些备份链"
+
+#: instance/views.py:98
+msgid "Flavor is created successfully!"
+msgstr "规格创建成功！"
+
+#: instance/views.py:101 instance/views.py:120
+msgid "Flavor data is not valid!"
+msgstr "规格数据有错误！"
+
+#: instance/views.py:106
+msgid "Failed to create flavor for unknown reason."
+msgstr "未知错误导致规格创建失败．"
+
+#: instance/views.py:117
+msgid "Flavor is updated successfully!"
+msgstr "规格更新成功"
+
+#: instance/views.py:125
+msgid "Failed to update flavor for unknown reason."
+msgstr "规格更新失败"
+
+#: instance/views.py:132
+msgid "Flavors have been deleted!"
+msgstr "规格已删除"
+
+#: instance/views.py:158
+msgid "Your selected network has not linked to any router."
+msgstr "您选择的私有网络未连接到路由器，请先连接到路由器后重试"
+
+#: instance/views.py:179
+#, python-format
+msgid ""
+"Your application for instance \"%(instance_name)s\" is successful, please "
+"waiting for approval result!"
+msgstr "您的云主机\"%(instance_name)s\"申请已生成，请等待审核结果！"
+
+#: instance/views.py:184
+msgid "Your instance is created, please wait for instance booting."
+msgstr "您的云主机已经创建，请等待启动．"
+
+#: lbaas/models.py:13
+msgid "Pool UUID"
+msgstr "资源池ID"
+
+#: lbaas/models.py:14
+msgid "Pool name"
+msgstr "名称"
+
+#: lbaas/models.py:15 lbaas/models.py:82
+msgid "Description"
+msgstr "描述"
+
+#: lbaas/models.py:17
+msgid "protocol"
+msgstr "协议"
+
+#: lbaas/models.py:18
+msgid "Lb method"
+msgstr "负载策略"
+
+#: lbaas/models.py:19
+msgid "Provider"
+msgstr ""
+
+#: lbaas/models.py:20 lbaas/models.py:56 lbaas/models.py:98
+#: lbaas/models.py:146
+msgid "Admin state up"
+msgstr ""
+
+#: lbaas/models.py:31 lbaas/models.py:32
+msgid "BalancerPool"
+msgstr "负载均衡器"
+
+#: lbaas/models.py:52
+msgid "Member_UUID"
+msgstr ""
+
+#: lbaas/models.py:53 lbaas/models.py:86 lbaas/models.py:87
+msgid "Address"
+msgstr "地址"
+
+#: lbaas/models.py:54 lbaas/models.py:89
+msgid "Protocol port"
+msgstr "端口"
+
+#: lbaas/models.py:55
+msgid "Weight"
+msgstr "权重"
+
+#: lbaas/models.py:66 lbaas/models.py:67
+msgid "BalancerMember"
+msgstr "负载均衡器成员"
+
+#: lbaas/models.py:78
+msgid "VIP_uuid"
+msgstr "虚IP ID"
+
+#: lbaas/models.py:91
+msgid "Port id"
+msgstr "端口"
+
+#: lbaas/models.py:94
+msgid "Session Persistence"
+msgstr "会话持久化"
+
+#: lbaas/models.py:97
+msgid "Connection limit"
+msgstr "链接限制"
+
+#: lbaas/models.py:108 lbaas/models.py:109
+msgid "BalancerVIP"
+msgstr ""
+
+#: lbaas/models.py:132
+msgid "Monitor uuid"
+msgstr "监听器"
+
+#: lbaas/models.py:134
+msgid "Monitor name"
+msgstr "名称"
+
+#: lbaas/models.py:136
+msgid "Type"
+msgstr "类型"
+
+#: lbaas/models.py:137
+msgid "Delay"
+msgstr "延迟"
+
+#: lbaas/models.py:138
+msgid "Timeout"
+msgstr "超时"
+
+#: lbaas/models.py:139
+msgid "Max retries"
+msgstr "最大重试次数"
+
+#: lbaas/models.py:140
+msgid "Http method"
+msgstr "HTTP Method"
+
+#: lbaas/models.py:142
+msgid "Url path"
+msgstr ""
+
+#: lbaas/models.py:144
+msgid "Expected codes"
+msgstr "期望状态吗"
+
+#: lbaas/models.py:164 lbaas/models.py:165
+msgid "BalancerMonitor"
+msgstr "负载均衡监听器"
+
+#: lbaas/models.py:182 lbaas/models.py:183
+msgid "BalancerPoolMonitor"
+msgstr "负载均衡器不存在"
+
+#: lbaas/settings.py:15 network/settings.py:19 network/settings.py:32
+msgid "CREATING"
+msgstr "创建中"
+
+#: lbaas/settings.py:16 lbaas/settings.py:27 network/settings.py:16
+#: network/settings.py:29
+msgid "ACTIVE"
+msgstr "已启动"
+
+#: lbaas/settings.py:17 lbaas/settings.py:28
+msgid "CREATED"
+msgstr "创建成功"
+
+#: lbaas/settings.py:18 lbaas/settings.py:29 network/settings.py:17
+#: network/settings.py:30
+msgid "DOWN"
+msgstr "已关闭"
+
+#: lbaas/settings.py:19 lbaas/settings.py:30 network/settings.py:18
+#: network/settings.py:31
+msgid "ERROR"
+msgstr "错误"
+
+#: lbaas/settings.py:20 lbaas/settings.py:31
+msgid "INACTIVE"
+msgstr "未激活"
+
+#: lbaas/settings.py:21 lbaas/settings.py:32 network/settings.py:21
+#: network/settings.py:34
+msgid "UPDATING"
+msgstr "更新中"
+
+#: lbaas/settings.py:22 lbaas/settings.py:33 network/settings.py:20
+#: network/settings.py:33
+msgid "DELETING"
+msgstr "删除中"
+
+#: lbaas/settings.py:26 volume/settings.py:27 volume/settings.py:49
+msgid "Creating"
+msgstr "创建中"
+
+#: lbaas/settings.py:43
+msgid "Round Robin"
+msgstr "轮询调度"
+
+#: lbaas/settings.py:44
+msgid "Least Connection"
+msgstr "最少链接"
+
+#: lbaas/settings.py:45
+msgid "Source IP"
+msgstr "源地址散列调度"
+
+#: lbaas/settings.py:49
+msgid "No Session Persistence"
+msgstr "无会话持久"
+
+#: lbaas/views.py:49
+msgid "Balancer no exists"
+msgstr "负载均衡器不存在"
+
+#: lbaas/views.py:65
+msgid "Creating balancer pool."
+msgstr "正在负载均衡器"
+
+#: lbaas/views.py:94
+msgid "Updating balancer pool."
+msgstr "正在更新负载均衡器"
+
+#: lbaas/views.py:110
+msgid "No balancer found."
+msgstr "没有数据！"
+
+#: lbaas/views.py:115
+#, python-format
+msgid "Balancer pool %(name)s is deleted"
+msgstr "负载均衡器%(name)s已删除"
+
+#: lbaas/views.py:128
+#, python-format
+msgid "Deleting balancer pool %(name)s"
+msgstr "正在删除负载均衡器%(name)s"
+
+#: lbaas/views.py:140
+msgid "No balancer pool found!"
+msgstr "没有负载均衡数据！"
+
+#: lbaas/views.py:160
+msgid "Creating balancer vip."
+msgstr "正在创建虚IP"
+
+#: lbaas/views.py:170
+msgid "No VIP found."
+msgstr "没有虚IP数据！"
+
+#: lbaas/views.py:180
+msgid "Vip update success"
+msgstr "虚IP更新成功"
+
+#: lbaas/views.py:182
+msgid "Vip update fail"
+msgstr "虚IP更新失败"
+
+#: lbaas/views.py:199
+msgid "Deleting balancer vip "
+msgstr "正在删除虚IP"
+
+#: lbaas/views.py:222
+msgid "Monitor is attached."
+msgstr "监听器已被连接"
+
+#: lbaas/views.py:232
+msgid "Monitor is detached"
+msgstr "监听器已被卸载"
+
+#: lbaas/views.py:262
+msgid "Selected balancer not found."
+msgstr "负载均衡器不存在"
+
+#: lbaas/views.py:278
+msgid "Load balancer members are being created."
+msgstr "正在创建负载均衡成员"
+
+#: lbaas/views.py:288
+msgid "Member not found."
+msgstr "成员不存在"
+
+#: lbaas/views.py:295
+msgid "Member is updated!"
+msgstr "成员信息更新成功"
+
+#: lbaas/views.py:306 lbaas/views.py:312
+msgid "Member is deleted."
+msgstr "成员已删除"
+
+#: lbaas/views.py:323
+msgid "Deleting member"
+msgstr "删除中"
+
+#: lbaas/views.py:341
+msgid "Monitor Data is not valid"
+msgstr "数据有错误！"
+
+#: lbaas/views.py:348
+msgid "Balancer monitor is created."
+msgstr "监听器已被创建"
+
+#: lbaas/views.py:362
+msgid "No monitor found!"
+msgstr "没有监听器！"
+
+#: lbaas/views.py:369
+msgid "Monitor data is not valid"
+msgstr "数据不对！"
+
+#: lbaas/views.py:379
+msgid "Balancer monitor is updated!"
+msgstr "监听器更新成功"
+
+#: lbaas/views.py:392
+#, python-format
+msgid "Monitor %(name)s is being used, can not be deleted."
+msgstr "监听器%(name)s在使用中,不允许删除"
+
+#: lbaas/views.py:397
+msgid "Balancer monitor is deleted."
+msgstr "监听器已被删除"
+
+#: management/commands/create_workflow_approve_permission.py:21
+msgid "Workflow approve permission has already created!"
+msgstr "工作流审批权限已被创建"
+
+#: management/commands/create_workflow_approve_permission.py:24
+msgid "Workflow Approve"
+msgstr "工作流审批"
+
+#: network/models.py:11 network/models.py:72
+msgid "Network Name"
+msgstr "名称"
+
+#: network/models.py:13
+msgid "OS Network UUID"
+msgstr ""
+
+#: network/models.py:75
+msgid "OS Subnet UUID"
+msgstr ""
+
+#: network/models.py:78
+msgid "IPv4 CIDR"
+msgstr ""
+
+#: network/models.py:80
+msgid "IP Version"
+msgstr "IP 版本"
+
+#: network/models.py:107
+msgid "Router Name"
+msgstr "名称"
+
+#: network/models.py:108
+msgid "OS Router UUID"
+msgstr "Router UUID"
+
+#: network/models.py:109
+msgid "Gateway IP Address"
+msgstr ""
+
+#: network/models.py:110
+msgid "Has Gateway Setted"
+msgstr ""
+
+#: network/models.py:149
+msgid "Port"
+msgstr "端口"
+
+#: network/models.py:160 network/models.py:161
+msgid "RouterInterface"
+msgstr "路由器端口"
+
+#: network/settings.py:15 network/settings.py:28
+msgid "BUILD"
+msgstr "构建中"
+
+#: network/views.py:52
+msgid "Network address exists"
+msgstr "地址已被占用"
+
+#: network/views.py:59
+msgid "The data is not valid"
+msgstr "数据有错误！"
+
+#: network/views.py:77
+msgid "Unkown error happened"
+msgstr "出现未知错误"
+
+#: network/views.py:82
+msgid "Creating network"
+msgstr "正在创建网络"
+
+#: network/views.py:93
+msgid "The selected network not exist"
+msgstr "私有网络不存在"
+
+#: network/views.py:99
+msgid "Update network success"
+msgstr "更新私有网络成功"
+
+#: network/views.py:110
+msgid "The selected network does not exist"
+msgstr "私有网络不存在"
+
+#: network/views.py:115
+msgid "Default network can not be deleted"
+msgstr "默认的私有网络不允许删除"
+
+#: network/views.py:121
+msgid "This network is being used!"
+msgstr "该网络正在使用中！"
+
+#: network/views.py:131
+msgid "Network deleted error"
+msgstr "私有网络删除失败"
+
+#: network/views.py:136
+msgid "Network deleted success"
+msgstr "私有网络删除成功"
+
+#: network/views.py:156
+msgid "Unkown router"
+msgstr "未知的路由器"
+
+#: network/views.py:163
+msgid "network exist address , not operation"
+msgstr "子网地址已经存在"
+
+#: network/views.py:174
+msgid "Link router success"
+msgstr "加入路由器成功"
+
+#: network/views.py:177
+msgid "Link router error"
+msgstr "加入路由器失败"
+
+#: network/views.py:193
+msgid "Leave router success "
+msgstr "离开路由器成功"
+
+#: network/views.py:230
+msgid "Create router success"
+msgstr "创建路由器成功"
+
+#: network/views.py:232
+msgid "Valid Router fail"
+msgstr "数据提交异常"
+
+#: network/views.py:235
+msgid "Create router fail"
+msgstr "创建路由器失败"
+
+#: network/views.py:239
+msgid "The selected router not exist"
+msgstr "路由器不存在"
+
+#: network/views.py:253
+msgid "Update router success"
+msgstr "路由器更新成功"
+
+#: network/views.py:261
+msgid "Cannot delete router under single router mode."
+msgstr "唯一路由模式下不能删除路由器"
+
+#: network/views.py:270
+msgid "The selected router does not exist"
+msgstr "路由器不存在"
+
+#: network/views.py:274
+msgid "Default Router can not be deleted"
+msgstr "默认路由器不允许删除"
+
+#: network/views.py:278
+msgid "This router is being used."
+msgstr "该路由器正在使用中！"
+
+#: network/views.py:284
+msgid "Router deleted success"
+msgstr "路由器删除成功"
+
+#: overview/views.py:46
+msgid "The host IP is used by other Data Center, Please check your host IP."
+msgstr "该节点ＩＰ已被其他数据中心使用，请检查您的节点IP."
+
+#: overview/views.py:51
+msgid "Unknown Error happened when creating data center!"
+msgstr "未知错误导致数据中心创建失败！"
+
+#: overview/views.py:58
+msgid "Data center is initialized successfully!"
+msgstr "数据中心初始化成功"
+
+#: overview/views.py:78
+msgid "Unknown Error happened when creating flavors!"
+msgstr "创建规格失败"
+
+#: overview/views.py:81
+msgid "Flavors are initialized successfully!"
+msgstr "规格更新成功"
+
+#: overview/views.py:106
+msgid "Unknown Error happened when creating images!"
+msgstr "创建镜像失败"
+
+#: overview/views.py:110
+msgid "Images are initialized successfully!"
+msgstr "镜像更新成功"
+
+#: overview/views.py:130
+msgid "Hypervisor status is none."
+msgstr ""
+
+#: overview/views.py:134
+msgid "Only super user can view the hypervisor status."
+msgstr ""
+
+#: volume/models.py:13
+msgid "Volume name"
+msgstr "名称"
+
+#: volume/models.py:14
+msgid "OS Volume UUID"
+msgstr "OS UUID"
+
+#: volume/models.py:16
+msgid "Volume size"
+msgstr "磁盘容量"
+
+#: volume/models.py:17
+msgid "Volume Type"
+msgstr "磁盘类型"
+
+#: volume/models.py:35
+#, python-format
+msgid "Volume: %(name)s / %(size)d GB"
+msgstr "磁盘：%(name)s / %(size)d GB"
+
+#: volume/models.py:46
+#, python-format
+msgid "Your application for %(size)d GB volume named %(name)s is approved! "
+msgstr "您的%(size)dGB磁盘%(name)s申请已通过审核!"
+
+#: volume/models.py:53
+msgid "Error happened to your application for volume"
+msgstr "您的磁盘申请出现了错误"
+
+#: volume/models.py:55
+#, python-format
+msgid ""
+"Your application for %(size)d GB volume named %(name)s is approved, but an "
+"error happened when creating it."
+msgstr ""
+"您申请的%(size)dGB磁盘%(name)s已通过审核，但在创建磁盘的过程中出现了错误."
+
+#: volume/models.py:65
+#, python-format
+msgid ""
+"Your application for %(disk_size)d GB volume named %(name)s is rejected! "
+msgstr "您的%(disk_size)dGB磁盘%(name)s申请被驳回！"
+
+#: volume/settings.py:28 volume/settings.py:50
+msgid "Attaching"
+msgstr "挂载中"
+
+#: volume/settings.py:29 volume/settings.py:52
+msgid "Available"
+msgstr "可用"
+
+#: volume/settings.py:30 volume/settings.py:53
+msgid "Backing Up"
+msgstr "备份中"
+
+#: volume/settings.py:32 volume/settings.py:55
+msgid "Downloading"
+msgstr "下载中"
+
+#: volume/settings.py:34 volume/settings.py:57
+msgid "Delete Failure"
+msgstr "删除失败"
+
+#: volume/settings.py:35 volume/settings.py:58
+msgid "Restore Failure"
+msgstr "恢复失败"
+
+#: volume/settings.py:36 volume/settings.py:59
+msgid "In Use"
+msgstr "使用中"
+
+#: volume/settings.py:37 volume/settings.py:60
+msgid "Restoring Backup"
+msgstr "恢复备份中"
+
+#: volume/settings.py:38 volume/settings.py:61
+msgid "Unrecognized"
+msgstr "未知"
+
+#: volume/settings.py:39 volume/settings.py:62
+msgid "Uploading"
+msgstr "上传中"
+
+#: volume/settings.py:42 volume/settings.py:51
+msgid "Detaching"
+msgstr "卸载中"
+
+#: volume/settings.py:69
+msgid "Capacity"
+msgstr "容量型"
+
+#: volume/settings.py:70
+msgid "Performance"
+msgstr "性能型"
+
+#: volume/views.py:89
+#, python-format
+msgid ""
+"Your application for %(size)d GB volume is successful, please waiting for "
+"approval result!"
+msgstr "您的%(size)dGB磁盘申请已生成，请等待审核结果！"
+
+#: volume/views.py:97
+msgid "Creating volume"
+msgstr "创建中"
+
+#: volume/views.py:118
+msgid "Volume update success"
+msgstr "更新磁盘成功"
+
+#: volume/views.py:121
+msgid "No volume found!"
+msgstr "没有磁盘！"
+
+#: volume/views.py:136
+msgid "This volume has one backup task running now."
+msgstr "这个磁盘有一个备份或恢复任务在进行中"
+
+#: volume/views.py:143
+msgid "Unknown volume action"
+msgstr "未知的磁盘操作"
+
+#: volume/views.py:169
+msgid "Attaching volume"
+msgstr "挂载中"
+
+#: volume/views.py:182
+msgid "Detaching volume"
+msgstr "卸载中"
+
+#: volume/views.py:188
+#, python-format
+msgid ""
+"Operation Failed. Volume %(volume)s is attached to instance: %(instance)s"
+msgstr "操作失败！磁盘%(volume)s已挂载到云主机:%(instance)s"
+
+#: volume/views.py:196
+msgid "This volume has backups, please delete them first."
+msgstr "这个磁盘还有备份链，请先删除这些备份链"
+
+#: volume/views.py:205
+msgid "Deleting volume"
+msgstr "删除中"
+
+#: volume/views.py:212
+msgid "Volume is deleted."
+msgstr "磁盘已删除"
+
+#: workflow/models.py:17
+msgid "Flow Name"
+msgstr "流程名称"
+
+#: workflow/models.py:25 workflow/models.py:26
+msgid "Workflow"
+msgstr "工作流"
+
+#: workflow/models.py:47 workflow/models.py:76 workflow/models.py:166
+msgid "Work Flow"
+msgstr "工作流"
+
+#: workflow/models.py:48 workflow/models.py:167
+msgid "Step Name"
+msgstr "名称"
+
+#: workflow/models.py:49 workflow/models.py:168
+msgid "Auditor"
+msgstr "审核人"
+
+#: workflow/models.py:50 workflow/models.py:169
+msgid "Step No."
+msgstr "步骤编号"
+
+#: workflow/models.py:59 workflow/models.py:178
+msgid "Workflow Step"
+msgstr "工作流步骤"
+
+#: workflow/models.py:60 workflow/models.py:179
+msgid "Workflow Steps"
+msgstr "工作流步骤"
+
+#: workflow/models.py:77
+msgid "Current Step"
+msgstr "当前步骤"
+
+#: workflow/models.py:79
+msgid "Reject Reason"
+msgstr "拒绝原因"
+
+#: workflow/models.py:80
+msgid "Completed"
+msgstr "已完成"
+
+#: workflow/models.py:81
+msgid "Extra Data"
+msgstr "其他数据"
+
+#: workflow/models.py:87
+msgid "Workflow Instance"
+msgstr "工作流实例"
+
+#: workflow/models.py:88
+msgid "Workflow Instances"
+msgstr "工作流实例"
+
+#: workflow/views.py:74
+msgid "Workflow is saved."
+msgstr "工作流定义已被保存"
+
+#: workflow/views.py:92
+#, python-format
+msgid "%(name)s is the default workflow for %(resource)s now."
+msgstr "%(name)s现在是申请%(resource)s的默认工作流"
+
+#: workflow/views.py:111
+#, python-format
+msgid "%(name)s is not default workflow anymore."
+msgstr "%(name)s不再是默认流程"
+
+#: workflow/views.py:128
+#, python-format
+msgid "Workflow %(name)s is deleted."
+msgstr "流程%(name)s已删除"
+
+#: workflow/views.py:168
+msgid "This process is transferred to next phrase successfully!"
+msgstr "该流程成功进入下一审核环节！"
+
+#: workflow/views.py:180
+msgid "Application is rejected."
+msgstr "申请被驳回."
+
+#~ msgid "%(resource)s:%(resource_name)s execute %(action)s operation"
+#~ msgstr "%(resource)s:%(resource_name)s 执行了 %(action)s 操作"
+
+#~ msgid "Size(GB)"
+#~ msgstr "容量(GB)"
+
+#~ msgid "Firewall rule delete error"
+#~ msgstr "规则删除失败"
+
+#~ msgid "Firewall rule delete success"
+#~ msgstr "规则删除成功"
+
+#~ msgid "Firewall create error"
+#~ msgstr "创建"
+
+#~ msgid "Data valid error"
+#~ msgstr "数据格式错误"
+
+#~ msgid "Not selected Firewall"
+#~ msgstr "选择防火墙"
+
+#~ msgid "Firewall not exists"
+#~ msgstr "防火墙不存在"
+
+#~ msgid "Firewall default can not delete"
+#~ msgstr "默认防火墙允许删除"
+
+#~ msgid "Firewall delete error"
+#~ msgstr "防火墙删除失败"
+
+#~ msgid "Firewall delete success"
+#~ msgstr "防火墙删除成功"
+
+#~ msgid "Not selected Firewall rule"
+#~ msgstr "选择规则"
+
+#~ msgid "No select float ip or vip"
+#~ msgstr "没有选择公网IP或者VIP"
+
+#~ msgid "Vip association floating success"
+#~ msgstr "虚IP关联公网IP成功"
+
+#~ msgid "Vip association floating fail"
+#~ msgstr "虚IP关联公网IP失败"
+
+#~ msgid "Vip disassociation floating success"
+#~ msgstr "虚IP解除关联公网IP成功"
+
+#~ msgid "Vip disassociation floating fail"
+#~ msgstr "虚IP解除关联公网IP失败"
+
+#~ msgid "Vip or Floating no exist"
+#~ msgstr "虚IP或者公网IP不存在"
+
+#~ msgid "No select balancer pool"
+#~ msgstr "请选择负载均衡器"
+
+#~ msgid "Create balancer vip success"
+#~ msgstr "创建负载均衡器成功"
+
+#~ msgid "Vip no exist"
+#~ msgstr "虚IP不存在"
+
+#~ msgid "Vip data valid no pass"
+#~ msgstr "虚IP数据有误"
+
+#~ msgid "Balancer pool or vip no exits"
+#~ msgstr "负载均衡器或者VIP不存在"
+
+#~ msgid "No select balancer or monitor"
+#~ msgstr "选择负载均衡器和监听器"
+
+#~ msgid "Balancer monitor association success"
+#~ msgstr "监听器管理成功"
+
+#~ msgid "Balancer monitor association fail"
+#~ msgstr "监听器关联失败"
+
+#~ msgid "Balancer monitor cancel association success"
+#~ msgstr "监听器解除成功"
+
+#~ msgid "Balancer monitor cancel association fail"
+#~ msgstr "监听器解除失败"
+
+#~ msgid "balancer or monitor no exist"
+#~ msgstr "负载均衡器或者监听器不存在"
+
+#~ msgid "Selected balancer no exists"
+#~ msgstr "请选择负载均衡器"
+
+#~ msgid "Add member success"
+#~ msgstr "添加成员成功"
+
+#~ msgid "No select member"
+#~ msgstr "请选择成员"
+
+#~ msgid "Update member fail"
+#~ msgstr "成员信息更新失败"
+
+#~ msgid "Member data valid no pass"
+#~ msgstr "成员信息数据有误"
+
+#~ msgid "Delete balancer member success"
+#~ msgstr "删除成员成功"
+
+#~ msgid "Balancer member no exist"
+#~ msgstr "成员不存在"
+
+#~ msgid "Create balancer monitor success"
+#~ msgstr "创建监听器成功"
+
+#~ msgid "Create balancer monitor Fail"
+#~ msgstr "创建监听器失败"
+
+#~ msgid "Monitor no exists"
+#~ msgstr "监听器不存在"
+
+#~ msgid "Update balancer monitor success"
+#~ msgstr "更新监听器成功"
+
+#~ msgid "Update balancer monitor Fail"
+#~ msgstr "更新监听器失败"
+
+#~ msgid "Monitor data valid no pass"
+#~ msgstr "监听器数据有误"
+
+#~ msgid "Delete balancer monitor success"
+#~ msgstr "删除监听器成功"
+
+#~ msgid "Balancer data valid no pass"
+#~ msgstr "负载均衡器数据有误"
+
+#~ msgid "Balancer pool no exist"
+#~ msgstr "负载均衡器不存在"
+
+#~ msgid "Attach volume error"
+#~ msgstr "挂载磁盘失败"
+
+#~ msgid "A user with that email already exists."
+#~ msgstr "该email地址已被人使用"
+
+#~ msgid "State: %(status)s"
+#~ msgstr "状态: %(status)s"
+
+#~ msgid "%(bandwidth)d Mbps floating state changed!"
+#~ msgstr "%(bandwidth)d Mpbs 公网IP状态改变"
+
+#~ msgid "State:　%(status)s"
+#~ msgstr "状态: %(status)s"
+
+#~ msgid "Unkown operation"
+#~ msgstr "未知的操作"
+
+#~ msgid "Network operation error"
+#~ msgstr "操作异常"
+
+#~ msgid "Router used can not deleted"
+#~ msgstr "使用中的路由器不允许删除"
+
+#~ msgid "Create network error"
+#~ msgstr "创建私有网络失败"
+
+#~ msgid "Create network success"
+#~ msgstr "创建私有网络成功"
+
+#~ msgid "Volume Available"
+#~ msgstr "可用"
+
+#~ msgid "Volume Backing Up"
+#~ msgstr "挂载中"
+
+#~ msgid "Volume Deleting"
+#~ msgstr "删除中"
+
+#~ msgid "Volume Downloading"
+#~ msgstr "下载中"
+
+#~ msgid "Volume Error"
+#~ msgstr "错误"
+
+#~ msgid "Volume Error Deleting"
+#~ msgstr "删除失败"
+
+#~ msgid "Volume Error Restoring"
+#~ msgstr "恢复失败"
+
+#~ msgid "Volume In Use"
+#~ msgstr "使用中"
+
+#~ msgid "Volume Restoring Backup"
+#~ msgstr "恢复磁盘中"
+
+#~ msgid "Volume Unrecognized"
+#~ msgstr "未知"
+
+#~ msgid "Volume Uploading"
+#~ msgstr "磁盘上传中"
+
+#~ msgid "Deletion Error"
+#~ msgstr "删除失败"
+
+#~ msgid "Volume create error"
+#~ msgstr "创建磁盘失败"
+
+#~ msgid "Volume update error"
+#~ msgstr "更新磁盘失败"
+
+#~ msgid "Volume action error"
+#~ msgstr "操作失败"
+
+#~ msgid "Detach volume error"
+#~ msgstr "卸载磁盘失败"
+
+#~ msgid "email address format error"
+#~ msgstr "电子邮件地址格式不正确"

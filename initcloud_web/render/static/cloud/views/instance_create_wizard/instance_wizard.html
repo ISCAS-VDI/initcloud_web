@@ -1,0 +1,93 @@
+<div class="row">
+    <div class="col-md-8" style="padding-right:0px;">
+        <div class="portlet box blue-chambray" id="form_wizard_1"
+             style="border-left-style: none;border-bottom-style: none;margin-bottom: 0px;">
+            <div class="portlet-title">
+                <div class="caption">{[{ 'instance.create_instance_title' | i18next }]}</div>
+            </div>
+
+            <div class="portlet-body form">
+                <form action="/api/instances/" class="form-horizontal" id="submit_form" method="POST">
+                    <div class="form-wizard">
+                        <div class="form-body">
+                            <ul class="nav nav-pills nav-justified steps" style="margin-bottom: 0px;">
+                                <li>
+                                    <a href="#tab1" data-toggle="tab" class="step">
+                                        <span class="number">1</span>
+                                        <span class="desc"><i class="fa fa-check"></i> {[{ "instance.image" | i18next }]} </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tab2" data-toggle="tab" class="step">
+                                        <span class="number">2</span>
+                                        <span class="desc"><i class="fa fa-check"></i> {[{ "instance.flavor" | i18next }]} </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tab3" data-toggle="tab" class="step">
+                                        <span class="number">3 </span>
+                                        <span class="desc"><i class="fa fa-check"></i> {[{ "profile" | i18next }]} </span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div id="bar" class="progress progress-striped" role="progressbar" style="margin-bottom:15px;">
+                                <div class="progress-bar progress-bar-success">
+                                </div>
+                            </div>
+
+                            <div class="tab-content">
+                                <div id="tab1" class="tab-pane active"
+                                     data-ng-include="'/static/cloud/views/instance_create_wizard/step_image.html?t='+seed">
+                                </div>
+
+                                <div class="tab-pane" id="tab2"
+                                        data-ng-include="'/static/cloud/views/instance_create_wizard/step_flavor.html?t='+seed">
+                                </div>
+                                <div class="tab-pane" id="tab3"
+                                        data-ng-include="'/static/cloud/views/instance_create_wizard/step_profile.html?t='+seed">
+                                </div>
+                            </div>
+
+                            <div class="form-actions right">
+                                <a href="javascript:;" class="btn btn-danger button-cancel"
+                                   style="float:left;margin-left:10px;" ng-click="cancel()">
+                                    {[{ 'cancel' | i18next }]} </a>
+                                <a href="javascript:;" class="btn default button-previous">
+                                    <i class="m-icon-swapleft"></i> {[{ 'back' | i18next }]} </a>
+                                <a href="javascript:;" class="btn blue button-next">
+                                    {[{ 'next' | i18next }]} <i class="m-icon-swapright m-icon-white"></i>
+                                </a>
+                                <a href="javascript:;" class="btn green button-submit"
+                                   ng-class="{'disabled': check_can_submit()}" nap-after-click>
+                                    {[{ 'submit' | i18next }]} <i class="m-icon-swapright m-icon-white"></i>
+                                </a>
+                                <a href="javascript:;" id="btnCreateInstance" ng-click="submit_click(instance_config)">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4" style="padding-left:0px;">
+        <div class="portlet box blue-chambray"
+             style="border-left-style: none;border-bottom-style: none;border-right-style:none; margin-bottom: 0px;">
+            <div class="portlet-title">
+                <div class="caption">
+                </div>
+            </div>
+            <div class="portlet-body from">
+                <div data-ng-include="'/static/cloud/views/instance_create_wizard/info.html?t='+seed"></div>
+                <div data-ng-include="'/static/cloud/views/instance_create_wizard/quota.html?t='+seed"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- END PAGE CONTENT-->
+<script type="text/javascript">
+    $(document).ready(function(){
+        FormWizard.init();
+    });
+</script>

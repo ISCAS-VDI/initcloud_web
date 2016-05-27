@@ -1,0 +1,19 @@
+<div class="row  scroller" id="img_div" style="height:300px;">
+    <div class="col-md-12">
+        <h4 class="block">{[{ 'instance.select_image' | i18next }]}</h4>
+        <div class="list-group">
+            <a ng-repeat="image in images_list" href="#" class="list-group-item"
+               ng-class="{active: instance_config.select_image == image}"
+               ng-click="instance_config.select_image=image;">
+                <span ng-if="image.os_name=='Linux'"><i class="fa fa-linux"></i> {[{ image.name }]}</span>
+                <span ng-if="image.os_name=='Windows'"><i class="fa fa-windows"></i> {[{ image.name }]}</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#img_div").slimScroll({});
+    });
+</script>

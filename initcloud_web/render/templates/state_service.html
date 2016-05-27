@@ -1,0 +1,72 @@
+
+{% for module in modules %}
+ angular.module('cloud.services').factory('{{ module.name }}', function(){
+
+    var startsWith = function(string, prefix) {
+        return string.slice(0, prefix.length) == prefix;
+    };
+
+    var module = {};
+
+    var valueLabels = {};
+
+    var stableStates = [];
+    var unstableStates = [];
+    {% for state in module.stable_states %}
+     stableStates.push({{ state }});
+    {% endfor %}
+
+    {% for state in module.unstable_states %}
+        unstableStates.push({{ state }});
+    {% endfor %}
+
+    {% for value, label in module.value_labels %}
+    valueLabels[{{ value }}] = "{{ label }}";
+    {% endfor %}
+
+    {% for key, value in module.key_values %}
+    module.is_{{ key|lower }} = function(obj){
+        return obj.status == {{ value }};
+    };
+    {% endfor %}
+
+    module.text = function(obj){
+        return valueLabels[obj.status];
+    };
+
+    module.is_stable = module.isStable = function(obj){
+        return stableStates.indexOf(obj.status) != -1;
+    }
+
+    module.is_unstable = module.isUnstable = function(obj){
+        return unstableStates.indexOf(obj.status) != -1;
+    };
+
+    module.process = function(obj){
+        for(var attr in module){
+            if(startsWith(attr, 'is')){
+                obj[attr] = module[attr](obj);
+            }
+        }
+
+        obj.status_text = module.text(obj);
+    };
+
+    module.processList = function(objects){
+        angular.forEach(objects, module.process);
+    }
+    return module;
+});
+
+{% endfor %}
+
+angular.module('cloud.services').constant('Choice', {
+    {% for name, choice_items in choices %}
+    {{ name }}: [
+        {% for key, value in choice_items %}
+            {key: {{ key }}, label: "{{ value }}"}
+            {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    ]{% if not forloop.last %} ,{% endif %}
+    {% endfor %}
+});

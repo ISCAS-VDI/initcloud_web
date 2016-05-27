@@ -1,0 +1,138 @@
+<div class="row">
+    <tabset>
+        <tab heading="{[{ 'billing.bill_overview' | i18next }]}">
+            <div class="col-md-12" data-ng-controller="BillOverviewController">
+                <div class="portlet">
+                    <div class="portlet-title">
+                        <div class="caption font-green-sharp">
+                            <a class="btn btn-icon-only btn-default" href="#" data-ng-click="overview_table.reload();">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </div>
+                        <div class="tools" data-ng-keypress="keypress($event)">
+                            <form class="form-inline">
+                                <div class="form-group" style="margin-right: 10px;">
+                                    <label for="date_range">{[{ 'billing.charge_period' | i18next }]}</label>
+                                    <input id="date_range" readonly="true" size="10" data-ng-model="condition.start_date"
+                                           class="form-control form-control-inline date-picker"
+                                           data-eon-date-picker>
+                                    ~
+                                    <input readonly="true" size="10" data-ng-model="condition.end_date"
+                                           class="form-control form-control-inline date-picker"
+                                           data-eon-date-picker>
+                                </div>
+                                <a class="btn btn-default" data-ng-click="search()">
+                                    {[{ 'action.query' | i18next }]}
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div id="" class="dataTables_wrapper no-footer">
+                            <table data-ng-table="overview_table"
+                                   class="table table-striped table-bordered table-advance table-hover">
+                                <tbody>
+                                    <tr data-ng-repeat="overview in $data">
+                                        <td data-title="'billing.resource_desc' | i18next">
+                                            <a class="btn default blue-stripe btn-xs"
+                                               data-ng-if="overview.resource_type == 'instance'"
+                                               data-ng-href="/#/instance-detail/{[{ bill.resource_id }]}/">
+                                                <i class="fa fa-desktop"></i> {[{ 'constant.instance' | i18next }]}
+                                            </a>
+                                            <a class="btn default blue-stripe btn-xs"
+                                               data-ng-if="overview.resource_type == 'volume'">
+                                                <i class="fa fa-stack-exchange"></i> {[{ 'constant.volume' | i18next }]}
+                                            </a>
+                                            <a class="btn default blue-stripe btn-xs"
+                                               data-ng-if="overview.resource_type == 'floating_ip'">
+                                                {[{ 'constant.floating_ip' | i18next }]}
+                                            </a>
+                                        </td>
+                                        <td data-title="'billing.resource_num' | i18next">
+                                            {[{ overview.num }]}
+                                        </td>
+                                        <td data-title="'billing.cost_sum' | i18next">
+                                            {[{ overview.total_cost.toFixed(2) }]}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+        <tab heading="{[{ 'billing.bill_detail' | i18next }]}">
+            <div class="col-md-12" data-ng-controller="BillDetailController">
+                <div class="portlet">
+                    <div class="portlet-title">
+                        <div class="caption font-green-sharp">
+                            <a class="btn btn-icon-only btn-default" href="#" data-ng-click="bill_table.reload();">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </div>
+                        <div class="tools" data-ng-keypress="keypress($event)">
+                            <form class="form-inline">
+                                <div class="form-group" style="margin-right: 10px;">
+                                    <label for="status">{[{ 'billing.resource_type' | i18next }]}</label>
+                                    <select id="resource" data-ng-model="condition.resource_type" class="form-control">
+                                        <option value="">-----------</option>
+                                        <option value="instance"> {[{ 'constant.instance' | i18next }]} </option>
+                                        <option value="volume"> {[{ 'constant.volume' | i18next }]} </option>
+                                        <option value="floating_ip"> {[{ 'constant.floating_ip' | i18next }]} </option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-right: 10px;">
+                                    <label for="date_range">{[{ 'billing.charge_period' | i18next }]}</label>
+                                    <input id="date_range" readonly="true" size="10" data-ng-model="condition.start_date"
+                                           class="form-control form-control-inline date-picker"
+                                           data-eon-date-picker>
+                                    ~
+                                    <input readonly="true" size="10" data-ng-model="condition.end_date"
+                                           class="form-control form-control-inline date-picker"
+                                           data-eon-date-picker>
+                                </div>
+                                <a class="btn btn-default" data-ng-click="search()">
+                                    {[{ 'action.query' | i18next }]}
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div id="" class="dataTables_wrapper no-footer">
+                            <table data-ng-table="bill_table"
+                                   class="table table-striped table-bordered table-advance table-hover">
+                                <tbody>
+                                    <tr data-ng-repeat="bill in $data">
+                                        <td data-title="'ID'">{[{ bill.id }]}</td>
+                                        <td data-title="'billing.resource_desc' | i18next">
+                                            <a class="btn default blue-stripe btn-xs"
+                                               data-ng-if="bill.resource_type == 'instance'"
+                                               data-ng-href="/#/instance-detail/{[{ bill.resource_id }]}/">
+                                                <i class="fa fa-desktop"></i> {[{ bill.resource_desc }]}
+                                            </a>
+                                            <a class="btn default blue-stripe btn-xs"
+                                               data-ng-if="bill.resource_type == 'volume'">
+                                                <i class="fa fa-stack-exchange"></i> {[{ bill.resource_desc }]}
+                                            </a>
+                                            <a class="btn default blue-stripe btn-xs"
+                                               data-ng-if="bill.resource_type == 'floating_ip'">
+                                                {[{ bill.resource_desc }]}
+                                            </a>
+                                        </td>
+                                        <td data-title="'billing.charge_period' | i18next">
+                                            {[{ bill.from_time }]} ~ {[{ bill.end_time }]}
+                                        </td>
+                                        <td data-title="'billing.month_cost' | i18next">
+                                            {[{ bill.cost.toFixed(2) }]}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+</div>
