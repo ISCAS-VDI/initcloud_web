@@ -11,8 +11,12 @@ CloudApp.controller('VDStatusController',
       },{
         counts: [],
         getData: function ($defer, params) {
-          VDStatus.query(function (data) {
-            $scope.status = ngTableHelper.paginate(data, $defer, params);
+          var searchParams = {page: params.page(), page_size: params.count()};
+          VDStatus.query(searchParams, function (data) {
+            $defer.resolve(data.results);
+            $scope.status = data.results;
+            ngTableHelper.countPages(params, data.count);
+            // $scope.status = ngTableHelper.paginate(data, $defer, params);
           });
         }
       });

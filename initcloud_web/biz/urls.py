@@ -226,7 +226,8 @@ if settings.BACKUP_ENABLED:
 
 # virtural desktop
 urlpatterns += format_suffix_patterns([
-  url(r'^vdstatus/$', vir_desktop.vdstatus),
+  # url(r'^vdstatus/$', vir_desktop.vdstatus),
+  url(r'^vdstatus/$', vir_desktop.VDStatusList.as_view()),
 ])
 
 # workflow

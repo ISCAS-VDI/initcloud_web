@@ -323,7 +323,7 @@ CloudApp.config(['$stateProvider', '$urlRouterProvider',
 
             // virtural desktop connection state
             .state("vdstatus", {
-              url: "/vdstatus",
+              url: "/vdstatus/",
               templateUrl: "/static/management/views/vdstatus.html",
               data: { pageTitle: 'Connention Status' },
               controller: "VDStatusController",
