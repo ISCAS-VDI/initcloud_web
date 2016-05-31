@@ -1,0 +1,54 @@
+<!-- MAIN CONTENT START -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet">
+      <div class="portlet-title">
+        <div class="caption font-green-sharp">
+          <a class="btn btn-icon-only btn-default" href="#" ng-click="">
+            <i class="fa fa-refresh"></i>
+          </a>
+        </div>
+      </div>
+      <div class="portlet-body">
+        <div id="" class="dataTables_wrapper no-footer">
+          <table ng-table="vdstatus_table" class="table table-striped table-bordered table-advance table-hover">
+            <tbody>
+              <tr ng-repeat="state in $data">
+                <td data-title="'user.name' | i18next">
+                  <span> {[{ state.username }]} </span>
+                </td>
+                <td data-title="'instance.status' | i18next">
+                  <span> {[{ state.status }]} </span>
+                </td>
+                <td data-title="'vir_desktop.name' | i18next">
+                  <span> {[{ state.vm }]} </span>
+                </td>
+                <td data-title="'actions' | i18next">
+                  <div class="btn-group">
+                    <button class="btn btn-default" type="button">action1</button>
+                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button" aria-expanded="false">
+                      <i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul role="menu" class="dropdown-menu">
+                      <li>
+                        <a href="javascript:void(0)" data-ng-click="">
+                          <i class="fa fa-list"></i> action2
+                        </a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)" data-ng-click="">
+                          <i class="fa fa-list"></i> action3
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MAIN CONTENT END -->

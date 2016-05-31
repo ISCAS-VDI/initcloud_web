@@ -321,6 +321,25 @@ CloudApp.config(['$stateProvider', '$urlRouterProvider',
                 }
             })
 
+            // virtural desktop connection state
+            .state("vdstatus", {
+              url: "/vdstatus",
+              templateUrl: "/static/management/views/vdstatus.html",
+              data: { pageTitle: 'Connention Status' },
+              controller: "VDStatusController",
+              resolve: {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                  return $ocLazyLoad.load({
+                    name: 'CloudApp',
+                    insertBefore: '#ng_load_plugins_before',
+                    files: [
+                      '/static/management/controllers/vdstatus_ctrl.js'
+                    ]
+                  });
+                }]
+              }
+            })
+
             // workflow
             .state("workflow", {
                 url: "/workflow/",

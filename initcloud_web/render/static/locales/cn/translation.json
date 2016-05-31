@@ -315,7 +315,9 @@
     "price_rule": "定价",
     "orders_and_bills": "产品订单",
     "orders": "订单管理",
-    "bills": "账单管理"
+    "bills": "账单管理",
+    "vd": "虚拟桌面管理",
+    "conn_state": "连接状态"
   },
 
   "overview": {
@@ -730,5 +732,9 @@
     "bill_overview": "概览",
     "resource_num": "资源数量",
     "cost_sum": "费用合计(元)"
+  },
+
+  "vir_desktop": {
+    "name": "桌面"
   }
 }

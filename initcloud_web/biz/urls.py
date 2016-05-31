@@ -18,6 +18,7 @@ from biz.overview import views as overview_views
 from biz.backup import views as backup_view
 from biz.workflow import views as workflow_view
 from biz.billing import views as billing_view
+from biz.vir_desktop import views as vir_desktop
 
 # various options and configurations
 urlpatterns = [
@@ -223,6 +224,10 @@ if settings.BACKUP_ENABLED:
             backup_view.delete_backup_item),
     ])
 
+# virtural desktop
+urlpatterns += format_suffix_patterns([
+  url(r'^vdstatus/$', vir_desktop.vdstatus),
+])
 
 # workflow
 if settings.WORKFLOW_ENABLED:

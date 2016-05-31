@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'biz.forum',
     'biz.backup',
     'biz.billing',
+    'biz.vir_desktop'
 ]
 
 MIDDLEWARE_CLASSES = (
