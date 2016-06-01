@@ -21,7 +21,8 @@ var CloudApp = angular.module("CloudApp", [
     "ngLodash",
     "cloud.services",
     "cloud.resources",
-    "cloud.directives"
+    "cloud.directives",
+    "ngWebSocket"
 ]);
 
 CloudApp.config(function ($i18nextProvider) {

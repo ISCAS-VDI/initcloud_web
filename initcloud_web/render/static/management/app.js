@@ -25,7 +25,8 @@ var CloudApp = angular.module("CloudApp", [
     "easypiechart",
     "cloud.services",
     "cloud.resources",
-    "cloud.directives"
+    "cloud.directives",
+    "ngWebSocket"
 ]);
 
 CloudApp.config(function ($i18nextProvider) {

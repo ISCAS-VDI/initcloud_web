@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from rest_framework.response import Response
 from rest_framework import generics
 
@@ -9,15 +11,8 @@ data = []
 for i in range(25):
     data.append({"username": "abc"+str(i), "vm": "ddc"+str(i)})
 
-@require_GET
-def vdstatus(request):
-    rsp = {
-        "results": data,
-        "count": 25
-    }
-    return Response(rsp)
-
 class VDStatusList(generics.ListAPIView):
+    # TODO: get data from webservice settings.MGR_HTTP_ADDR
     queryset = data
     serializer_class = VDStatusSerializer
     pagination_class = PagePagination
