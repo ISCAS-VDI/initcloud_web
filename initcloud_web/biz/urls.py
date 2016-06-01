@@ -13,11 +13,21 @@ from biz.floating import views as floating_view
 from biz.firewall import views as firewall_view
 from biz.forum import views as forums_view
 from biz.account import views as account_view
+from biz.role import views as role_view
+from biz.group import views as group_view
 from biz.idc import views as idc_views
 from biz.overview import views as overview_views
 from biz.backup import views as backup_view
 from biz.workflow import views as workflow_view
 from biz.billing import views as billing_view
+#policy
+from biz.policy_nova import views as policy_nova_view
+from biz.policy_cinder import views as policy_cinder_view
+from biz.policy_neutron import views as policy_neutron_view
+
+
+#alarm
+from biz.alarm import views as alarm_view
 
 # various options and configurations
 urlpatterns = [
@@ -138,6 +148,132 @@ urlpatterns += format_suffix_patterns([
     url(r'^firewall/default_rules/$', firewall_view.firewall_rule_view),
     url(r'^firewall/server_change_firewall/$', firewall_view.instance_change_firewall_view),
 ])
+
+# group 
+urlpatterns += format_suffix_patterns([
+    url(r'^account/contract/$', account_view.contract_view),
+    url(r'^account/quota/$', account_view.quota_view),
+    url(r'^group/create/$', group_view.create_group),
+    url(r'^group/update/$', group_view.update_group),
+    url(r'^group/is-name-unique/$', group_view.is_groupname_unique),
+    url(r'^group/batch-delete/$', group_view.delete_groups),
+    url(r'^account/is-email-unique/$', account_view.is_email_unique),
+    url(r'^account/is-mobile-unique/$', account_view.is_mobile_unique),
+    url(r'^operation/$', account_view.OperationList.as_view()),
+    url(r'^operation/filters$', account_view.operation_filters),
+    url(r'^group/$', group_view.GroupList.as_view()),
+    url(r'^users/active/$', account_view.active_users),
+    url(r'^users/(?P<pk>[0-9]+)/$', account_view.UserDetail.as_view()),
+    url(r'^users/initialize/$', account_view.initialize_user),
+    url(r'^users/deactivate/$', account_view.deactivate_user),
+    url(r'^users/activate/$', account_view.activate_user),
+    url(r'^users/change-password/$', account_view.change_password),
+    url(r'^users/change-profile/$', account_view.change_profile),
+    url(r'^users/grant-workflow-approve/$', account_view.grant_workflow_approve),
+    url(r'^users/revoke-workflow-approve/$', account_view.revoke_workflow_approve),
+    url(r'^users/workflow-approvers/$', account_view.workflow_approvers),
+    url(r'^quotas/$', account_view.QuotaList.as_view()),
+    url(r'^quotas/(?P<pk>[0-9]+)/$', account_view.QuotaDetail.as_view()),
+    url(r'^quotas/batch-create/$', account_view.create_quotas),
+    url(r'^quotas/create/$', account_view.create_quota),
+    url(r'^quotas/delete/$', account_view.delete_quota),
+    url(r'^quota-resource-options/$', account_view.resource_options),
+    url(r'^notifications/broadcast/$', account_view.broadcast),
+    url(r'^notifications/data-center-broadcast/$', account_view.data_center_broadcast),
+    url(r'^notifications/announce/$', account_view.announce),
+    url(r'^notifications/$', account_view.NotificationList.as_view()),
+    url(r'^notifications/options/$', account_view.notification_options),
+    url(r'^notifications/(?P<pk>[0-9]+)/$', account_view.NotificationDetail.as_view()),
+    url(r'^feeds/$', account_view.FeedList.as_view()),
+    url(r'^feeds/(?P<pk>[0-9]+)/$', account_view.FeedDetail.as_view()),
+    url(r'^feeds/(?P<pk>[0-9]+)/mark-read/$', account_view.mark_read),
+    url(r'^feeds/status/$', account_view.feed_status),
+])
+
+
+
+# role 
+urlpatterns += format_suffix_patterns([
+    url(r'^account/contract/$', account_view.contract_view),
+    url(r'^account/quota/$', account_view.quota_view),
+    url(r'^role/create/$', role_view.create_role),
+    url(r'^role/update/$', role_view.update_role),
+    url(r'^role/is-name-unique/$', role_view.is_rolename_unique),
+    url(r'^role/batch-delete/$', role_view.delete_roles),
+    url(r'^account/is-email-unique/$', account_view.is_email_unique),
+    url(r'^account/is-mobile-unique/$', account_view.is_mobile_unique),
+    url(r'^operation/$', account_view.OperationList.as_view()),
+    url(r'^operation/filters$', account_view.operation_filters),
+    url(r'^roles/$', role_view.RoleList.as_view()),
+    url(r'^users/active/$', account_view.active_users),
+    url(r'^users/(?P<pk>[0-9]+)/$', account_view.UserDetail.as_view()),
+    url(r'^users/initialize/$', account_view.initialize_user),
+    url(r'^users/deactivate/$', account_view.deactivate_user),
+    url(r'^users/activate/$', account_view.activate_user),
+    url(r'^users/change-password/$', account_view.change_password),
+    url(r'^users/change-profile/$', account_view.change_profile),
+    url(r'^users/grant-workflow-approve/$', account_view.grant_workflow_approve),
+    url(r'^users/revoke-workflow-approve/$', account_view.revoke_workflow_approve),
+    url(r'^users/workflow-approvers/$', account_view.workflow_approvers),
+    url(r'^quotas/$', account_view.QuotaList.as_view()),
+    url(r'^quotas/(?P<pk>[0-9]+)/$', account_view.QuotaDetail.as_view()),
+    url(r'^quotas/batch-create/$', account_view.create_quotas),
+    url(r'^quotas/create/$', account_view.create_quota),
+    url(r'^quotas/delete/$', account_view.delete_quota),
+    url(r'^quota-resource-options/$', account_view.resource_options),
+    url(r'^notifications/broadcast/$', account_view.broadcast),
+    url(r'^notifications/data-center-broadcast/$', account_view.data_center_broadcast),
+    url(r'^notifications/announce/$', account_view.announce),
+    url(r'^notifications/$', account_view.NotificationList.as_view()),
+    url(r'^notifications/options/$', account_view.notification_options),
+    url(r'^notifications/(?P<pk>[0-9]+)/$', account_view.NotificationDetail.as_view()),
+    url(r'^feeds/$', account_view.FeedList.as_view()),
+    url(r'^feeds/(?P<pk>[0-9]+)/$', account_view.FeedDetail.as_view()),
+    url(r'^feeds/(?P<pk>[0-9]+)/mark-read/$', account_view.mark_read),
+    url(r'^feeds/status/$', account_view.feed_status),
+])
+#policy_neutron
+urlpatterns += [
+    url(r'^policy_neutron/create/$', policy_neutron_view.create_policy_neutron),
+    url(r'^policy_neutron/$', policy_neutron_view.Policy_NeutronList.as_view()),
+#    url(r'^policy_nova/$', policy_nova_view.role_list_view.as_view()),
+    url(r'^policy_neutron/update', policy_neutron_view.update_policy_neutron),
+    url(r'^policy_neutron/role', policy_neutron_view.role_list_view.as_view()),
+]
+
+
+
+#policy_cinder
+urlpatterns += [
+    url(r'^policy_cinder/create/$', policy_cinder_view.create_policy_cinder),
+    url(r'^policy_cinder/$', policy_cinder_view.Policy_CinderList.as_view()),
+#    url(r'^policy_nova/$', policy_nova_view.role_list_view.as_view()),
+    url(r'^policy_cinder/update', policy_cinder_view.update_policy_cinder),
+    url(r'^policy_cinder/role', policy_cinder_view.role_list_view.as_view()),
+]
+
+
+
+#policy_nova
+urlpatterns += [
+    url(r'^policy_nova/create/$', policy_nova_view.create_policy_nova),
+    url(r'^policy_nova/$', policy_nova_view.Policy_NovaList.as_view()),
+#    url(r'^policy_nova/$', policy_nova_view.role_list_view.as_view()),
+    url(r'^policy_nova/update', policy_nova_view.update_policy_nova),
+    url(r'^policy_nova/role', policy_nova_view.role_list_view.as_view()),
+    url(r'^policy_nova/assignrole', policy_nova_view.assignrole),
+]
+
+#alarm
+urlpatterns += [
+    url(r'^alarm/create/$', alarm_view.create_alarm),
+    #url(r'^alarm/create/$', alarm_view.create_alarm_test),
+    url(r'^alarm/$', alarm_view.AlarmList.as_view()),
+    url(r'^alarm/batch-delete/$', alarm_view.delete_alarms),
+    url(r'^alarm/resource/$', alarm_view.ResourceList.as_view()),
+    url(r'^alarm/update/$', alarm_view.update),
+    url(r'^alarm/meter/$', alarm_view.MeterList.as_view()),
+]
 
 # account
 urlpatterns += format_suffix_patterns([

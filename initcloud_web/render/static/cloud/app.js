@@ -206,6 +206,28 @@ CloudApp.config(['$stateProvider', '$urlRouterProvider', 'current_user', 'site_c
                 }
             })
 
+             //update start 
+
+            //alarm
+            .state("alarm", {
+                url: "/alarm/",
+                templateUrl: "/static/cloud/views/alarm.html",
+                data: {pageTitle: 'Alarm'},
+                controller: "AlarmController",
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'CloudApp',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                '/static/cloud/controllers/alarm_ctrl.js'
+                            ]
+                        });
+                    }]
+                }
+            })
+
+
             // image
             .state("image", {
                 url: "/image/",

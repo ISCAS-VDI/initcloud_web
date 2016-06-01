@@ -35,6 +35,34 @@ angular.module('cloud.resources', [])
     return $resource("/api/operation/:id", {}, {query: {isArray: false}});
 }])
 
+//update start 
+.factory('Role', ['$resource', function ($resource) {
+    return $resource("/api/roles/:id", {id: '@id'});
+}])
+
+.factory('Nova_Role', ['$resource', function ($resource) {
+    return $resource("/api/policy_nova/role/", {id: '@id'});
+}])
+
+.factory('Policy_Nova', ['$resource', function ($resource) {
+    return $resource("/api/policy_nova/:id", {id: '@id'});
+}])
+
+
+.factory('Policy_Cinder', ['$resource', function ($resource) {
+    return $resource("/api/policy_cinder/:id", {id: '@id'});
+}])
+
+.factory('Policy_Neutron', ['$resource', function ($resource) {
+    return $resource("/api/policy_neutron/:id", {id: '@id'});
+}])
+
+
+.factory('Group', ['$resource', function ($resource) {
+    return $resource("/api/group/:id", {id: '@id'});
+}])
+//update end
+
 .factory('Flavor', ['$resource', function ($resource) {
     return $resource("/api/flavors/:id");
 }])
@@ -127,4 +155,17 @@ angular.module('cloud.resources', [])
          query: {isArray: false},
          overview: {isArray: true, params: {action: 'overview'}}
      });
-});
+})
+
+//update start
+.factory('Alarm_Meter', ['$resource', function ($resource) {
+    return $resource("/api/alarm/meter/", {id: '@id'});
+}])
+
+.factory('Alarm_Resource', ['$resource', function ($resource) {
+    return $resource("/api/alarm/resource/", {id: '@id'});
+}])
+
+.factory('Alarm', ['$resource', function ($resource) {
+    return $resource("/api/alarm/:id", {id: '@id'});
+}]);

@@ -1,5 +1,13 @@
 #-*-coding=utf-8-*-
 
+from keystoneclient.v2_0 import client
+from keystoneclient.auth.identity import v2
+from keystoneclient import session
+from novaclient.client import Client
+from django.conf import settings
+
+
+
 RC_ENV = {
     "username": "username",
     "password": "password",
@@ -19,6 +27,22 @@ def _create_rc(obj=None):
 
     return rc
 
+
+def get_nova_admin(instance):
+    auth = v2.Password(auth_url=settings.AUTH_URL,
+                           username=settings.ADMIN_NAME,
+                           password=settings.ADMIN_PASS,
+                           tenant_name=settings.ADMIN_TENANT_NAME)
+    sess = session.Session(auth=auth)
+    #this should read from settings
+    novaClient = Client(settings.NOVA_VERSION, session=sess)
+    return novaClient
+
+
+def get_admin_client(instance=None):
+    admin_client = client.Client(token=settings.ADMIN_TOKEN, endpoint=settings.ENDPOINT)
+
+    return admin_client
 
 def create_rc_by_instance(instance=None):
     return _create_rc(instance)

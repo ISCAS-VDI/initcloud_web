@@ -85,6 +85,28 @@ CloudApp.controller('UserController',
             });
         };
 
+        $scope.assignrole = function(user){
+            $modal.open({
+                templateUrl: 'assignrole.html',
+                controller: 'AssignRoleController',
+                backdrop: "static",
+                size: 'lg',
+                resolve: {
+                    user: function(){
+                        return user;
+                    },
+                    AssignRoles: function(){
+                        return CommonHttpService.get('/api/policy_nova/role/');
+                    }
+                }
+            }).result.then(function(){
+                   checkboxGroup.uncheck();
+            });
+        };
+
+
+
+
         var openBroadcastModal = function(users){
             $modal.open({
                 templateUrl: 'broadcast.html',
@@ -260,6 +282,67 @@ CloudApp.controller('UserController',
             }
     })
 
+    .controller('AssignRoleController',
+        function($scope, $modalInstance, $i18next, ngTableParams,
+                 CommonHttpService, ValidationTool, ToastrService,CheckboxGroup, Nova_Role, 
+                 user, AssignRoles){
+
+
+            $scope.roles = roles = AssignRoles; 
+            $scope.user = user;
+            var checkboxGroup = $scope.checkboxGroup = CheckboxGroup.init($scope.roles);
+            $scope.cancel = $modalInstance.dismiss;
+            $scope.role_user_param = {"userid": user.id};
+
+            $modalInstance.rendered.then(function(){
+                form = ValidationTool.init('#assignRoleForm');
+            });
+
+            $scope.submit = function(role_user_param){
+
+                if(!form.valid()){
+                    return;
+                }
+
+                var params = angular.copy(role_user_param);
+
+                var return_roles = function(){
+
+                    var ids = [];
+                    var count = 0;
+                    checkboxGroup.forEachChecked(function(roles){
+                        if(roles.checked){
+                            if(roles.role == "admin_or_owner"){
+                                ids.push({"rule" : roles.role});
+                            }
+                            else{
+                                ids.push("role:" + roles.role);
+                            }
+                            count += 1;
+                        }
+                    });
+                    if(count == roles.length){
+                        ids = "all"
+                    }
+                    //alert(ids)
+                    return ids;
+                    };
+
+                params.roles = return_roles
+
+                CommonHttpService.post('/api/policy_nova/assignrole/', params).then(function(result){
+                    if(result.success){
+                        ToastrService.success(result.msg, $i18next("success"));
+                        $modalInstance.close();
+                    } else {
+                        ToastrService.error(result.msg, $i18next("op_failed"));
+                    }
+                });
+            }
+    })
+
+
+
     .controller('DataCenterBroadcastController',
         function($scope, $modalInstance, $i18next, ngTableParams,
                 CommonHttpService, ValidationTool, ToastrService,
@@ -349,7 +432,7 @@ CloudApp.controller('UserController',
             });
 
             $scope.dataCenters = dataCenters;
-            $scope.user = {is_resource_user: false, is_approver: false};
+            $scope.user = {is_resource_user: false, is_approver: false, is_system_user: false, is_safety_user: false, is_audit_user: false};
             $scope.is_submitting = false;
             $scope.cancel = $modalInstance.dismiss;
             $scope.create = function(){

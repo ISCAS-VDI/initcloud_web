@@ -18,7 +18,7 @@ from biz.volume.settings import (VOLUME_STATE_AVAILABLE,
                                  VOLUME_STATE_IN_USE, VOLUME_STATE_ERROR)
 from biz.image.settings import WINDOWS, LINUX
 
-from cloud_utils import create_rc_by_instance, create_rc_by_dc
+from cloud_utils import create_rc_by_instance, create_rc_by_dc, get_admin_client, get_nova_admin
 from network_task import make_sure_default_private_network
 from cloud import volume_task, billing_task
 
@@ -39,12 +39,13 @@ def flavor_create(instance):
     def _get_flavor_by_name(instance, name):
         rc = create_rc_by_instance(instance)
         flavor = None
+        novaAdmin = get_nova_admin(instance)
         try:
-            flavors = nova.flavor_list(rc)
+            flavors = novaAdmin.flavors.list(rc)
         except Exception:
             flavors = []
             raise
-        
+
         if flavors is not None:
             for f in flavors:
                 if f.name == name:
@@ -57,12 +58,15 @@ def flavor_create(instance):
     rc = create_rc_by_instance(instance)
     name = _generate_name(instance)
     flavor = _get_flavor_by_name(instance, name)
-        
+
+
     if flavor is None:
         try:
             LOG.info(u"Flavor not exist, create new, [%s][%s].", instance, name)
-            flavor = nova.flavor_create(rc, memory=instance.memory, name=name,
-                                  vcpu=instance.cpu, disk=instance.sys_disk,
+         
+            novaadmin = get_nova_admin(instance)
+            flavor = novaadmin.flavors.create(ram=instance.memory, name=name,
+                                  vcpus=instance.cpu, disk=instance.sys_disk,
                                   is_public=True)
         except nova.nova_exceptions.Conflict:
             LOG.info(u"Flavor name conflict, [%s][%s].", instance, name)
@@ -194,15 +198,13 @@ def instance_create_sync_status_task(instance, neutron_enabled,
 
         if status == "ACTIVE":
             instance.status = INSTANCE_STATE_RUNNING
-            try: 
-                if len(srv.addresses.keys()) > 0:
-                    private_net = srv.addresses.keys()[0]
-                    LOG.debug("private_net=%s, server addresses=%s",\
-                                private_net, srv.addresses)
-                    instance.private_ip = srv.addresses.\
-                                get(private_net)[0].get("addr", "---")
+            try:
+                if neutron_enabled:
+                    private_net = "network-%s" % instance.network.id
                 else:
-                    raise Exception("Server adddresses is empty.")
+                    private_net = "private"
+                instance.private_ip = srv.addresses.\
+                            get(private_net)[0].get("addr", "---")
             except Exception as ex:
                 LOG.info(u"Instance create succeed, "
                          "but set private network failed, "
@@ -262,8 +264,11 @@ def instance_create_task(instance, **kwargs):
                         instance)
         return False
 
+
+    # First check if network exists or not.
     neutron_enabled = neutron.is_neutron_enabled(rc)
     
+    # If not exists, create a new one for that tenant.
     if neutron_enabled:
         network = make_sure_default_private_network(instance)
         instance.network_id = network.id
