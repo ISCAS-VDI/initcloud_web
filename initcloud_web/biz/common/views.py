@@ -108,8 +108,31 @@ def gen_module(settings, value_labels, stable_dict,
 @login_required
 def site_config(request):
 
+
     user = request.user
-    current_user = {'username': user.username}
+
+    user_ = UserProxy.objects.get(pk=user.pk)
+
+    current_user = {'username': user.username, 'is_system_user': user_.is_system_user, 'is_safety_user': user_.is_safety_user, 'is_audit_user': user_.is_audit_user}
+
+
+    if user_.is_system_user:
+        return render(request, 'site_config.js',
+                      {'current_user': json.dumps(current_user),
+                       'site_config': json.dumps(settings.SITE_CONFIG)},
+                      content_type='application/javascript')
+    if user_.is_audit_user:
+        return render(request, 'site_config.js',
+                      {'current_user': json.dumps(current_user),
+                       'site_config': json.dumps(settings.SITE_CONFIG)},
+                      content_type='application/javascript')
+
+    if user_.is_safety_user:
+        return render(request, 'site_config.js',
+                      {'current_user': json.dumps(current_user),
+                       'site_config': json.dumps(settings.SITE_CONFIG)},
+                      content_type='application/javascript')
+
 
     if not user.is_superuser:
         # Retrieve user to use some methods of UserProxy

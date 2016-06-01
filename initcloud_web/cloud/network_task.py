@@ -33,13 +33,18 @@ from api import network
 LOG = logging.getLogger(__name__)
 
 
+
+# We try to get default private netwok.
 def make_sure_default_private_network(instance):
     network = None
     try:
         network = Network.objects.get(pk=instance.network_id)
     except Network.DoesNotExist:
+        LOG.info("network not exist")
         pass
 
+
+    # Try to get default network
     default_private_networks = Network.objects.filter(deleted=False,
         is_default=True, status__in=[NETWORK_STATE_BUILD, NETWORK_STATE_ACTIVE],
         user=instance.user, user_data_center=instance.user_data_center)
@@ -55,10 +60,13 @@ def make_sure_default_private_network(instance):
             is_default=True, status__in=[NETWORK_STATE_BUILD, NETWORK_STATE_ACTIVE],
             user=instance.user, user_data_center=instance.user_data_center)
 
+        # No default network exists, create a new one.
         if not default_private_networks.exists(): 
             LOG.info("Double check no default network [%s][%s].",
                     instance.user_data_center.tenant_name, instance.name)
             begin = datetime.datetime.now()
+
+            # Create Default network to initcloud
             default_private_network = Network.objects.create(
                 name=settings.DEFAULT_NETWORK_NAME, status=NETWORK_STATE_BUILD,
                 is_default=True, user=instance.user,
@@ -66,19 +74,21 @@ def make_sure_default_private_network(instance):
 
             address = None
             for i in xrange(255):
-                tmp_address = "172.31.%s.0/24" % i
+                tmp_address = settings.TENANT_DEFAULT_NETWORK
                 if not Subnet.objects.filter(user=instance.user,
                             deleted=False, address=tmp_address,
                             user_data_center=instance.user_data_center).exists():
                     address = tmp_address
                     break
             if not address:
-                address = "172.30.0.0/24"
+                address = settings.TENANT_DEFAULT_NETWORK 
+            # Create default private subnet to initcloud
             default_private_subnet = Subnet.objects.create(
                 name=settings.DEFAULT_SUBNET_NAME, network=default_private_network,
                 address=address, ip_version=4, status=0, user=instance.user,
                 user_data_center=instance.user_data_center)
 
+            # Create default private router to initcloud
             default_router = Router.objects.create(
                 name=settings.DEFAULT_ROUTER_NAME, status=0, is_default=True,
                 is_gateway=settings.DEFAULT_ROUTER_AUTO_SET_GATEWAY, user=instance.user,
@@ -88,12 +98,16 @@ def make_sure_default_private_network(instance):
             LOG.info("Create network db record apply [%s] seconds.",
                             (end-begin).seconds) 
 
+            # Start to create real network in neutron
             begin = datetime.datetime.now()
             create_network(default_private_network)
             create_subnet(default_private_subnet)
-            router_create_task(default_router)
-            attach_network_to_router(default_private_network.id,
-                        default_router.id, default_private_subnet.id)
+      
+            # We do not want to create rotuer now.       
+
+            #router_create_task(default_router)
+            #attach_network_to_router(default_private_network.id,
+            #            default_router.id, default_private_subnet.id)
             end = datetime.datetime.now()
             LOG.info("Prepare private network api apply [%s] seconds.",
                             (end-begin).seconds) 
@@ -108,6 +122,7 @@ def make_sure_default_private_network(instance):
     if not network:
         network = default_private_network
     
+    # Wait for network creation complete
     count = 1
     while True:
         if count > settings.MAX_COUNT_SYNC:
@@ -145,8 +160,11 @@ def create_network(network):
     LOG.info("Start to create network, id:[%s], name[%s]",
              network.id, network.name)
     begin = datetime.datetime.now()
+
+    LOG.info("----------- rc is -------------" + str(rc))
     try:
         net = neutron.network_create(rc, **network_params)
+        LOG.info("net create success")
         end = datetime.datetime.now()
         LOG.info("Create network api apply [%s] seconds", \
                     (end-begin).seconds) 
@@ -201,6 +219,7 @@ def create_subnet(subnet=None):
                      "cidr": subnet.address,
                      "ip_version": subnet.ip_version,
                      "dns_nameservers": settings.DNS_NAMESERVERS,
+                     "gateway_ip": settings.GATEWAY_IP,
                      "enable_dhcp": True}
 
     LOG.info("Start to create subnet, id[%s], name[%s]",

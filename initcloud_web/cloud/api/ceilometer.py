@@ -13,7 +13,8 @@
 import logging
 import threading
 
-from ceilometerclient import client as ceilometer_client
+from ceilometerclient.v2 import client as ceilometer_client
+#from ceilometerclient import client as ceilometer_client
 from django.conf import settings
 from django.utils import datastructures
 from django.utils.translation import ugettext_lazy as _
@@ -268,21 +269,29 @@ class Statistic(base.APIResourceWrapper):
               'count', 'min', 'max', 'sum', 'avg',
               'duration', 'duration_start', 'duration_end']
 
-
-@memoized
+#@memoized
 def ceilometerclient(request):
     """Initialization of Ceilometer client."""
 
-    endpoint = base.url_for(request, 'metering')
+    #endpoint = base.url_for(request, 'metering')
     insecure = getattr(settings, 'OPENSTACK_SSL_NO_VERIFY', False)
     cacert = getattr(settings, 'OPENSTACK_SSL_CACERT', None)
-    LOG.debug('ceilometerclient connection created using token "%s" '
-              'and endpoint "%s"' % (request.user.token.id, endpoint))
-    return ceilometer_client.Client('2', endpoint,
-                                    token=(lambda: request.user.token.id),
-                                    insecure=insecure,
-                                    cacert=cacert)
-
+   # LOG.debug('ceilometerclient connection created using token "%s" '
+   #           'and endpoint "%s"' % (request.user.token.id, endpoint))
+   # return ceilometer_client.Client('2', endpoint,
+   #                                 token=(lambda: request.user.token.id),
+   #                                 insecure=insecure,
+   #                                 cacert=cacert)
+    LOG.info("********** tenant_name is **********" + str(request.get("tenant_name")))
+    LOG.info("********** username is **********" + str(request.get("username")))
+    LOG.info("********** password is **********" + str(request.get("password")))
+    LOG.info("********** auth url is **********" + str(request.get("auth_url")))
+    return ceilometer_client.Client(None,username=request.get("username"),
+                           password=request.get("password"),
+                           tenant_name=request.get("tenant_name"),
+                           auth_url=request.get("auth_url"),
+                           insecure=insecure,
+                           cacert=cacert)
 
 def resource_list(request, query=None, ceilometer_usage_object=None):
     """List the resources."""
@@ -300,6 +309,7 @@ def sample_list(request, meter_name, query=None):
 
 def meter_list(request, query=None):
     """List the user's meters."""
+    LOG.info("**************** ceilometerclient(request) are ******************" + str(ceilometerclient(request)))
     meters = ceilometerclient(request).meters.list(query)
     return [Meter(m) for m in meters]
 
@@ -309,7 +319,6 @@ def statistic_list(request, meter_name, query=None, period=None):
     statistics = ceilometerclient(request).\
         statistics.list(meter_name=meter_name, q=query, period=period)
     return [Statistic(s) for s in statistics]
-
 
 class ThreadedUpdateResourceWithStatistics(threading.Thread):
     """Multithread wrapper for update_with_statistics method of
@@ -1185,3 +1194,39 @@ class Meters(object):
                 'description': _("Power consumption"),
             }),
         ])
+
+#Update By dongdong
+class Alarm(base.APIResourceWrapper):
+    """Represents one Ceilometer alarm."""
+
+    _attrs = ['id','name', 'description', 'enabled', 'type', 'meter_name',
+              'state', 'severity', 'enabled', 'alarm_actions', 'ok_actions',
+              'insufficient_data_actions', 'project_id', 'user_id', 'time_constraints', 'created_at', 'repeat_actions', 'project_id', 'user_id']
+
+
+
+def alarm_list(request, query=None):
+    """List the alarms."""
+    alarms = ceilometerclient(request).alarms.list(q=query)
+    return [Alarm(a) for a in alarms]
+
+def alarm_update(request, alarm_id, **kwargs):
+    """List the alarms."""
+    alarm = ceilometerclient(request).alarms.update(alarm_id, **kwargs)
+    return alarm
+
+def alarm_get(request, alarm_id):
+    """List the alarms."""
+    alarm = ceilometerclient(request).alarms.get(alarm_id)
+    return alarm
+
+def alarm_delete(request, alarm_id):
+    """List the alarms."""
+    alarm = ceilometerclient(request).alarms.delete(alarm_id)
+    return alarm
+
+
+def alarm_create(request, **kwargs):
+    """List the alarms."""
+    alarm = ceilometerclient(request).alarms.create(**kwargs)
+    return alarm

@@ -263,6 +263,8 @@ CloudApp.config(['$stateProvider', '$urlRouterProvider',
                 }
             })
 
+            //update start
+            
             // roles 
             .state("roles", {
                 url: "/roles/",
@@ -282,11 +284,69 @@ CloudApp.config(['$stateProvider', '$urlRouterProvider',
                 }
             })
 
+          //policy_cinder
+          .state("policy_cinder", {
+                url: "/policy_cinder/",
+                templateUrl: "/static/management/views/policy_cinder.html",
+                data: {pageTitle: 'Policy_Cinder'},
+                controller: "Policy_CinderController",
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'CloudApp',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                '/static/management/controllers/policy_cinder_ctrl.js'
+                            ]
+                        });
+                    }]
+                }
+            })
 
-            // groups 
-            .state("groups", {
-                url: "/groups/",
-                templateUrl: "/static/management/views/groups.html",
+          //policy_neutron
+          .state("policy_neutron", {
+                url: "/policy_neutron/",
+                templateUrl: "/static/management/views/policy_neutron.html",
+                data: {pageTitle: 'Policy_Neutron'},
+                controller: "Policy_NeutronController",
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'CloudApp',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                '/static/management/controllers/policy_neutron_ctrl.js'
+                            ]
+                        });
+                    }]
+                }
+            })
+
+
+
+          //policy_nova
+          .state("policy_nova", {
+                url: "/policy_nova/",
+                templateUrl: "/static/management/views/policy_nova.html",
+                data: {pageTitle: 'Policy_Nova'},
+                controller: "Policy_NovaController",
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'CloudApp',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                '/static/management/controllers/policy_nova_ctrl.js'
+                            ]
+                        });
+                    }]
+                }
+            })
+
+          //group
+          .state("group", {
+                url: "/group/",
+                templateUrl: "/static/management/views/group.html",
                 data: {pageTitle: 'Group'},
                 controller: "GroupController",
                 resolve: {
@@ -295,13 +355,15 @@ CloudApp.config(['$stateProvider', '$urlRouterProvider',
                             name: 'CloudApp',
                             insertBefore: '#ng_load_plugins_before',
                             files: [
-                                '/static/management/controllers/groups_ctrl.js'
+                                '/static/management/controllers/group_ctrl.js'
                             ]
                         });
                     }]
                 }
             })
 
+            //update end
+            
             // user
             .state("notifications", {
                 url: "/notifications/",

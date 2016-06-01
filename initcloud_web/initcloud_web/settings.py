@@ -1,3 +1,4 @@
+# -*- coding:utf8 -*-
 """
 Django settings for initcloud_web project.
 
@@ -36,6 +37,12 @@ INSTALLED_APPS = [
     'captcha',
     'biz',
     'biz.account',
+    'biz.policy_nova',
+    'biz.policy_cinder',
+    'biz.policy_neutron',
+    'biz.alarm',
+    'biz.role',
+    'biz.group',
     'biz.idc',
     'biz.instance',
     'biz.image',
@@ -232,6 +239,7 @@ SITE_CONFIG = {
     "ICP_NUMBER": ICP_NUMBER,
     "COPY_RIGHT": COPY_RIGHT,
     "WORKFLOW_ENABLED": WORKFLOW_ENABLED,
+    "TRI_ENABLED": TRI_ENABLED,
     "BATCH_INSTANCE_LIMIT": BATCH_INSTANCE,
     "BACKUP_ENABLED": BACKUP_ENABLED,
     "THEME": THEME_NAME
@@ -242,7 +250,7 @@ logging.config.dictConfig(LOG_CONFIG)
 
 # Added by arthur
 
-ADMIN_TOKEN = "f14e712d84e243ca8a02dbc799e3184b"
+ADMIN_TOKEN = "eed424fd2d584dc2923055e72542e508"
 ADMIN_NAME = "admin"
 EDNPOINT = "http://localhost:35357/v2.0"
 ADMIN_TENANT_NAME = "admin"
@@ -253,3 +261,5 @@ TENANT_DEFAULT_NETWORK = "10.0.0.0/24"
 GATEWAY_IP = "10.0.0.1"
 TEST_TENANT_NAME = "testwork"
 TEST_TENANT_ID = "cde7d6ed392941c5b75a3079459690d4"
+ALARM_ACTIONS = "http://192.168.1.35:5998/wsgi_app.py"
+RESULT = [{"meter_name": "cpu_util"},{'meter_name':"memory.usage"},{"meter_name": "disk.write.bytes"},{"meter_name": "network.incoming.bytes"}, {"meter_name": "network.outgoing.bytes"}]

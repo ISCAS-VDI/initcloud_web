@@ -71,6 +71,49 @@ class UserProxy(User):
     def is_approver(self):
         return self.can_approve_workflow(self)
 
+
+
+    @property
+    def is_system_user(self):
+        return self.has_system_perm(self)
+
+    @property
+    def is_audit_user(self):
+        return self.has_audit_perm(self)
+
+    @property
+    def is_safety_user(self):
+        return self.has_safety_perm(self)
+
+
+    @classmethod
+    def grant_system_user(cls, user, save=True):
+
+        perm = Permission.objects.get(codename="system_user")
+        user.user_permissions.add(perm)
+        LOG.info("*********** add user perm done ******")
+
+        if save:
+            user.save()
+
+    @classmethod
+    def grant_safety_user(cls, user, save=True):
+
+        perm = Permission.objects.get(codename="safety_user")
+        user.user_permissions.add(perm)
+
+        if save:
+            user.save()
+
+    @classmethod
+    def grant_audit_user(cls, user, save=True):
+
+        perm = Permission.objects.get(codename="audit_user")
+        user.user_permissions.add(perm)
+
+        if save:
+            user.save()
+
     @classmethod
     def grant_workflow_approve(cls, user, save=True):
 
@@ -93,6 +136,23 @@ class UserProxy(User):
     def can_approve_workflow(cls, user):
         return settings.WORKFLOW_ENABLED and \
             user.has_perm('workflow.approve_workflow')
+
+
+    @classmethod
+    def has_system_perm(cls, user):
+
+        return settings.TRI_ENABLED and \
+            user.has_perm('workflow.system_user')
+
+    @classmethod
+    def has_safety_perm(cls, user):
+        return settings.TRI_ENABLED and \
+            user.has_perm('workflow.safety_user')
+
+    @classmethod
+    def has_audit_perm(cls, user):
+        return settings.TRI_ENABLED and \
+            user.has_perm('workflow.audit_user')
 
     @classmethod
     def has_any_data_center(cls, user):
