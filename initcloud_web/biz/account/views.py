@@ -61,6 +61,9 @@ class OperationList(generics.ListAPIView):
         start_date = request.query_params.get('start_date')
         end_date = request.query_params.get('end_date')
 
+        user_id = request.user.id
+        user = UserProxy.objects.get(pk=user_id)
+
         queryset = super(OperationList, self).get_queryset()
 
         if resource:
@@ -75,7 +78,7 @@ class OperationList(generics.ListAPIView):
         if end_date:
             queryset = queryset.filter(create_date__lte=end_date)
 
-        if request.user.is_superuser:
+        if request.user.is_superuser or user.is_audit_user :
 
             data_center_pk = request.query_params.get('data_center', '')
             operator_pk = request.query_params.get('operator', '')
@@ -499,6 +502,44 @@ def create_user(request):
         return Response({"success": False, "msg": _("Data is not valid")})
 
     user = form.save()
+
+
+
+    #update start
+    if settings.TRI_ENABLED and request.data['is_system_user'] == 'true':
+
+        LOG.info("******** I am systemuser  ***************")
+        #user = User.objects.create_superuser(username=username, email=email, password=password1)
+        UserProxy.grant_system_user(user)
+        LOG.info("fffffffffff")
+
+        #return Response({"success": True,
+        #                 "msg": _("User is created successfully!")})
+
+
+    if settings.TRI_ENABLED and request.data['is_safety_user'] == 'true':
+
+        LOG.info("******** I am safetyuser  ***************")
+        #user = User.objects.create_superuser(username=username, email=email, password=password1)
+        LOG.info("******** SUPERUSER CREATE SUCCESS **********")
+        UserProxy.grant_safety_user(user)
+        LOG.info("fffffffffff")
+
+        #return Response({"success": True,
+        #                 "msg": _("User is created successfully!")})
+
+
+    if settings.TRI_ENABLED and request.data['is_audit_user'] == 'true':
+
+        LOG.info("******** I am audituser  ***************")
+        #user = User.objects.create_superuser(username=username, email=email, password=password1)
+        LOG.info("******** SUPERUSER CREATE SUCCESS **********")
+        UserProxy.grant_audit_user(user)
+        LOG.info("fffffffffff")
+
+        #return Response({"success": True,
+        #                 "msg": _("User is created successfully!")})
+
 
     # If workflow is disabled, then only resrouce user can be created,
     # otherwise admin can create resource user and workflow approver user.

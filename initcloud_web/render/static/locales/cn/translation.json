@@ -274,12 +274,12 @@
   "sidebar": {
     "cloud": "云平台",
     "cloud_management": "后台管理",
-    "policy_management": "权限管理",
+    "authority_management": "权限管理",
     "policy": "权限",
     "roles": "角色",
     "role": "角色",
     "Role": "角色",
-    "groups": "组管理",
+    "group": "组管理",
     "Rroup": "组管理",
     "console": "用户面板",
     "overview": "概览",
@@ -315,7 +315,14 @@
     "price_rule": "定价",
     "orders_and_bills": "产品订单",
     "orders": "订单管理",
-    "bills": "账单管理"
+    "bills": "账单管理",
+    "policymanagement": "权限管理",
+    "policy_nova": "计算",
+    "policy_cinder": "存储",
+    "policy_neutron": "网络",
+    "policy_glance": "资源",
+    "alarm": "监控报警"
+
   },
 
   "overview": {
@@ -453,12 +460,60 @@
     "query": "查询"
   },
 
+  "role": {
+    "name": "角色名",
+    "email": "邮箱",
+    "mobile": "手机号",
+    "is_active": "活跃用户",
+    "is_superuser": "超级用户",
+    "date_joined": "加入时间",
+    "last_login": "最近登录时间",
+    "user_data_centers": "用户openstack集群列表",
+    "password": "密码",
+    "old_password": "原密码",
+    "new_password": "新密码",
+    "confirm_password": "确认密码",
+    "change_password": "修改密码",
+    "confirm_deactivate": "确定要禁止这个用户吗？",
+    "confirm_delete": "确定要删除这个权限吗？",
+    "same_password_tip": "两次输入密码不同",
+    "invalid_password_tip": "密码强度不够！",
+    "password_help": "密码长度至少８位，由大小写字母，数字，特殊字符组成. 允许的特殊字符有：（!@#$%^&*?_~）。",
+    "yes": "是",
+    "no": "否",
+    "deactivate": "禁止",
+    "activate": "激活",
+    "view_detail": "明细",
+    "is_initialized": "已初始化",
+    "initialize": "初始化",
+    "confirm_initialize": "确定要为该用户分配openstack集群吗？",
+    "new_role": "添加角色",
+    "name_is_used": "该权限已经存在",
+    "email_is_used": "该邮箱已被人使用",
+    "mobile_is_used": "该手机号已被人使用",
+    "data_center_is_needed": "请选择至少一个openstack集群",
+    "workflow_approve": "工作流审批",
+    "approver_or_datacenter": "当用户即没有审批权限又没有分配openstack集群时，将无法登录系统",
+    "assign_data_center": "分配openstack集群",
+    "grant_workflow_approve": "授予工作流审批权限",
+    "revoke_workflow_approve": "取消工作流审批权限",
+    "resource_user": "资源用户",
+    "update_role_title": "更新角色"
+  },
+
+
   "user": {
     "name": "用户名",
     "email": "邮箱",
     "mobile": "手机号",
     "is_active": "活跃用户",
+    "assignrole": "分配用户角色",
     "is_superuser": "超级用户",
+    "system_user": "系统管理员",
+    "safety_user": "安全管理员",
+    "audit_user": "审计管理员", 
+    "tri_policy": "三员管理", 
+    "tri_description": "当上述权限都没有选中时，用户为普通用户",
     "date_joined": "加入时间",
     "last_login": "最近登录时间",
     "user_data_centers": "用户openstack集群列表",
@@ -730,5 +785,50 @@
     "bill_overview": "概览",
     "resource_num": "资源数量",
     "cost_sum": "费用合计(元)"
+  },
+
+  "policy_cinder": {
+    "action_allow": "操作",
+    "role": "角色",
+    "compute:create": "创建",
+    "current_role": "当前角色",
+    "update_policy_cinder": "修改权限"
+  },
+
+  "policy_neutron": {
+    "action_allow": "操作",
+    "role": "角色",
+    "compute:create": "创建",
+    "current_role": "当前角色",
+    "update_policy_neutron": "修改权限"
+  },
+
+
+  "policy_nova": {
+    "action_allow": "操作",
+    "role": "角色",
+    "compute:create": "创建",
+    "current_role": "当前角色",
+    "update_policy_nova": "修改权限"
+  },
+
+  "alarm": {
+    "name": "监控名称",
+    "meter_name": "计量值",
+    "comparison": "判断条件",
+    "threshold": "阈值",
+    "resource_name": "资源名称",
+    "select_meter_name": "选择监控类型",
+    "update_alarm_title": "挂载资源",
+    "new_alarm": "新建监控",
+    "nofitication": "通知",
+    "email_or_mobile": "邮箱或手机号",
+    "statistic": "度量方式",
+    "severity": "严重性",
+    "thresh": "数字",
+    "select_resource": "选择资源",
+    "select_a_resource":"选择一项资源",
+    "confirm_delete":"确认删除？"
   }
+
 }

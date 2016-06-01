@@ -9,7 +9,7 @@ from django.conf import settings
 from celery import app
 from api import keystone
 from biz.account.models import Contract
-from biz.idc.models import UserDataCenter
+from biz.idc.models import UserDataCenter, DataCenter
 from cloud.cloud_utils import create_rc_by_dc
 from cloud.network_task import edit_default_security_group
 
@@ -19,13 +19,24 @@ LOG = logging.getLogger("cloud.tasks")
 @app.task
 def link_user_to_dc_task(user, datacenter):
 
+    LOG.info("---------start to execute link_user_to_dc_task-----------")
+
+    LOG.info("----------user is-------------" + str(user))
+
     if UserDataCenter.objects.filter(
             user=user, data_center=datacenter).exists():
         LOG.info("User[%s] has already registered to data center [%s]",
                  user.username, datacenter.name)
         return True
 
+    LOG.info("-----------datacenter is-----------------" + str(datacenter))
+
+    #create rc for auth.
     rc = create_rc_by_dc(datacenter)
+    LOG.info("---------------rc is------------" + str(rc))
+
+    #Now we do not let user to create a new tenant.
+    """
     tenant_name = "%s-%04d" % (settings.OS_NAME_PREFIX, user.id)
 
     keystone_user = "%s-%04d-%s" % (settings.OS_NAME_PREFIX, user.id,
@@ -39,32 +50,49 @@ def link_user_to_dc_task(user, datacenter):
     LOG.info("User[%s] is registered as tenant[id:%s][name:%s] in "
              "data center [%s]", user.username, t.id, tenant_name,
              datacenter.name)
+    """
+    keystone_user = "%s-%04d-%s" % (settings.OS_NAME_PREFIX, user.id,
+                                    user.username)
 
     pwd = "cloud!@#%s" % random.randrange(100000, 999999)
+    
+    #hard coded tenant id and name for test.
+    tenant_name = settings.TEST_TENANT_NAME
+    project_id = settings.TEST_TENANT_ID
+
     u = keystone.user_create(rc, name=keystone_user, email=user.email,
-                             password=pwd, project=t.id)
+                             password=pwd, project=project_id)
 
     LOG.info("User[%s] is registered as keystone user[uid:%s] in "
              "data center[%s]", user.username, u.id, datacenter.name)
 
     roles = keystone.role_list(rc)
-    admin_role = filter(lambda r: r.name.lower() == "admin", roles)[0]
-    keystone.add_tenant_user_role(rc, project=t.id, user=u.id,
-                                  role=admin_role.id)
-    LOG.info("Admin role[%s] in tenant[%s] is granted to user[%s]",
-             admin_role.id, t.id, user.username)
+    LOG.info("------------------roles are----------------" + str(roles))
+    member_role = filter(lambda r: r.name.lower() == "_member_", roles)[0]
+    LOG.info("------------------ member role is ----------------" + str(member_role.id))
+    LOG.info("------------------ user id is ----------------" + str(u.id))
+
+
+    try:
+        keystone.add_tenant_user_role(rc, project=project_id, user=u.id,
+                                      role=member_role.id)
+    except:
+        pass
 
     udc = UserDataCenter.objects.create(
         data_center=datacenter,
         user=user,
         tenant_name=tenant_name,
-        tenant_uuid=t.id,
+        tenant_uuid=project_id,
         keystone_user=keystone_user,
         keystone_password=pwd,
     )
 
     LOG.info("Register user[%s] to datacenter [udc:%s] successfully",
              user.username, udc.id)
+
+
+    #Add default security group
     try:
         edit_default_security_group(user, udc)
     except:
@@ -83,3 +111,67 @@ def link_user_to_dc_task(user, datacenter):
 
     return u
 
+
+
+@app.task
+def role_create(request, role_name):
+
+
+    LOG.info("************* start to create a new role in keystone ***************")
+    rc = create_rc_by_dc(DataCenter.objects.all()[0])
+    LOG.info("************* rc is ***************" + str(rc))
+    try:
+        role = keystone.role_create(rc, role_name)
+    except:
+        return False
+    return True
+
+@app.task
+def role_delete(request, role_name):
+
+
+    LOG.info("************* start to create a new role in keystone ***************")
+    rc = create_rc_by_dc(DataCenter.objects.all()[0])
+    LOG.info("************* rc is ***************" + str(rc))
+
+    roles = keystone.role_list(rc)
+    role_id = None
+    for role_ in roles:
+        if role_name == role_.name:
+            role_id = role_.id
+    try:
+        role = keystone.role_delete(rc, role_id)
+    except:
+        return False
+    return True
+
+@app.task
+def add_user_role(keystone_user, role, user_tenant_id):
+
+    LOG.info("ddddddddd")
+    datacenter = DataCenter.get_default()
+    rc = create_rc_by_dc(datacenter)
+    LOG.info("********* keystone_user is *********" + str(keystone_user))
+    LOG.info("********* role is *********" + str(role))
+    LOG.info("********* user_tenant_id is *********" + str(user_tenant_id))
+    # get user_id
+    users = keystone.user_list(rc, project=user_tenant_id)
+    LOG.info("******* users are ******" + str(users))
+    user_id = None
+    for u in users:
+        if u.username == keystone_user:
+            user_id = u.id
+    LOG.info("****** user_id is *********" + str(user_id))
+
+    role_id = None
+    roles = keystone.role_list(rc)
+    for r in roles:
+        if r.name == role:
+            role_id = r.id
+    LOG.info("******** role_id is ********" + str(role_id))
+    try:
+        keystone.add_tenant_user_role(rc, project=user_tenant_id, user=user_id,
+                                      role=role_id)
+    except:
+        pass
+    return False

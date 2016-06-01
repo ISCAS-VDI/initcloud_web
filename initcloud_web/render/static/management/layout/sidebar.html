@@ -29,7 +29,16 @@
                 </span>
             <span class="selected"></span></a>
         </li>
-        <li id="flavor">
+        <li id="contract">
+            <a href="#/contract/">
+                <i class="fa fa-file-word-o"></i>
+                <span class="title">
+                    {[{ 'sidebar.contract' | i18next }]}
+                </span>
+            <span class="selected"></span></a>
+        </li>
+        <li id="flavor"
+            data-ng-if="current_user.is_system_user">
             <a href="#/flavor/">
                 <i class="fa fa-adjust"></i>
                 <span class="title">
@@ -37,7 +46,8 @@
                 </span>
             <span class="selected"></span></a>
         </li>
-        <li id="image">
+        <li id="image"
+            data-ng-if="current_user.is_system_user">
             <a href="#/image/">
                 <i class="fa fa-circle-o-notch"></i>
                 <span class="title">
@@ -45,7 +55,8 @@
                 </span>
             <span class="selected"></span></a>
         </li>
-        <li id="op_log">
+        <li id="op_log"
+            data-ng-if="current_user.is_audit_user">
             <a href="#/operation/">
                 <i class="fa fa-pencil-square-o"></i>
                 <span class="title">
@@ -53,12 +64,13 @@
                 </span>
             <span class="selected"></span></a>
         </li>
-        <li class="heading">
+        <li class="heading" data-ng-if="current_user.is_system_user">
             <h3 class="uppercase">
                 {[{ 'sidebar.market_management' | i18next }]}
             </h3>
         </li>
-        <li id="support">
+        <li id="support"
+            data-ng-if="current_user.is_system_user">
             <a href="#/support/">
                 <i class="fa fa-file-text-o"></i>
                 <span class="title">
@@ -66,7 +78,8 @@
                 </span>
             <span class="selected"></span></a>
         </li>
-        <li>
+        <li
+            data-ng-if="current_user.is_system_user">
             <a href="#/users/">
                 <i class="fa fa-users"></i>
                 <span class="title">
@@ -74,7 +87,8 @@
                 </span>
             <span class="selected"></span></a>
         </li>
-        <li>
+        <li
+            data-ng-if="current_user.is_system_user">
             <a href="#/notifications/">
                 <i class="fa fa-bullhorn"></i>
                 <span class="title">
@@ -82,41 +96,57 @@
                 </span>
             <span class="selected"></span></a>
         </li>
-        <li class="heading">
+        <li class="heading" data-ng-if-start="current_user.is_safety_user">
             <h3 class="uppercase">
-                {[{ 'sidebar.policy_management' | i18next }]}
+                {[{ 'sidebar.authority_management' | i18next }]}
             </h3>
         </li>
         <li>
-            <a href="#/roles/">
-                <i class="fa fa-users"></i>
+            <a href="#/roles/"
+            data-ng-if="current_user.is_safety_user">
+                <i class="fa fa-ban"></i>
                 <span class="title">
-                    {[{ 'sidebar.roles' | i18next }]}
+                    {[{ 'sidebar.role' | i18next }]}
                 </span>
             <span class="selected"></span></a>
         </li>
-         <li>
-            <a href="#/groups/">
-                <i class="fa fa-users"></i>
+        <li>
+            <a href="#/policy_nova/">
+                <i class="fa fa-lock"></i>
                 <span class="title">
-                    {[{ 'sidebar.groups' | i18next }]}
+                    {[{ 'sidebar.policy_nova' | i18next }]}
                 </span>
             <span class="selected"></span></a>
         </li>
-        <li class="heading" data-ng-if-start="site_config.WORKFLOW_ENABLED">
+        <li>
+            <a href="#/policy_neutron/">
+                <i class="fa fa-stethoscope"></i>
+                <span class="title">
+                    {[{ 'sidebar.policy_neutron' | i18next }]}
+                </span>
+            <span class="selected"></span></a>
+        </li>
+        <li>
+            <a href="#/policy_cinder/">
+                <i class="fa fa-list"></i>
+                <span class="title">
+                    {[{ 'sidebar.policy_cinder' | i18next }]}
+                </span>
+            <span class="selected"></span></a>
+        </li>
+        <li data-ng-if-end class="heading" data-ng-if="site_config.WORKFLOW_ENABLED">
             <h3 class="uppercase">
                 {[{ 'sidebar.workflow_management' | i18next }]}
             </h3>
         </li>
-        <li data-ng-if-end>
-            <a href="#/workflow/">
+        <li>
+            <a href="#/workflow/" data-ng-if="current_user.is_test">
                 <i class="fa fa-desktop"></i>
                 <span class="title">
                     {[{ 'sidebar.workflow_definition' | i18next }]}
                 </span>
             <span class="selected"></span></a>
         </li>
-
     </ul>
     <!-- END SIDEBAR MENU -->
 </div>	

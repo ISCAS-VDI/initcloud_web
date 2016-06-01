@@ -11,6 +11,7 @@ from rest_framework.decorators import api_view
 
 from biz.image.models import Image
 from biz.image.serializer import ImageSerializer
+from biz.account.models import UserProxy
 from biz.idc.models import UserDataCenter
 
 LOG = logging.getLogger(__name__)
@@ -23,6 +24,22 @@ class ImageList(generics.ListCreateAPIView):
     def list(self, request, *args, **kwargs):
 
         queryset = self.get_queryset()
+        user = request.user
+
+        user_ = UserProxy.objects.get(pk=user.pk)
+   
+        if user_.is_system_user:
+            LOG.info("******* image system user *******")
+            return Response(ImageSerializer(queryset, many=True).data)
+
+        if user_.is_safety_user:
+            LOG.info("******* image safety user *******")
+            return Response(ImageSerializer(queryset, many=True).data)
+
+        if user_.is_audit_user:
+            LOG.info("******* image audit user *******")
+            return Response(ImageSerializer(queryset, many=True).data)
+
         if not request.user.is_superuser:
             udc = UserDataCenter.objects.get(pk=request.session["UDC_ID"])
             queryset = queryset.filter(data_center=udc.data_center)

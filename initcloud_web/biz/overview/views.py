@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from biz.account.models import Contract
+from biz.account.models import Contract, UserProxy
 from biz.idc.models import DataCenter
 from biz.idc.serializer import DataCenter, DataCenterSerializer
 from biz.instance.models import Instance, Flavor
@@ -112,7 +112,11 @@ def init_images(request):
 
 @api_view(['GET'])
 def hypervisor_stats(request):
-    if request.user.is_superuser:
+
+    user = request.user
+    user_ = UserProxy.objects.get(pk=user.pk)
+    
+    if request.user.is_superuser or user_.is_system_user or user_.is_safety_user or user_.is_audit_user:
         data_center = DataCenter.get_default()
         stats = hypervisor_stats_task(data_center)
         if stats: 

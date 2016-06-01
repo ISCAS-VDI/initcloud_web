@@ -49,7 +49,7 @@ def cloud(request):
     return render(request, "cloud.html")
 
 
-@superuser_required
+#@superuser_required
 def management(request):
     return render(request, 'management.html',
                   {'inited': DataCenter.objects.exists()})
@@ -89,7 +89,7 @@ class LoginView(View):
 
         # Retrieve user to use some methods of UserProxy
         user = UserProxy.objects.get(pk=user.pk)
-        if user.is_superuser:
+        if user.is_superuser or user.is_system_user or user.is_audit_user or user.is_safety_user:
             return redirect('management')
 
         udc_set = UDC.objects.filter(user=user)

@@ -1412,6 +1412,27 @@ msgstr "规格更新失败"
 msgid "Flavors have been deleted!"
 msgstr "规格已删除"
 
+
+#: role/views.py:76
+msgid "Roles have been deleted!"
+msgstr "权限已删除"
+
+#: role/views.py:59
+msgid "Role is created successfully!"
+msgstr "权限已创建成功"
+
+
+#: role/views.py:62
+msgid "Role data is not valid!"
+msgstr "权限数据不正确"
+
+
+#: role/views.py:68
+msgid "Failed to create role for unknown reason.'"
+msgstr "无法创建role"
+
+
+
 #: instance/views.py:158
 msgid "Your selected network has not linked to any router."
 msgstr "您选择的私有网络未连接到路由器，请先连接到路由器后重试"
