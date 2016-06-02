@@ -4,7 +4,7 @@
     <div class="portlet">
       <div class="portlet-title">
         <div class="caption font-green-sharp">
-          <a class="btn btn-icon-only btn-default" href="#" ng-click="">
+          <a class="btn btn-icon-only btn-default" href="#" ng-click="vdstatus_table.reload()">
             <i class="fa fa-refresh"></i>
           </a>
         </div>
@@ -15,17 +15,19 @@
             <tbody>
               <tr ng-repeat="state in status">
                 <td data-title="'user.name' | i18next">
-                  <span> {[{ state.username }]} </span>
+                  <span> {[{ state.user }]} </span>
                 </td>
-                <!-- <td data-title="'instance.status' | i18next"> -->
-                  <!-- <span> {[{ state.status }]} </span> -->
-                <!-- </td> -->
+                <td data-title="'instance.status' | i18next">
+                  <span ng-if="state.online"> {[{ 'vir_desktop.online' | i18next }]} </span>
+                  <span ng-if="!state.online"> {[{ 'vir_desktop.offline' | i18next }]} </span>
+                </td>
                 <td data-title="'vir_desktop.name' | i18next">
-                  <span> {[{ state.vm }]} </span>
+                  <span ng-if="state.vm != null"> {[{ state.vm }]} </span>
+                  <span ng-if="state.vm == null"> {[{ 'vir_desktop.null_vm' | i18next }]} </span>
                 </td>
                 <td data-title="'actions' | i18next">
                   <div class="btn-group">
-                    <button class="btn btn-default" type="button">action1</button>
+                    <button class="btn btn-default" type="button" ng-disabled="state.vm == null" ng-click="takeAction(state.user, state.vm, 'disconnect')"> {[{ 'vir_desktop.disconn_desktop' | i18next }]} </button>
                     <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button" aria-expanded="false">
                       <i class="fa fa-angle-down"></i>
                     </button>

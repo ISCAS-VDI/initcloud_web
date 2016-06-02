@@ -265,5 +265,5 @@ ALARM_ACTIONS = "http://192.168.1.35:5998/wsgi_app.py"
 RESULT = [{"meter_name": "cpu_util"},{'meter_name':"memory.usage"},{"meter_name": "disk.write.bytes"},{"meter_name": "network.incoming.bytes"}, {"meter_name": "network.outgoing.bytes"}]
 
 # Virtural Desktop
-MGR_HTTP_ADDR = ""
+MGR_HTTP_ADDR = "http://192.168.161.9:8893/v1/vdstatus"
 

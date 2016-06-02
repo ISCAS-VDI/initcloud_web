@@ -541,7 +541,15 @@
   },
 
   "vir_desktop": {
-    "name": "Desktop"
+    "name": "Desktop",
+    "online": "Online",
+    "offline": "Offline",
+    "user": "User",
+    "do_online": "online",
+    "do_offline": "offline",
+    "conn_desktop": "connected to desktop",
+    "disconn_desktop": "disconnected from desktop",
+    "null_vm": "No desktop connected"
   }
 
 }

@@ -789,7 +789,15 @@
   },
 
   "vir_desktop": {
-    "name": "桌面"
+    "name": "桌面",
+    "online": "在线",
+    "offline": "离线",
+    "user": "用户",
+    "do_online": "上线",
+    "do_offline": "下线",
+    "conn_desktop": "连接桌面",
+    "disconn_desktop": "断开桌面",
+    "null_vm": "未连接桌面"
   },
 
   "policy_cinder": {
