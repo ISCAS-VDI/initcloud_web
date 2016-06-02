@@ -20,6 +20,7 @@ from biz.overview import views as overview_views
 from biz.backup import views as backup_view
 from biz.workflow import views as workflow_view
 from biz.billing import views as billing_view
+from biz.vir_desktop import views as vir_desktop
 #policy
 from biz.policy_nova import views as policy_nova_view
 from biz.policy_cinder import views as policy_cinder_view
@@ -359,6 +360,10 @@ if settings.BACKUP_ENABLED:
             backup_view.delete_backup_item),
     ])
 
+# virtural desktop
+urlpatterns += format_suffix_patterns([
+  url(r'^vdstatus/$', vir_desktop.VDStatusList.as_view()),
+])
 
 # workflow
 if settings.WORKFLOW_ENABLED:

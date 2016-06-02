@@ -281,7 +281,9 @@
     "backup": "Backup",
     "market_management": "User Management",
     "operation_support": "Operation Support",
-    "notifications": "Notification"
+    "notifications": "Notification",
+    "vd": "Virtural Desktop",
+    "conn_state": "Connection Status"
   },
 
   "overview": {
@@ -536,6 +538,18 @@
     "select_monitor":"请选择监听器",
     "add_member":"添加成员",
     "delay_lg_timeout":"超时时间不能大于延迟时间"
+  },
+
+  "vir_desktop": {
+    "name": "Desktop",
+    "online": "Online",
+    "offline": "Offline",
+    "user": "User",
+    "do_online": "online",
+    "do_offline": "offline",
+    "conn_desktop": "connected to desktop",
+    "disconn_desktop": "disconnected from desktop",
+    "null_vm": "No desktop connected"
   }
 
 }

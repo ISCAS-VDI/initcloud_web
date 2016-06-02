@@ -133,6 +133,12 @@ angular.module('cloud.resources', [])
         {status: {isArray: false, params: {action: 'status'}}});
 }])
 
+.factory('VDStatus', ['$resource', function($resource) {
+  return $resource('/api/vdstatus/:id/:action', { id: '@id' }, {
+    query: {isArray: false}
+  });
+}])
+
 .factory('Workflow', ['$resource', function ($resource){
     return $resource("/api/workflows/:id/:action/", {id: '@id'});
 }])

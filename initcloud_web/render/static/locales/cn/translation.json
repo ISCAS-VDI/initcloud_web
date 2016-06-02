@@ -316,13 +316,14 @@
     "orders_and_bills": "产品订单",
     "orders": "订单管理",
     "bills": "账单管理",
+    "vd": "虚拟桌面管理",
+    "conn_state": "连接状态",
     "policymanagement": "权限管理",
     "policy_nova": "计算",
     "policy_cinder": "存储",
     "policy_neutron": "网络",
     "policy_glance": "资源",
     "alarm": "监控报警"
-
   },
 
   "overview": {
@@ -785,6 +786,18 @@
     "bill_overview": "概览",
     "resource_num": "资源数量",
     "cost_sum": "费用合计(元)"
+  },
+
+  "vir_desktop": {
+    "name": "桌面",
+    "online": "在线",
+    "offline": "离线",
+    "user": "用户",
+    "do_online": "上线",
+    "do_offline": "下线",
+    "conn_desktop": "连接桌面",
+    "disconn_desktop": "断开桌面",
+    "null_vm": "未连接桌面"
   },
 
   "policy_cinder": {
