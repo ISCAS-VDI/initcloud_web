@@ -16,22 +16,22 @@ for i in range(25):
     data.append({"user": "abc"+str(i), "vm": "ddc"+str(i)})
 
 class VDStatusList(generics.ListAPIView):
-    # queryset = data
+    queryset = data
     serializer_class = VDStatusSerializer
     pagination_class = PagePagination
     
-    def get_queryset(self):
-        LOG.info("---vir_desktop.views---")
-        ret = []
-        try:
-            r = requests.get(settings.MGR_HTTP_ADDR)
-            if r.status_code == 200:
-              ret = r.json()
-              LOG.info(ret)
-            else:
-              ret = [{"user": "Error code: "+str(r.status_code), "vm": "null"}]
-        except Exception, e:
-            LOG.info(e)
+    # def get_queryset(self):
+        # LOG.info("---vir_desktop.views---")
+        # ret = []
+        # try:
+            # r = requests.get(settings.MGR_HTTP_ADDR)
+            # if r.status_code == 200:
+              # ret = r.json()
+              # LOG.info(ret)
+            # else:
+              # ret = [{"user": "Error code: "+str(r.status_code), "vm": "null"}]
+        # except Exception, e:
+            # LOG.info(e)
         
-        return ret
+        # return ret
 

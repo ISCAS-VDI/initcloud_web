@@ -549,7 +549,12 @@
     "do_offline": "offline",
     "conn_desktop": "connected to desktop",
     "disconn_desktop": "disconnected from desktop",
-    "null_vm": "No desktop connected"
+    "null_vm": "No desktop connected",
+    "soft_mgr": "Software Management",
+    "soft_setup": "Software Setup",
+    "soft_remove": "Software Remove",
+    "setup": "Setup",
+    "remove": "Remove"
   }
 
 }

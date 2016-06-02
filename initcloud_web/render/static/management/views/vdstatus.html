@@ -7,6 +7,12 @@
           <a class="btn btn-icon-only btn-default" href="#" ng-click="vdstatus_table.reload()">
             <i class="fa fa-refresh"></i>
           </a>
+          <a class="btn btn-primary" href="#" ng-click="openSoftwareSetupModal(checkboxGroup.checkedObjects())" ng-disabled="checkboxGroup.noneChecked()">
+            <i class="fa fa-plus-square"></i>{[{ 'vir_desktop.soft_setup' | i18next}]}
+          </a>
+          <a class="btn btn-danger" href="#" ng-click="openSoftwareRemoveModal(checkboxGroup.checkedObjects())" ng-disabled="checkboxGroup.noneChecked()">
+            <i class="fa fa-minus-square"></i>{[{ 'vir_desktop.soft_remove' | i18next}]}
+          </a>
         </div>
       </div>
       <div class="portlet-body">
@@ -14,6 +20,9 @@
           <table ng-table="vdstatus_table" class="table table-striped table-bordered table-advance table-hover">
             <tbody>
               <tr ng-repeat="state in status">
+                <td width="30" header="'checkbox-header.html'">
+                  <input type="checkbox" data-ng-model="state.checked"/>
+                </td>
                 <td data-title="'user.name' | i18next">
                   <span> {[{ state.user }]} </span>
                 </td>
@@ -33,13 +42,13 @@
                     </button>
                     <ul role="menu" class="dropdown-menu">
                       <li>
-                        <a href="javascript:void(0)" data-ng-click="">
-                          <i class="fa fa-list"></i> action2
+                        <a href="javascript:void(0)" data-ng-click="openSoftwareSetupModal([state])">
+                          <i class="fa fa-plus-square"></i> {[{ 'vir_desktop.soft_setup' | i18next }]}
                         </a>
                       </li>
                       <li>
-                        <a href="javascript:void(0)" data-ng-click="">
-                          <i class="fa fa-list"></i> action3
+                        <a href="javascript:void(0)" data-ng-click="openSoftwareRemoveModal([state])">
+                          <i class="fa fa-minus-square"></i> {[{ 'vir_desktop.soft_remove' | i18next }]}
                         </a>
                       </li>
                     </ul>
@@ -54,3 +63,56 @@
   </div>
 </div>
 <!-- MAIN CONTENT END -->
+
+<!-- BEGIN TEMPLATE CHECKBOXHEADER -->
+<script type="text/ng-template" id="checkbox-header.html">
+  <input type="checkbox"  data-ng-model="checkboxGroup.checked" data-ng-change="checkboxGroup.toggleAll()"/>
+</script>
+<!-- END TEMPLATE CHECKBOXHEADER -->
+
+<!-- BEGIN TEMPLATE SOFTWARECONF -->
+<script type="text/ng-template" id="softwareconf.html">
+  <div class="modal-header">
+    <div class="modal-title"> {[{ 'vir_desktop.soft_mgr' | i18next }]}</div>
+  </div>
+  <div class="modal-body">
+    <div class="col-md-4" style="padding-right:0px;">
+    </div>
+    <div class="col-md-8" style="padding-left:0px;">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
+      {[{ 'cancel' | i18next }]}
+    </a>
+    <a class="btn" data-ng-show="is_submitting">
+      <img src="/static/assets/global/img/throbber.gif"/>
+    </a>
+    <a class="btn btn-primary" data-ng-click="commit()" data-ng-hide="is_submitting">
+      {[{ 'submit' | i18next }]}
+    </a>
+  </div>
+</script>
+<!-- END TEMPLATE SOFTWARECONF -->
+
+<!-- BEGIN TEMPLATE SOFTWAREREMOVE -->
+<script type="text/ng-template" id="softwareremove.html">
+  <div class="modal-header">
+    <div class="modal-title"> {[{ 'vir_desktop.soft_remove' | i18next }]}</div>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
+      {[{ 'cancel' | i18next }]}
+    </a>
+    <a class="btn" data-ng-show="is_removing">
+      <img src="/static/assets/global/img/throbber.gif"/>
+    </a>
+    <a class="btn btn-danger" data-ng-click="remove()" data-ng-hide="is_removing">
+      {[{ 'vir_desktop.remove' | i18next }]}
+    </a>
+  </div>
+</script>
+<!-- END TEMPLATE SOFTWAREREMOVE -->
+

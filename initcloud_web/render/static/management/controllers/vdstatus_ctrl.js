@@ -2,11 +2,13 @@
 
 CloudApp.controller('VDStatusController',
     function ($rootScope, $scope, $i18next, $ngBootbox, $modal, lodash, ngTableParams,
-              CommonHttpService, ToastrService, ngTableHelper, VDStatus, VDStatusWS) {
+              CommonHttpService, ToastrService, CheckboxGroup, ngTableHelper, VDStatus, VDStatusWS) {
 
       var page_count = 10;
 
       $scope.status = [];
+      var checkboxGroup = $scope.checkboxGroup = CheckboxGroup.init($scope.status);
+      
       $scope.vdstatus_table = new ngTableParams({
         page: 1,
         count: page_count
@@ -21,6 +23,7 @@ CloudApp.controller('VDStatusController',
             $defer.resolve(data.results);
             $scope.status = data.results;
             ngTableHelper.countPages(params, data.count);
+            checkboxGroup.syncObjects($scope.status);
           });
         }
       });
@@ -79,6 +82,58 @@ CloudApp.controller('VDStatusController',
           action: action
         }));
       };
+
+      $scope.openSoftwareSetupModal = function(userlist) {
+        $modal.open({
+          templateUrl: 'softwareconf.html',
+          backdrop: 'static',
+          controller: 'SoftwareSetupController',
+          size: 'lg',
+          resolve: {
+            userlist: function() {
+              return userlist;
+            }
+          }
+        }).result.then(function() {
+          checkboxGroup.uncheck();
+        });
+      };
+
+      $scope.openSoftwareRemoveModal = function(userlist) {
+        $modal.open({
+          templateUrl: 'softwareconf.html',
+          backdrop: 'static',
+          controller: 'SoftwareRemoveController',
+          size: 'lg',
+          resolve: {
+            userlist: function() {
+              return userlist;
+            }
+          }
+        }).result.then(function() {
+          checkboxGroup.uncheck();
+        });
+      };
+    }
+)
+
+.controller('SoftwareSetupController', function($scope, $modalInstance, $i18next, 
+    CommonHttpService, ToastrService, userlist) {
+      $scope.is_submitting = false;
+      $scope.commit = function() {
+        // TODO: call the API
+      };
+      $scope.cancel = $modalInstance.dismiss;
+    }
+)
+
+.controller('SoftwareRemoveController', function($scope, $modalInstance, $i18next, 
+    CommonHttpService, ToastrService, userlist) {
+      $scope.is_submitting = false;
+      $scope.commit = function() {
+        // TODO: call the API
+      };
+      $scope.cancel = $modalInstance.dismiss;
     }
 )
 
