@@ -8,10 +8,10 @@
             <i class="fa fa-refresh"></i>
           </a>
           <a class="btn btn-primary" href="#" ng-click="openSoftwareSetupModal(checkboxGroup.checkedObjects())" ng-disabled="checkboxGroup.noneChecked()">
-            <i class="fa fa-plus-square"></i>{[{ 'vir_desktop.soft_setup' | i18next}]}
+            <i class="fa fa-plus-square"></i> {[{ 'vir_desktop.soft_setup' | i18next}]}
           </a>
           <a class="btn btn-danger" href="#" ng-click="openSoftwareRemoveModal(checkboxGroup.checkedObjects())" ng-disabled="checkboxGroup.noneChecked()">
-            <i class="fa fa-minus-square"></i>{[{ 'vir_desktop.soft_remove' | i18next}]}
+            <i class="fa fa-minus-square"></i> {[{ 'vir_desktop.soft_remove' | i18next}]}
           </a>
         </div>
       </div>
@@ -72,47 +72,63 @@
 
 <!-- BEGIN TEMPLATE SOFTWARECONF -->
 <script type="text/ng-template" id="softwareconf.html">
-  <div class="modal-header">
-    <div class="modal-title"> {[{ 'vir_desktop.soft_mgr' | i18next }]}</div>
-  </div>
-  <div class="modal-body">
+  <div class="row">
     <div class="col-md-4" style="padding-right:0px;">
+      <div class="portlet box blue-chambray" id="form_wizard_1"
+           style="border-left-style: none;border-bottom-style: none;margin-bottom: 0px;">
+        <div class="portlet-title">
+          <div class="caption">{[{ 'vir_desktop.soft_mgr' | i18next }]}</div>
+        </div>
+        <div class="portlet-body">
+          <table class="table">
+            <thead>
+              <tr><th>{[{ 'vir_desktop.user' | i18next }]}</th></tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="user in userlist">
+                <td>{[{user.user}]}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <div class="col-md-8" style="padding-left:0px;">
+      <div class="portlet box blue-chambray"
+        style="border-left-style: none;border-bottom-style: none;border-right-style:none; margin-bottom: 0px;">
+        <div class="portlet-title">
+          <div class="caption"></div>
+        </div>
+        <div class="portlet-body form">
+          <form class="form-horizontal">
+            <div class="form-wizard">
+              <div class="form-body">
+                <h4>{[{ 'vir_desktop.soft_list' | i18next }]}</h4>
+                <div style="height:294px;overflow-y:scroll;padding:15px">
+                  <ul class="list-unstyled">
+                    <li style="font-size:large;" ng-repeat="software in softwares">
+                      <input type="checkbox" data-ng-model="software.checked"/> {[{software.name}]}
+                    </li>
+                  </ul>
+                </div>
+                <div class="form-actions right">
+                  <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
+                    {[{ 'cancel' | i18next }]}
+                  </a>
+                  <a class="btn" data-ng-show="is_submitting">
+                    <img src="/static/assets/global/img/throbber.gif"/>
+                  </a>
+                  <a class="btn btn-primary" ng-disabled="checkboxGroup.noneChecked()" data-ng-click="commit()" data-ng-hide="is_submitting">
+                    {[{ 'submit' | i18next }]}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
-      {[{ 'cancel' | i18next }]}
-    </a>
-    <a class="btn" data-ng-show="is_submitting">
-      <img src="/static/assets/global/img/throbber.gif"/>
-    </a>
-    <a class="btn btn-primary" data-ng-click="commit()" data-ng-hide="is_submitting">
-      {[{ 'submit' | i18next }]}
-    </a>
   </div>
 </script>
 <!-- END TEMPLATE SOFTWARECONF -->
-
-<!-- BEGIN TEMPLATE SOFTWAREREMOVE -->
-<script type="text/ng-template" id="softwareremove.html">
-  <div class="modal-header">
-    <div class="modal-title"> {[{ 'vir_desktop.soft_remove' | i18next }]}</div>
-  </div>
-  <div class="modal-body">
-  </div>
-  <div class="modal-footer">
-    <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
-      {[{ 'cancel' | i18next }]}
-    </a>
-    <a class="btn" data-ng-show="is_removing">
-      <img src="/static/assets/global/img/throbber.gif"/>
-    </a>
-    <a class="btn btn-danger" data-ng-click="remove()" data-ng-hide="is_removing">
-      {[{ 'vir_desktop.remove' | i18next }]}
-    </a>
-  </div>
-</script>
-<!-- END TEMPLATE SOFTWAREREMOVE -->
 

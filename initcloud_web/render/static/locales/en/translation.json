@@ -554,7 +554,8 @@
     "soft_setup": "Software Setup",
     "soft_remove": "Software Remove",
     "setup": "Setup",
-    "remove": "Remove"
+    "remove": "Remove",
+    "soft_list": "Software List"
   }
 
 }

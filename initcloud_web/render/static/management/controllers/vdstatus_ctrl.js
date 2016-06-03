@@ -92,6 +92,9 @@ CloudApp.controller('VDStatusController',
           resolve: {
             userlist: function() {
               return userlist;
+            },
+            action: function() {
+              return 'setup';
             }
           }
         }).result.then(function() {
@@ -103,11 +106,14 @@ CloudApp.controller('VDStatusController',
         $modal.open({
           templateUrl: 'softwareconf.html',
           backdrop: 'static',
-          controller: 'SoftwareRemoveController',
+          controller: 'SoftwareSetupController',
           size: 'lg',
           resolve: {
             userlist: function() {
               return userlist;
+            },
+            action: function() {
+              return 'remove';
             }
           }
         }).result.then(function() {
@@ -118,17 +124,51 @@ CloudApp.controller('VDStatusController',
 )
 
 .controller('SoftwareSetupController', function($scope, $modalInstance, $i18next, 
-    CommonHttpService, ToastrService, userlist) {
+    CommonHttpService, ToastrService, CheckboxGroup, userlist, action) {
+      $scope.userlist = userlist;
+      $scope.softwares = [];
+      var checkboxGroup = $scope.checkboxGroup = CheckboxGroup.init($scope.softwares);
+      CommonHttpService.get('/api/software/select' + action + '/').then(function(data) {
+        $scope.softwares = data;
+        checkboxGroup.syncObjects($scope.softwares);
+      });
+
       $scope.is_submitting = false;
       $scope.commit = function() {
         // TODO: call the API
+        var users = [],
+          vms = [],
+          softwares = [],
+          selected = checkboxGroup.checkedObjects();
+        for(var i = 0; i < userlist.length; ++i) {
+          users.push(userlist[i].user);
+          vms.push(userlist[i].vm);
+        }
+        for(var i = 0; i < selected.length; ++i) {
+          softwares.push(selected[i].name);
+        }
+        var data = {
+          users: users,
+          vms: vms,
+          softwares: softwares
+        };
+        CommonHttpService.post('/api/software/' + action + '/', data).then(function(data) {
+          if(data.success) {
+            ToastrService.success(data.msg, $i18next('success'));
+          }
+        });
+        $modalInstance.close();
       };
       $scope.cancel = $modalInstance.dismiss;
     }
 )
 
 .controller('SoftwareRemoveController', function($scope, $modalInstance, $i18next, 
-    CommonHttpService, ToastrService, userlist) {
+    CommonHttpService, ToastrService, CheckboxGroup, userlist) {
+      $scope.userlist = userlist;
+      $scope.softwares = [];
+      var checkboxGroup = $scope.checkboxGroup = CheckboxGroup.init($scope.softwares);
+      // TODO: initialize softwares
       $scope.is_submitting = false;
       $scope.commit = function() {
         // TODO: call the API

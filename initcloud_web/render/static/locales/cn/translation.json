@@ -802,7 +802,8 @@
     "soft_setup": "软件安装",
     "soft_remove": "软件卸载",
     "setup": "安装",
-    "remove": "卸载"
+    "remove": "卸载",
+    "soft_list": "软件列表"
   },
 
   "policy_cinder": {

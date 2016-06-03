@@ -363,6 +363,10 @@ if settings.BACKUP_ENABLED:
 # virtural desktop
 urlpatterns += format_suffix_patterns([
   url(r'^vdstatus/$', vir_desktop.VDStatusList.as_view()),
+  url(r'^software/selectsetup/$', vir_desktop.software_can_setup),
+  url(r'^software/selectremove/$', vir_desktop.software_can_remove),
+  url(r'^software/setup/$', vir_desktop.software_setup),
+  url(r'^software/remove/$', vir_desktop.software_remove),
 ])
 
 # workflow
