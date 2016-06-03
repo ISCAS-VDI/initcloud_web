@@ -2,11 +2,13 @@
 
 CloudApp.controller('VDStatusController',
     function ($rootScope, $scope, $i18next, $ngBootbox, $modal, lodash, ngTableParams,
-              CommonHttpService, ToastrService, ngTableHelper, VDStatus, VDStatusWS) {
+              CommonHttpService, ToastrService, CheckboxGroup, ngTableHelper, VDStatus, VDStatusWS) {
 
       var page_count = 10;
 
       $scope.status = [];
+      var checkboxGroup = $scope.checkboxGroup = CheckboxGroup.init($scope.status);
+      
       $scope.vdstatus_table = new ngTableParams({
         page: 1,
         count: page_count
@@ -21,6 +23,7 @@ CloudApp.controller('VDStatusController',
             $defer.resolve(data.results);
             $scope.status = data.results;
             ngTableHelper.countPages(params, data.count);
+            checkboxGroup.syncObjects($scope.status);
           });
         }
       });
@@ -79,6 +82,98 @@ CloudApp.controller('VDStatusController',
           action: action
         }));
       };
+
+      $scope.openSoftwareSetupModal = function(userlist) {
+        $modal.open({
+          templateUrl: 'softwareconf.html',
+          backdrop: 'static',
+          controller: 'SoftwareSetupController',
+          size: 'lg',
+          resolve: {
+            userlist: function() {
+              return userlist;
+            },
+            action: function() {
+              return 'setup';
+            }
+          }
+        }).result.then(function() {
+          checkboxGroup.uncheck();
+        });
+      };
+
+      $scope.openSoftwareRemoveModal = function(userlist) {
+        $modal.open({
+          templateUrl: 'softwareconf.html',
+          backdrop: 'static',
+          controller: 'SoftwareSetupController',
+          size: 'lg',
+          resolve: {
+            userlist: function() {
+              return userlist;
+            },
+            action: function() {
+              return 'remove';
+            }
+          }
+        }).result.then(function() {
+          checkboxGroup.uncheck();
+        });
+      };
+    }
+)
+
+.controller('SoftwareSetupController', function($scope, $modalInstance, $i18next, 
+    CommonHttpService, ToastrService, CheckboxGroup, userlist, action) {
+      $scope.userlist = userlist;
+      $scope.softwares = [];
+      var checkboxGroup = $scope.checkboxGroup = CheckboxGroup.init($scope.softwares);
+      CommonHttpService.get('/api/software/select' + action + '/').then(function(data) {
+        $scope.softwares = data;
+        checkboxGroup.syncObjects($scope.softwares);
+      });
+
+      $scope.is_submitting = false;
+      $scope.commit = function() {
+        // TODO: call the API
+        var users = [],
+          vms = [],
+          softwares = [],
+          selected = checkboxGroup.checkedObjects();
+        for(var i = 0; i < userlist.length; ++i) {
+          users.push(userlist[i].user);
+          vms.push(userlist[i].vm);
+        }
+        for(var i = 0; i < selected.length; ++i) {
+          softwares.push(selected[i].name);
+        }
+        var data = {
+          users: users,
+          vms: vms,
+          softwares: softwares
+        };
+        CommonHttpService.post('/api/software/' + action + '/', data).then(function(data) {
+          if(data.success) {
+            ToastrService.success(data.msg, $i18next('success'));
+          }
+        });
+        $modalInstance.close();
+      };
+      $scope.cancel = $modalInstance.dismiss;
+    }
+)
+
+.controller('SoftwareRemoveController', function($scope, $modalInstance, $i18next, 
+    CommonHttpService, ToastrService, CheckboxGroup, userlist) {
+      $scope.userlist = userlist;
+      $scope.softwares = [];
+      var checkboxGroup = $scope.checkboxGroup = CheckboxGroup.init($scope.softwares);
+      // TODO: initialize softwares
+      $scope.is_submitting = false;
+      $scope.commit = function() {
+        // TODO: call the API
+      };
+      $scope.cancel = $modalInstance.dismiss;
     }
 )
 

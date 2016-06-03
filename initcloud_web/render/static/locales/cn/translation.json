@@ -797,7 +797,13 @@
     "do_offline": "下线",
     "conn_desktop": "连接桌面",
     "disconn_desktop": "断开桌面",
-    "null_vm": "未连接桌面"
+    "null_vm": "未连接桌面",
+    "soft_mgr": "软件管理",
+    "soft_setup": "软件安装",
+    "soft_remove": "软件卸载",
+    "setup": "安装",
+    "remove": "卸载",
+    "soft_list": "软件列表"
   },
 
   "policy_cinder": {
