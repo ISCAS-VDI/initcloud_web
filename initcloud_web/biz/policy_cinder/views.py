@@ -8,7 +8,7 @@ import logging
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -23,6 +23,7 @@ from biz.idc.models import DataCenter
 from biz.common.pagination import PagePagination
 from biz.common.decorators import require_POST, require_GET
 from biz.common.utils import retrieve_params, fail
+from biz.common.views import IsSystemUser, IsSafetyUser, IsAuditUser
 from biz.workflow.models import Step
 from cloud.tasks import (link_user_to_dc_task, send_notifications,
                          send_notifications_by_data_center)
@@ -55,6 +56,7 @@ def format_role(role):
     return role
 
 class Policy_CinderList(generics.ListAPIView):
+    permission_classes = (IsSafetyUser,)
     LOG.info("--------- I am policy_cinder list in Policy_CinderList ----------")
     queryset = Policy_Cinder.objects.all().filter(deleted=False)
     LOG.info("--------- Queryset is --------------" + str(queryset)) 

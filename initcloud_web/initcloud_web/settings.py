@@ -15,6 +15,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import logging
 import logging.config
+from django.utils.translation import ugettext_lazy as _
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -41,11 +42,13 @@ INSTALLED_APPS = [
     'biz.policy_cinder',
     'biz.policy_neutron',
     'biz.alarm',
+    'biz.UserGrouper',
     'biz.role',
     'biz.group',
     'biz.idc',
     'biz.instance',
     'biz.image',
+    'biz.instancemanage',
     'biz.floating',
     'biz.network',
     'biz.lbaas',
@@ -64,6 +67,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -81,6 +85,7 @@ REST_FRAMEWORK = {
 
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
+
     ),  
 
 }
@@ -122,6 +127,10 @@ DATABASES = {
 # Internationalization
 
 LANGUAGE_CODE = 'zh_CN'
+LANGUAGES_SUPPORTED = (
+    ('en', _('English')),
+    ('zh_CN', _('Chinese')),
+)
 USE_I18N = True
 USE_L10N = True
 TIME_ZONE = 'Asia/Shanghai'
@@ -250,7 +259,7 @@ logging.config.dictConfig(LOG_CONFIG)
 
 # Added by arthur
 
-ADMIN_TOKEN = "eed424fd2d584dc2923055e72542e508"
+ADMIN_TOKEN = "f14e712d84e243ca8a02dbc799e3184b"
 ADMIN_NAME = "admin"
 EDNPOINT = "http://localhost:35357/v2.0"
 ADMIN_TENANT_NAME = "admin"
@@ -261,9 +270,12 @@ TENANT_DEFAULT_NETWORK = "10.0.0.0/24"
 GATEWAY_IP = "10.0.0.1"
 TEST_TENANT_NAME = "testwork"
 TEST_TENANT_ID = "cde7d6ed392941c5b75a3079459690d4"
-ALARM_ACTIONS = "http://192.168.1.35:5998/wsgi_app.py"
+ALARM_ACTIONS = "http://192.168.223.108:5998/wsgi_app.py"
 RESULT = [{"meter_name": "cpu_util"},{'meter_name':"memory.usage"},{"meter_name": "disk.write.bytes"},{"meter_name": "network.incoming.bytes"}, {"meter_name": "network.outgoing.bytes"}]
 
 # Virtural Desktop
 MGR_HTTP_ADDR = "http://192.168.161.9:8893/v1/vdstatus"
 
+COMPUTE_HOSTS = {'libertyall': "192.168.223.108"}
+
+DEVICEPOLICY = [{"name":"usb"}]

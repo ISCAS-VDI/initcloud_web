@@ -17,9 +17,11 @@ LOG = logging.getLogger("cloud.tasks")
 
 
 @app.task
-def link_user_to_dc_task(user, datacenter):
+def link_user_to_dc_task(user, datacenter, tenant_id):
 
     LOG.info("---------start to execute link_user_to_dc_task-----------")
+
+    LOG.info("----------tenant_id is-------------" + str(tenant_id))
 
     LOG.info("----------user is-------------" + str(user))
 
@@ -51,14 +53,16 @@ def link_user_to_dc_task(user, datacenter):
              "data center [%s]", user.username, t.id, tenant_name,
              datacenter.name)
     """
+    tenant_ = keystone.tenant_get(rc, tenant_id)
+    tenant_name = tenant_.name 
+    LOG.info("************ tenant_name is ************" + str(tenant_name))
     keystone_user = "%s-%04d-%s" % (settings.OS_NAME_PREFIX, user.id,
                                     user.username)
 
     pwd = "cloud!@#%s" % random.randrange(100000, 999999)
     
     #hard coded tenant id and name for test.
-    tenant_name = settings.TEST_TENANT_NAME
-    project_id = settings.TEST_TENANT_ID
+    project_id = tenant_id 
 
     u = keystone.user_create(rc, name=keystone_user, email=user.email,
                              password=pwd, project=project_id)
@@ -68,6 +72,8 @@ def link_user_to_dc_task(user, datacenter):
 
     roles = keystone.role_list(rc)
     LOG.info("------------------roles are----------------" + str(roles))
+    #member_role = filter(lambda r: r.name.lower() == "_member_", roles)[0]
+
     member_role = filter(lambda r: r.name.lower() == "_member_", roles)[0]
     LOG.info("------------------ member role is ----------------" + str(member_role.id))
     LOG.info("------------------ user id is ----------------" + str(u.id))

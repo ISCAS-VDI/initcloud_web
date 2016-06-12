@@ -1,6 +1,7 @@
 #coding=utf-8
 
 import json
+import logging
 from django.conf import settings
 from django.http import HttpResponse
 
@@ -9,6 +10,8 @@ from biz.instance.models import Instance
 from biz.volume.models import Volume
 from biz.floating.models import Floating
 
+
+LOG = logging.getLogger(__name__)
 
 def get_quota_usage(user, udc_id):
     def instance_used(quota):
@@ -56,10 +59,15 @@ def get_quota_usage(user, udc_id):
         return d
 
     c = Contract.objects.filter(user=user, udc__id=udc_id, deleted=0)[0]
+    LOG.info("*********** get quota 1 ***********")
     quota = c.get_quotas()
+    LOG.info("*********** get quota 1 ***********")
     quota.update(instance_used(quota))
+    LOG.info("*********** get quota 1 ***********")
     quota.update(volume_used(quota))
+    LOG.info("*********** get quota 1 ***********")
     quota.update(floating_used(quota))
+    LOG.info("*********** get quota 1 ***********")
 
     if not settings.QUOTA_CHECK:
         for k in quota.keys():

@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include('biz.urls')),
     url(r'^captcha/', include('captcha.urls')),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
 ]
 
 
@@ -55,6 +56,10 @@ urlpatterns += patterns(
     #url(r'^password-reset-complete/$',
     #                views.password_reset_complete,
     #                name="password_reset_complete")
+)
+
+urlpatterns += patterns('',
+  url(r'^setlang/$', 'django.views.i18n.set_language', name = 'setlang'),
 )
 
 handler404 = views.not_found

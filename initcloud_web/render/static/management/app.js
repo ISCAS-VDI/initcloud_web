@@ -186,6 +186,24 @@ CloudApp.config(['$stateProvider', '$urlRouterProvider',
                     }]
                 }
             })
+            //instancemanage
+            .state("instancemanage", {
+                url: "/instancemanage/",
+                templateUrl: "/static/management/views/instancemanage.html",
+                data: {pageTitle: 'Instancemanage'},
+                controller: "InstancemanageController",
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'CloudApp',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                '/static/management/controllers/instancemanage_ctrl.js'
+                            ]
+                        });
+                    }]
+                }
+            })
 
             // image
             .state("image", {
@@ -264,6 +282,46 @@ CloudApp.config(['$stateProvider', '$urlRouterProvider',
                 }
             })
 
+
+            .state("UserGrouper", {
+                url: "/UserGrouper/",
+                templateUrl: "/static/management/views/UserGrouper.html",
+                data: {pageTitle: 'Usergrouper'},
+                controller: "UsergrouperController",
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'CloudApp',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                '/static/management/controllers/UserGrouper_ctrl.js'
+                            ]
+                        });
+                    }]
+                }
+            })
+
+
+            .state("usergrouper_detail", {
+                url: "/usergrouper_detail/:group_id",
+                templateUrl: "/static/management/views/UserGrouper_detail.html",
+                data: {pageTitle: 'UserGrouper'},
+                controller: "UserGrouperDetailController",
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'CloudApp',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                '/static/management/controllers/UserGrouper_ctrl.js'
+                            ]
+                        });
+                    }],
+                    group_id: function ($stateParams) {
+                        return $stateParams.group_id;
+                    }
+                }
+            })
             //update start
             
             // roles 

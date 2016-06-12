@@ -486,6 +486,21 @@
                            name="password2" data-ng-model="user.password2"/>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="title">{[{'user.tenants' |i18next}]}<span
+                 class="required">* </span></label>
+
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-addon"> <i class="fa fa-desktop"></i> </span>
+                            <select class="form-control" data-ng-model="user.tenant">
+                                <option ng-repeat="rule in user.tenants" value="{[{rule.id}]}">{[{rule.name}]}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
             <div class="clear"></div>
         </form>
     </div>

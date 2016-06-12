@@ -1,5 +1,6 @@
 #-*- coding=utf-8 -*-
 import logging
+import ast
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
@@ -9,6 +10,7 @@ from rest_framework.response import Response
 
 from biz.instance.models import Instance
 from biz.account.models import Operation
+from biz.idc.models import DataCenter
 from biz.volume.models import Volume
 from biz.backup.models import BackupItem
 from biz.workflow.models import Workflow, FlowInstance, ResourceType
@@ -22,10 +24,35 @@ from .settings import (VOLUME_STATES_DICT, VOLUME_STATE_ATTACHING,
 
 from cloud.volume_task import volume_create_task, volume_delete_task
 from cloud import tasks
+from cloud.api import cinder
+from cloud.cloud_utils import create_rc_by_dc 
 from biz.common.utils import fail, success, error
 from biz.account.utils import check_quota
 
 LOG = logging.getLogger(__name__)
+
+@api_view(['GET', 'POST'])
+def volume_typelist_view(request):
+    try:
+        udc_id = request.session["UDC_ID"]
+        data_center = DataCenter.objects.get(userdatacenter__pk=udc_id)
+        rc = create_rc_by_dc(data_center)
+        LOG.info("******** rc is ***********" + str(rc))
+        volume_types = cinder.cinderclient(rc).volume_types.list()
+
+        volumetypes = []
+        for vt in volume_types:
+            LOG.info("******** vt is *********" + str(vt))
+             
+            volumetypes.append({"name":vt.name})
+        #keystone.role_list(rc)
+        LOG.info(volumetypes)
+        return Response(volumetypes)
+
+    except Exception as e:
+        LOG.exception("query volume type list error, msg:[%s]", e)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['GET', 'POST'])
@@ -74,6 +101,11 @@ def volume_create_view(request):
                         status=status.HTTP_400_BAD_REQUEST)
 
         pay_type = request.data['pay_type']
+        os_volume_type = request.data['os_volume_type']
+        os_volume_type = ast.literal_eval(os_volume_type)
+        LOG.info("********** os volume type is ************" + str(os_volume_type))
+        os_volume_type = os_volume_type['name']
+        LOG.info("********** os volume type is ************" + str(os_volume_type))
         pay_num = int(request.data['pay_num'])
 
         volume = serializer.save()
@@ -92,7 +124,7 @@ def volume_create_view(request):
             return success(msg=msg)
         else:
             try:
-                volume_create_task.delay(volume)
+                volume_create_task.delay(volume, os_volume_type)
                 Order.for_volume(volume, pay_type=pay_type, pay_num=pay_num)
                 return success(msg=_('Creating volume'),
                                status=status.HTTP_201_CREATED)

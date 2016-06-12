@@ -31,7 +31,7 @@ def volume_get(volume):
 
 
 @app.task
-def volume_create_task(volume):
+def volume_create_task(volume, os_volume_type):
     assert volume is not None
     LOG.info('Volume create start, [%s].', volume)
     rc = create_rc_by_volume(volume)
@@ -40,7 +40,7 @@ def volume_create_task(volume):
         result = cinder.volume_create(rc, size=volume.size,
                                       name="Volume-%04d" % volume.id,
                                       description="",
-                                      volume_type=None)
+                                      volume_type=os_volume_type)
     except Exception:
         end = datetime.datetime.now()
         LOG.exception("Volume create api call failed, [%s], "

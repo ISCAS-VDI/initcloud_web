@@ -12,6 +12,7 @@ class Volume(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(_('Volume name'), null=False, blank=False, max_length=128)
     volume_id = models.CharField(_('OS Volume UUID'), null=True, blank=False, max_length=128)
+    os_volume_type = models.CharField(_('OS Volume Type'), null=True, blank=False, max_length=128)
 
     size = models.IntegerField(_('Volume size'), null=False, blank=False)
     volume_type = models.IntegerField(_('Volume Type'),  choices=VOLUME_TYPES, default=VOLUME_TYPE_VOLUME)
