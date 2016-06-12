@@ -151,6 +151,9 @@ class Flavor(models.Model):
     memory = models.IntegerField(_("Memory MB"))
     price = models.FloatField(_("Price"))
     create_date = models.DateTimeField(_("Create Date"), auto_now_add=True)
+    flavorid = models.CharField(_('FlavorId'), null=False, blank=False, max_length=128, default = None)
+    disk = models.IntegerField(_("Disk"), default = 10)
+    
 
     def __unicode__(self):
         return u"<Flavor: ID:%s Name:%s C:%s M:%s>" % (self.id, self.name,

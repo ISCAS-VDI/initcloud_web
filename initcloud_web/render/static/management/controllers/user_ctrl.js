@@ -210,6 +210,9 @@ CloudApp.controller('UserController',
                 resolve: {
                     dataCenters: function(){
                         return DataCenter.query().$promise;
+                    },
+                    Tenants: function(){
+                        return CommonHttpService.get('/api/account/tenants/');
                     }
                 }
             }).result.then(function(){
@@ -424,7 +427,7 @@ CloudApp.controller('UserController',
 
     .controller('NewUserController',
         function($scope, $modalInstance, $i18next,
-                 CommonHttpService, ToastrService, UserForm, dataCenters){
+                 CommonHttpService, ToastrService, UserForm, dataCenters, Tenants){
 
             var form = null;
             $modalInstance.rendered.then(function(){
@@ -432,7 +435,8 @@ CloudApp.controller('UserController',
             });
 
             $scope.dataCenters = dataCenters;
-            $scope.user = {is_resource_user: false, is_approver: false, is_system_user: false, is_safety_user: false, is_audit_user: false};
+            $scope.tenants = Tenants;
+            $scope.user = {is_resource_user: false, is_approver: false, is_system_user: false, is_safety_user: false, is_audit_user: false, tenants: $scope.tenants};
             $scope.is_submitting = false;
             $scope.cancel = $modalInstance.dismiss;
             $scope.create = function(){
@@ -501,6 +505,9 @@ CloudApp.controller('UserController',
                             password1: {
                                 required: true,
                                 complexPassword: true
+                            },
+                            tenant: {
+                                required: false,
                             },
                             password2: {
                                 required: true,

@@ -103,11 +103,10 @@ def make_sure_default_private_network(instance):
             create_network(default_private_network)
             create_subnet(default_private_subnet)
       
-            # We do not want to create rotuer now.       
 
-            #router_create_task(default_router)
-            #attach_network_to_router(default_private_network.id,
-            #            default_router.id, default_private_subnet.id)
+            router_create_task(default_router)
+            attach_network_to_router(default_private_network.id,
+                        default_router.id, default_private_subnet.id)
             end = datetime.datetime.now()
             LOG.info("Prepare private network api apply [%s] seconds.",
                             (end-begin).seconds) 
@@ -269,13 +268,16 @@ def delete_subnet(subnet):
 
 @app.task
 def router_create_task(router=None):
+
+    LOG.info("********** start to create router ***********")
     rc = create_rc_by_router(router)
 
-    router_params = {"name": "router-%s" % router.id,
-                     "distributed": False,
-                     "ha": False}
+    router_params = {"name": "router-%s" % router.id}
+                     #"distributed": False,
+                     #"ha": False}
     begin = datetime.datetime.now()
     try:
+        LOG.info("*********** create start **********")
         rot = neutron.router_create(rc, **router_params)
         end = datetime.datetime.now()
         LOG.info("Create router api apply [%s] seconds", \

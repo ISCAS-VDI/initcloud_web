@@ -9,8 +9,21 @@ angular.module('cloud.resources', [])
     return $resource("/api/images/:id");
 }])
 
+.factory('Instancemanage', ['$resource', function ($resource) {
+    return $resource("/api/instancemanage/:id", {id: '@id'});
+}])
+
 .factory('Instance', ['$resource', function ($resource) {
     return $resource("/api/instances/:id");
+}])
+
+.factory('UserCheck', ['$resource', function ($resource) {
+    return $resource("/api/UserGrouper/UserCheck", {id:'@id'});
+}])
+
+
+.factory('Usergrouper', ['$resource', function ($resource) {
+    return $resource("/api/UserGrouper/:id", {id: '@id'});
 }])
 
 .factory('User', ['$resource', function($resource){

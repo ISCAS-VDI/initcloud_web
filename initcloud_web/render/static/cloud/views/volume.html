@@ -161,6 +161,20 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="col-md-3 control-label" for="title">{[{'volume.type' |i18next}]}<span
+                            class="required">* </span></label>
+
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-addon"> <i class="fa fa-link"></i> </span>
+                            <select class="form-control" ng-model="volume.selected_rule">
+                                <option ng-repeat="rule in roles" value="{[{rule}]}">{[{rule.name}]}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-md-3 control-label"> {[{ 'volume.size' | i18next }]}
                         <span class="required" aria-required="true"> *</span>
                     </label>

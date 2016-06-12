@@ -87,6 +87,9 @@ angular.module("CloudApp")
                         },
                         prices: function(){
                             return PriceRule.query({'resource_type': 'volume'}).$promise;
+                        },
+                        volume_types: function(){
+                            return CommonHttpService.get("/api/volumes/typelist/"); 
                         }
                     }
                 });
@@ -217,14 +220,18 @@ angular.module("CloudApp")
 
     .controller('VolumeCreateController',
         function ($rootScope, $scope, $modalInstance,
-                  $i18next, PriceTool, CommonHttpService, ToastrService,
-                  volume_table, prices, quota){
+                  $i18next, PriceTool, CommonHttpService, ToastrService,CheckboxGroup,
+                  volume_table, prices, quota, volume_types){
 
+
+            $scope.roles = volume_types;
+            var checkboxGroup = $scope.checkboxGroup = CheckboxGroup.init($scope.roles);
             $scope.quota = quota;
             $scope.volume = {
                 "count": 1,
                 "size": 10,
                 "pay_type": "hour",
+                "selected_rule": "iscsi",
                 "pay_num": 1
             };
 
@@ -291,6 +298,7 @@ angular.module("CloudApp")
                 $scope.flag = false;
                 var post_data = {
                     "name": volume.name,
+                    "os_volume_type": volume.selected_rule,
                     "size": volume.size,
                     "pay_type": volume.pay_type,
                     "pay_num": volume.pay_num

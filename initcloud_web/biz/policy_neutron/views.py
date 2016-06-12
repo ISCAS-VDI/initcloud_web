@@ -8,7 +8,9 @@ import logging
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+#update 2016.06.02
+from rest_framework.decorators import api_view, permission_classes
+#update end
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -22,6 +24,9 @@ from biz.policy_neutron.utils import *
 from biz.idc.models import DataCenter
 from biz.common.pagination import PagePagination
 from biz.common.decorators import require_POST, require_GET
+#update 2016.06.02
+from biz.common.views import IsSystemUser, IsSafetyUser, IsAuditUser
+#update end
 from biz.common.utils import retrieve_params, fail
 from biz.workflow.models import Step
 from cloud.tasks import (link_user_to_dc_task, send_notifications,
@@ -55,6 +60,9 @@ def format_role(role):
     return role
 
 class Policy_NeutronList(generics.ListAPIView):
+    #update 2016.06.02
+    permission_classes = (IsSafetyUser,)
+    #update end
     LOG.info("--------- I am policy_neutron list in Policy_NeutronList ----------")
     queryset = Policy_Neutron.objects.all().filter(deleted=False)
     LOG.info("--------- Queryset is --------------" + str(queryset)) 

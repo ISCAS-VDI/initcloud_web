@@ -21,7 +21,10 @@ from django.template.loader import get_template
 from django.template import Context
 
 from cloud.tasks import link_user_to_dc_task, send_mail
-from biz.account.models import Notification, ActivateUrl, UserProxy
+from cloud.api import keystone
+from biz.idc.models import UserDataCenter, DataCenter
+from cloud.cloud_utils import create_rc_by_dc
+from biz.account.models import Notification, ActivateUrl, UserProxy, Operation
 from biz.idc.models import DataCenter, UserDataCenter as UDC
 from biz.common.decorators import superuser_required
 from frontend.forms import CloudUserCreateForm
@@ -51,8 +54,12 @@ def cloud(request):
 
 #@superuser_required
 def management(request):
-    return render(request, 'management.html',
-                  {'inited': DataCenter.objects.exists()})
+    if request.user.is_superuser or request.user.has_perm("workflow.system_user") or request.user.has_perm("workflow.safety_user") or request.user.has_perm("workflow.audit_user"):
+        return render(request, 'management.html',
+                      {'inited': DataCenter.objects.exists()})
+    else:
+        Operation.log(request.user, obj_name="management", action="access_manage", result=0)
+        return render(request, "cloud.html")
 
 
 @login_required
@@ -127,14 +134,27 @@ def logout(request):
 class SignupView(View):
 
     def get(self, request):
+        LOG.info("****** signup get method ********")
+        datacenter = DataCenter.get_default()
+        LOG.info("****** signup get method ********")
+        rc = create_rc_by_dc(datacenter)
+        LOG.info("****** signup get method ********")
+        tenants = keystone.keystoneclient(rc).tenants.list()
+        tenants_id = {}
+        for tenant in tenants:
+            if str(tenant.name) not in ["admin", "demo", "services"]:
+                tenants_id[tenant.id] = tenant.name
+        LOG.info("********* tenants_id is **************" + str(tenants_id))
         return self.response(request, CloudUserCreateForm(
-            initial={'username': '',  'email': '', 'mobile': ''}))
+            initial={'username': '',  'email': '', 'mobile': ''}), tenants_id)
 
     def post(self, request):
 
         user = User()
         form = CloudUserCreateForm(data=request.POST, instance=user)
 
+        LOG.info("post start")
+        tenant_id = request.POST.get("project")
         LOG.info("post start")
         if form.is_valid():
             form.save()
@@ -146,7 +166,7 @@ class SignupView(View):
                         "activate email, please check your input box.")
             else:
                 LOG.info("start to run celery")
-                link_user_to_dc_task(user, DataCenter.get_default())
+                link_user_to_dc_task(user, DataCenter.get_default(), tenant_id)
                 LOG.info("end")
                 msg = _("Your registration successed!")
 
@@ -154,12 +174,25 @@ class SignupView(View):
 
         return self.response(request, form, form.errors)
 
-    def response(self, request, form, errors=None):
+    def response(self, request, form, tenants_id=None, errors=None):
+
+        LOG.info("****** signup get method ********")
+        datacenter = DataCenter.get_default()
+        LOG.info("****** signup get method ********")
+        rc = create_rc_by_dc(datacenter)
+        LOG.info("****** signup get method ********")
+        tenants = keystone.keystoneclient(rc).tenants.list()
+        tenants_id = {}
+        for tenant in tenants:
+            if str(tenant.name) not in ["admin", "demo", "services"]:
+                tenants_id[tenant.id] = tenant.name
+        LOG.info("********* tenants_id is **************" + str(tenants_id))
 
         context = {
             "BRAND": settings.BRAND,
             "form": form,
             "errors": errors,
+            "tenants_id": tenants_id
         }
 
         return render(request, 'signup.html', context)

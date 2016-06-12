@@ -5,7 +5,7 @@ from django_auth_ldap.config import LDAPSearch
 
 #### site config
 
-BRAND = u"软件所openstack"
+BRAND = u"openstack"
 EMAIL_SUBJECT_PREFIX = u"[%s]" % BRAND
 ICP_NUMBER = u"京- default"
 COPY_RIGHT = u"2015 © default"

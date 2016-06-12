@@ -287,9 +287,45 @@ angular.module("CloudApp")
                 }
             });
         };
+        var instance_qos = function (ins, action) {
+            //挂载硬盘
+            if (action == "attach") {
+                var volumes = null;
+                CommonHttpService.get("/api/volumes/search/").then(function (data) {
+                    $scope.volumes = data;
+                });
+            } else {
+                //卸载硬盘
+                CommonHttpService.post("/api/volumes/search/",
+                    {'instance_id': ins.id}).then(function (data) {
+                        $scope.volumes = data;
+                    });
+            }
 
+            $scope.instance = ins;
+            $modal.open({
+                templateUrl: 'qos.html',
+                controller: 'InstanceQosController',
+                backdrop: "static",
+                scope: $scope,
+                resolve: {
+                    type: function () {
+                        return action;
+                    },
+                    instance_table: function () {
+                        return $scope.instance_table;
+                    }
+                }
+            });
+        };
+
+ 
         var instance_attach_volume = function (ins) {
             instance_volume(ins, "attach");
+        };
+
+        var instance_add_qos = function (ins) {
+            instance_qos(ins, "qos");
         };
 
         var instance_detach_volume = function (ins) {
@@ -340,7 +376,8 @@ angular.module("CloudApp")
             "detach_volume": instance_detach_volume,
             "terminate": instance_terminate,
             "backup": instance_backup,
-            "restore": instance_restore
+            "restore": instance_restore,
+            "add_qos": instance_add_qos
         };
 
         $scope.instance_action = function (ins, action) {
@@ -483,6 +520,43 @@ angular.module("CloudApp")
               ToastrService, type, instance_table, CommonHttpService) {
 
         $scope.is_attach = type == "attach";
+
+        $scope.cancel = $modalInstance.dismiss;
+
+            $scope.has_error = false;
+            $scope.selected_volume = false;
+
+        $scope.attach = function (volume) {
+            if (volume) {
+                var post_data = {
+                    "volume_id": volume.id,
+                    "instance_id": $scope.instance.id,
+                    "action": type
+                };
+
+                CommonHttpService.post("/api/volumes/action/", post_data).then(function (data) {
+                    if (data.success) {
+                        ToastrService.success(data.msg, $i18next("success"));
+                        window.location.href = "/cloud/#volume/";
+                    }
+                    else {
+                        ToastrService.error(data.msg, $i18next("op_failed"));
+                    }
+                    $modalInstance.dismiss();
+                });
+            }
+            else {
+                $scope.has_error = true;
+                $scope.selected_volume = false;
+            }
+        }
+    })
+
+    .controller('InstanceQosController',
+    function ($rootScope, $scope, $state, $modalInstance, $i18next,
+              ToastrService, type, instance_table, CommonHttpService) {
+
+        $scope.is_attach = type == "qos";
 
         $scope.cancel = $modalInstance.dismiss;
 

@@ -50,6 +50,15 @@
                    value="{{ form.mobile.value }}"
                    placeholder="{% trans 'Mobile' %}" name="mobile"/>
         </div>
+        <div class="form-group">
+            <select name="project" class="form-control placeholder-no-fix form-sel">
+                <option value="" selected="selected">请选择一个租户</option>
+
+        {% for key,value in tenants_id.iteritems %}
+        <option value="{{key}}">{{value}}</option>
+        {% endfor %}
+            </select>
+         </div>
         {% if CAPTCHA_ENABLED %}
         <div class="form-group">
             {{ form.captcha }}

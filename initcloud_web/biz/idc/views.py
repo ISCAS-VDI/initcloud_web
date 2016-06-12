@@ -4,18 +4,31 @@ import logging
 
 from rest_framework import generics, status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+#udpate 2016.06.02
+from rest_framework.decorators import api_view, permission_classes
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
 
 from biz.idc.models import DataCenter, UserDataCenter
 from biz.account.models import Contract
+#update 2016.06.02
+from biz.common.views import IsSystemUser, IsAuditUser, IsSafetyUser
+#update end
 from biz.idc.serializer import DataCenterSerializer, UserDataCenterSerializer
 
 LOG = logging.getLogger(__name__)
 
+#update 2016.06.02
+#update decorators
+#@permission_classes((IsSystemUser, ))
+
 
 class DataCenterList(generics.ListAPIView):
+
+    #update 2016.06.02
+    #permission_classes = (IsSystemUser,)
+    #update end
+ 
     queryset = DataCenter.objects.all()
     serializer_class = DataCenterSerializer
 
@@ -46,6 +59,7 @@ class UserDataCenterDetail(generics.RetrieveAPIView):
 
 
 @api_view(['POST'])
+@permission_classes((IsSystemUser, ))
 def create_data_center(request):
     try:
         serializer = DataCenterSerializer(data=request.data,

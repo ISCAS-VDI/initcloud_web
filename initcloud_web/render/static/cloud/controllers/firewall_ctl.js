@@ -160,7 +160,6 @@ CloudApp.controller('FirewallRulesController', function ($rootScope, $scope, $fi
         });
     });
 
-    // watch for data checkboxes
     $scope.$watch('checkboxes.items', function (values) {
         $scope.checked_count = 0;
         if (!$scope.ruleList) {
@@ -178,11 +177,9 @@ CloudApp.controller('FirewallRulesController', function ($rootScope, $scope, $fi
         }
 
         $scope.checked_count = checked;
-        // grayed checkbox
         angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
     }, true);
 
-    // open create firewall page
     $scope.modal_create_firewall_rule = function () {
         $modal.open({
             templateUrl: 'create_firewall_rule.html',

@@ -27,6 +27,7 @@
                     <table ng-table="firewall_rules_table"
                            class="table table-striped table-bordered table-advance table-hover">
                         <tbody>
+                        {[{data}]}
                         <tr ng-repeat="firewall_rule in $data">
                             <td width="30" style="text-align: left" header="'ng-table/headers/checkbox.html'">
                                 <input type="checkbox" ng-model="checkboxes.items[firewall_rule.id]"/>

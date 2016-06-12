@@ -2,6 +2,8 @@
 
 import re
 import logging
+import os
+import subprocess
 import uuid
 from djproxy.views import HttpProxy
 from django.conf import settings
@@ -39,6 +41,14 @@ from cloud.instance_task import (instance_create_task,
                                 instance_get_console_log,
                                 instance_get, instance_get_port)
 
+from keystoneclient.v2_0 import client
+from keystoneclient.auth.identity import v2
+from keystoneclient import session
+from novaclient.client import Client
+from biz.common.views import IsSystemUser, IsAuditUser, IsSafetyUser
+from cloud.cloud_utils import get_nova_admin
+import traceback
+
 LOG = logging.getLogger(__name__)
 OPERATION_SUCCESS = 1
 OPERATION_FAILED = 0
@@ -47,7 +57,7 @@ OPERATION_FAILED = 0
 class InstanceList(generics.ListCreateAPIView):
     queryset = Instance.objects.all().filter(deleted=False)
     serializer_class = InstanceSerializer
-
+    #LOG.info(Instance.objects.all())
     def list(self, request):
         try:
             udc_id = request.session["UDC_ID"]
@@ -94,12 +104,39 @@ class FlavorDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FlavorSerializer
 
 
+def get_nova_admin(request):
+    auth = v2.Password(auth_url=settings.AUTH_URL,
+			username = settings.ADMIN_NAME,
+			password = settings.ADMIN_PASS,
+			tenant_name = settings.ADMIN_TENANT_NAME)
+    sess = session.Session(auth=auth)
+    novaClient = Client(settings.NOVA_VERSION, session = sess)
+    return novaClient
+
 @api_view(["POST"])
 def create_flavor(request):
     try:
         serializer = FlavorSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
-            serializer.save()
+	    #LOG.info(serializer.data)
+	    LOG.info("************ CREATE FLAVOR ***************")
+	    novaadmin = get_nova_admin(request)
+	    #LOG.info(type(novaadmin))
+	    #LOG.info(novaadmin)
+	    #LOG.info(novaadmin.flavors.list())
+	    mem = request.data.get("memory")
+	    name = request.data.get("name")
+	    cpu = request.data.get("cpu")
+	    disk = request.data.get("disk")
+	    flavor = novaadmin.flavors.create(name = name , ram = mem, vcpus = cpu, disk = disk)
+	    #LOG.info(flavor.id)
+	    flavorid = flavor.id
+	    try:
+	    	serializer.save(flavorid = flavor.id)
+	    except:
+		traceback.print_exc()
+	    LOG.info(Flavor.objects.all().filter(flavorid = flavor.id))
+	    
             return Response({'success': True, "msg": _('Flavor is created successfully!')},
                             status=status.HTTP_201_CREATED)
         else:
@@ -133,6 +170,13 @@ def update_flavor(request):
 @api_view(["POST"])
 def delete_flavors(request):
     ids = request.data.getlist('ids[]')
+    flavorid = Flavor.objects.get(pk__in=ids).flavorid
+    novaadmin = get_nova_admin(request)
+    #novaadmin.flavors.delete(flavorid)
+    try:
+	novaadmin.flavors.delete(flavorid)
+    except:
+	traceback.print_exc()
     Flavor.objects.filter(pk__in=ids).delete()
     return Response({'success': True, "msg": _('Flavors have been deleted!')}, status=status.HTTP_201_CREATED)
 
@@ -329,6 +373,69 @@ def _get_instance_detail(instance):
     instance_data['volume_list'] = volume_data
 
     return Response(instance_data)
+
+#update by dongdong
+@api_view(["GET"])
+def vdi_view(request):
+    LOG.info("****** i am vdi view with method get ********")
+
+    queryset = Instance.objects.all().filter(deleted=False, user_id=request.user.id)
+    json_value = {}
+    for q in queryset:
+        LOG.info("******")
+        novaAdmin = get_nova_admin(request)
+        LOG.info("******")
+        LOG.info("uuid is" + str(uuid))
+        if not q.uuid:
+            continue
+        server = novaAdmin.servers.get(q.uuid)
+        LOG.info("******")
+        server_dict = server.to_dict()
+        LOG.info("******")
+        server_host = server_dict['OS-EXT-SRV-ATTR:host']
+        server_status = server_dict['status']
+        host_ip = settings.COMPUTE_HOSTS[server_host]
+        LOG.info("host ip is" + str(host_ip))
+        cmd="virsh -c qemu+tcp://" + host_ip + "/system vncdisplay " + q.uuid
+        LOG.info("cmd=" + cmd)
+        p = subprocess.Popen("virsh -c qemu+tcp://" + host_ip + "/system vncdisplay " + q.uuid, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        port = None
+        for line in p.stdout.readlines():
+            port = line
+            break
+        LOG.info("host_ip=" + host_ip)
+        LOG.info("port=" + str(port))
+        if "error" in str(port):
+            json_value[q.id] = {"vm_uuid": q.uuid, "vm_private_ip": q.private_ip, "vm_public_ip": q.public_ip, "vm_host": host_ip, "vm_status": server_status, "policy_device": 1, "vnc_port": "no port", "vm_internalid": q.id, "vm_name": q.name}
+            continue
+        split_port = port.split(":")
+        port_1 = split_port[1]
+        port_2 = port_1.split("\\")
+        port_3 = port_2[0]
+        vnc_port = 5900 + int(port_3)
+        json_value[q.id] = {"vm_uuid": q.uuid, "vm_private_ip": q.private_ip, "vm_public_ip": q.public_ip, "vm_host": host_ip, "vm_status": server_status, "policy_device": 1, "vnc_port": vnc_port, "vm_internalid": q.id, "vm_name": q.name}
+
+    return Response(json_value)
+
+@api_view(["POST"])
+def instance_action_view(request, pk):
+    LOG.info("9999999999")
+    instance_id, action = request.data['instance'], request.data['action']
+    LOG.info("instance id is" + str(instance_id))
+    LOG.info("action is" + str(action))
+    data = instance_action(request.user, instance_id, action)
+    return Response(data)
+
+@api_view(["GET"])
+def instance_action_vdi_view(request):
+    LOG.info("9999999999")
+    instance_id = request.GET.get('instance')
+    action = request.GET.get('action')
+    #instance_id, action = request.data['instance'], request.data['action']
+    LOG.info("instance id is" + str(instance_id))
+    LOG.info("action is" + str(action))
+    data = instance_action(request.user, instance_id, action)
+    return Response(data)
 
 
 @require_GET

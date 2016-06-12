@@ -6,7 +6,9 @@ import logging
 
 from django.conf import settings
 from django.shortcuts import render
+from rest_framework import permissions
 from django.contrib.auth.decorators import login_required
+from rest_framework.authentication import SessionAuthentication 
 
 from biz.instance import settings as instance_settings
 from biz.floating import settings as floating_settings
@@ -159,3 +161,48 @@ def site_config(request):
                   {'current_user': json.dumps(current_user),
                    'site_config': json.dumps(settings.SITE_CONFIG)},
                   content_type='application/javascript')
+
+class IsAuditUser(permissions.BasePermission):
+    """
+    Object-level permission to only allow system users of an object to edit it.
+    Assumes the user model instance has an is_system_user attribute.
+    """
+
+    def has_permission(self, request, view):
+        if request.user.is_superuser or request.user.has_perm("workflow.audit_user"):
+            return True 
+
+    def has_object_permission(self, request, view, obj):
+        return False 
+
+class IsSafetyUser(permissions.BasePermission):
+    """
+    Object-level permission to only allow system users of an object to edit it.
+    Assumes the user model instance has an is_system_user attribute.
+    """
+
+    def has_permission(self, request, view):
+        if request.user.is_superuser or request.user.has_perm("workflow.safety_user"):
+            return True 
+
+    def has_object_permission(self, request, view, obj):
+        return False 
+
+class IsSystemUser(permissions.BasePermission):
+    """
+    Object-level permission to only allow system users of an object to edit it.
+    Assumes the user model instance has an is_system_user attribute.
+    """
+
+    def has_permission(self, request, view):
+        if request.user.is_superuser or request.user.has_perm("workflow.system_user"):
+            return True 
+
+    def has_object_permission(self, request, view, obj):
+        return False 
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        return  # To not perform the csrf check previously happening
+
