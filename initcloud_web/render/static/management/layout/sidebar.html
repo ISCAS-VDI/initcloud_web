@@ -46,6 +46,15 @@
                 </span>
             <span class="selected"></span></a>
         </li>
+        <li id="instancemanage"
+            data-ng-if="current_user.is_system_user">
+            <a href="#/instancemanage/">
+                <i class="fa fa-adjust"></i>
+                <span class="title">
+                    {[{ 'sidebar.instancemanage' | i18next }]}
+                </span>
+            <span class="selected"></span></a>
+        </li>
         <li id="image"
             data-ng-if="current_user.is_system_user">
             <a href="#/image/">
@@ -84,6 +93,14 @@
                 <i class="fa fa-users"></i>
                 <span class="title">
                     {[{ 'sidebar.user' | i18next }]}
+                </span>
+            <span class="selected"></span></a>
+        </li>
+        <li data-ng-if="current_user.is_system_user">
+            <a href="#/UserGrouper/">
+                <i class="fa fa-pencil-square-o"></i>
+                <span class="title">
+                    {[{ 'sidebar.user_grouper' | i18next }]}
                 </span>
             <span class="selected"></span></a>
         </li>

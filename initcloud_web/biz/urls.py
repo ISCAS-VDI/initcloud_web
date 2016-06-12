@@ -4,6 +4,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 
 from biz.instance import views as instance_view
+from biz.instancemanage import views as instancemanage_view
 from biz.image import views as image_view
 from biz.network import views as network_view
 from biz.lbaas import views as lb_view
@@ -28,12 +29,34 @@ from biz.policy_neutron import views as policy_neutron_view
 
 #alarm
 from biz.alarm import views as alarm_view
+from biz.UserGrouper import views as user_grouper_view
 
 # various options and configurations
 urlpatterns = [
     url(r'^settings/monitor/$', instance_view.monitor_settings),
     url(r'^settings/resource_types/$', workflow_view.resource_types),
     url(r'^settings/data-centers/switch/$', idc_views.switch_list),
+]
+
+
+#qos
+urlpatterns += [
+    url(r'^qos/$', user_grouper_view.update_UserGrouper),
+]
+
+
+#user_grouper
+urlpatterns += [
+    url(r'^UserGrouper/$', user_grouper_view.UsergrouperList.as_view()),
+    url(r'^UserGrouper/create/$', user_grouper_view.create_UserGrouper),
+    url(r'^UserGrouper/batch-delete/$', user_grouper_view.delete_UserGroupers),
+    url(r'^UserGrouper/update', user_grouper_view.update_UserGrouper),
+    url(r'^UserGrouper/UserCheck', user_grouper_view.UserCheckList),
+    url(r'^UserGrouper/UserView', user_grouper_view.UserView),
+    url(r'^UserGrouper/details/(?P<group_id>[0-9]+)/$', user_grouper_view.user_grouper_detail_view.as_view()),
+    url(r'^UserGrouper/addgroupuser/$', user_grouper_view.add_group_user_view),
+    url(r'^UserGrouper/deletegroupuser/$', user_grouper_view.delete_group_user_view),
+    #url(r'^UserGrouper/UserNotInGroup/(?P<group_id>[0-9]+)/$', user_grouper_view.usernotingroup),
 ]
 
 
@@ -45,6 +68,9 @@ urlpatterns += [
     url(r'^init/flavors/$', overview_views.init_flavors),
     url(r'^init/images/$', overview_views.init_images),
     url(r'^instances/$', instance_view.InstanceList.as_view()),
+    url(r'^instancemanage/$', instancemanage_view.InstancemanageList.as_view()),
+    url(r'^instancemanage/devicepolicy/$', instancemanage_view.InstancemanageDevicePolicy.as_view()),
+    url(r'^instances/vdi/$', instance_view.vdi_view),
     url(r'^instances/(?P<pk>[0-9]+)/$', instance_view.InstanceDetail.as_view()),
     url(r'^instances/details/(?P<pk>[0-9]+)/$', instance_view.instance_detail_view),
     url(r'^instances/(?P<uuid_or_ip>[\w\.\-]+)/detail/$', instance_view.instance_detail_view_via_uuid_or_ip),
@@ -52,6 +78,7 @@ urlpatterns += [
     url(r'^instances/create/$', instance_view.instance_create_view),
     url(r'^instances/search/$', instance_view.instance_search_view),
     url(r'^instances/(?P<pk>[0-9]+)/action/$', instance_view.instance_action_view),
+    url(r'^instances/vdi_action/$', instance_view.instance_action_vdi_view),
     url(r'^instances/monitor/(?P<url>.*)$', instance_view.monitor_proxy),
     url(r'^flavors/$', instance_view.FlavorList.as_view()),
     url(r'^flavors/create/$', instance_view.create_flavor),
@@ -123,6 +150,7 @@ urlpatterns += format_suffix_patterns([
     url(r'^volumes/create/$', volume_view.volume_create_view),
     url(r'^volumes/update/$', volume_view.volume_update_view),
     url(r'^volumes/action/$', volume_view.volume_action_view),
+    url(r'^volumes/typelist/$', volume_view.volume_typelist_view),
     url(r'^volumes/status/$', volume_view.volume_status_view),
 ])
 
@@ -280,6 +308,7 @@ urlpatterns += format_suffix_patterns([
     url(r'^account/contract/$', account_view.contract_view),
     url(r'^account/quota/$', account_view.quota_view),
     url(r'^account/create/$', account_view.create_user),
+    url(r'^account/tenants/$', account_view.tenants_list.as_view()),
     url(r'^account/is-name-unique/$', account_view.is_username_unique),
     url(r'^account/is-email-unique/$', account_view.is_email_unique),
     url(r'^account/is-mobile-unique/$', account_view.is_mobile_unique),

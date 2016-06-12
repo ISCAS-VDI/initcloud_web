@@ -50,6 +50,8 @@
   "instance": {
     "desc": "提供虚拟机服务",
     "name": "主机名称",
+    "add_sc": "指定数据包过滤",
+    "add_qos": "限速",
     "image": "镜像",
     "flavor": "规格",
     "private_ip": "私有IP",
@@ -131,6 +133,7 @@
     "name": "名称",
     "cpu": "CPU",
     "memory": "内存(MB)",
+    "disk": "硬盘(GB)",
     "price": "价格",
     "create_date": "创建日期",
     "title_create": "创建新规格",
@@ -144,6 +147,7 @@
     "status": "状态",
     "terminate": "删除",
     "instance": "云主机",
+    "type": "类型",
     "create_new": "创建云硬盘",
     "change_volume": "修改云硬盘",
     "name_prompt": "请输入硬盘名称",
@@ -274,6 +278,7 @@
   "sidebar": {
     "cloud": "云平台",
     "cloud_management": "后台管理",
+    "instancemanage": "虚拟机管理",
     "authority_management": "权限管理",
     "policy": "权限",
     "roles": "角色",
@@ -284,6 +289,7 @@
     "console": "用户面板",
     "overview": "概览",
     "consumption": "消费",
+    "user_grouper": "用户组",
     "sub_account": "子账号",
     "instance": "云主机",
     "image": "镜像",
@@ -505,6 +511,7 @@
   "user": {
     "name": "用户名",
     "email": "邮箱",
+    "tenants": "租户",
     "mobile": "手机号",
     "is_active": "活跃用户",
     "assignrole": "分配用户角色",
@@ -829,6 +836,42 @@
     "select_resource": "选择资源",
     "select_a_resource":"选择一项资源",
     "confirm_delete":"确认删除？"
-  }
+  },
+
+  "UserGrouper": {
+
+    "name": "组名称",
+    "username": "用户名",
+    "new_user": "添加新用户",
+    "adduser": "添加用户",
+    "confirm_delete_user": "确定将此用户移除本组吗",
+    "description": "描述",
+    "view": "查看用户",
+    "policy": "分配权限",
+    "action": "操作",
+    "new_UserGrouper": "新组名称",
+    "update_UserGrouper_title": "更新组",
+    "confirm_delete": "确认删除"
+     
+
+  },
+  
+
+  "qos": {
+
+      "add_qos": "添加限速",
+      "name": "速率",
+      "add": "添加"
+  },
+
+  "instancemanage": {
+
+      "name": "虚拟机名称",
+      "cpu": "cpu",
+      "memory": "内存",
+      "public_ip": "公网ip",
+      "assignrole": "分配权限"
+
+}    
 
 }

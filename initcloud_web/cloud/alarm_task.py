@@ -13,7 +13,6 @@ import traceback
 LOG = logging.getLogger(__name__)
 
 
-#------------------ alarm by lm ------------------------
 
 #@app.task
 def alarm_create_task(alarm, **kwargs):

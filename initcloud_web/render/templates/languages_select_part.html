@@ -1,0 +1,6 @@
+{% if languages %}
+<form id="language-select-form" method="post" action="{% url django.views.i18n.set_language %}">{% csrf_token %}
+<select class="dropdown" onchange="this.form.submit();" name="language">
+{% for lang in languages %}<option value="{{ lang.code }}" {% if lang.code == default %}selected="selected"{% endif %}>{{ lang.name_local }}</option>
+{% endfor %}</select>
+</form>{% endif %}

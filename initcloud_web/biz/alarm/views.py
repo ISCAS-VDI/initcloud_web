@@ -51,7 +51,7 @@ class AlarmList(generics.ListAPIView):
 		user=request.user, user_data_center__pk=udc_id)
 	    serializer = AlarmSerializer(queryset, many=True)
             LOG.info("------------------serializer -----------------")
-	    LOG.info(serializer.data)
+	    LOG.info("***************** serializer.data " + str(serializer.data))
             return Response(serializer.data)
             #return Response()
         except Exception as e:

@@ -245,6 +245,7 @@ def instance_create_sync_status_task(instance, neutron_enabled,
 
 @app.task
 def instance_create_task(instance, **kwargs):
+    LOG.info("*************** I am instance create in instance_create_task ****************")
     password = kwargs.get("password", None)
     assert instance
     assert password
@@ -267,19 +268,25 @@ def instance_create_task(instance, **kwargs):
 
     # First check if network exists or not.
     neutron_enabled = neutron.is_neutron_enabled(rc)
+    LOG.info("********** check neutron is enabled or not **************" + str(neutron_enabled))
     
     # If not exists, create a new one for that tenant.
     if neutron_enabled:
+        LOG.info("********** neutron_enabled *************")
+        LOG.info("********** start to make sure make_sure_default_private_network ***********")
         network = make_sure_default_private_network(instance)
+        LOG.info("********* network is *********" + str(network))
         instance.network_id = network.id
         instance.save() 
         LOG.info(u"Instance create set network passed, [%s][%s].",
                     instance, network)
 
     if not instance.firewall_group:
+        LOG.info("********** start to set default firewall ************")
         instance.set_default_firewall()
  
     try:
+        LOG.info("********** start to create instance *****************")
         server = instance_create(instance, password)
     except Exception as ex:
         instance.status = INSTANCE_STATE_ERROR

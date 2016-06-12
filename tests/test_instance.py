@@ -18,7 +18,7 @@ csrftoken = client.cookies['csrftoken']
 print csrftoken
 
 # Authenticate
-login_data = dict(username='vtvt', password='ydd1121NN', csrfmiddlewaretoken=csrftoken, next='/')
+login_data = dict(username='klkl', password='ydd1121NN', csrfmiddlewaretoken=csrftoken, next='/')
 login_return = client.post(URL, data=login_data, headers=dict(Referer=URL))
 print "*********** auth status *********"
 print login_return.status_code
@@ -27,7 +27,7 @@ print login_return.content
 
 
 # Get instances
-instances_return = client.get("http://192.168.223.108:8081/api/instances/")
+instances_return = client.get("http://192.168.223.108:8081/api/instances/vdi/")
 
 print "***************** start to get instances *********"
 print "*********** return status is " + str(instances_return.status_code)

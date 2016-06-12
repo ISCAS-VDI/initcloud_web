@@ -7,7 +7,7 @@ import logging
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -26,6 +26,9 @@ from biz.idc.models import DataCenter
 from biz.common.pagination import PagePagination
 from biz.common.decorators import require_POST, require_GET
 from biz.common.utils import retrieve_params, fail
+from cloud.cloud_utils import create_rc_by_dc
+from cloud.api import keystone
+from biz.common.views import IsSystemUser, IsAuditUser
 from biz.workflow.models import Step
 from cloud.tasks import (link_user_to_dc_task, send_notifications,
                          send_notifications_by_data_center)
@@ -44,11 +47,13 @@ def contract_view(request):
 
 @api_view(["GET"])
 def quota_view(request):
+    LOG.info("*********** get quota *******")
     quota = get_quota_usage(request.user, request.session["UDC_ID"])
     return Response(quota)
 
 
 class OperationList(generics.ListAPIView):
+    #permission_classes = (IsAuditUser,)
     queryset = Operation.objects
     serializer_class = OperationSerializer
     pagination_class = PagePagination
@@ -110,6 +115,7 @@ def operation_filters(request):
 
 
 class ContractList(generics.ListCreateAPIView):
+    permission_classes = (IsSystemUser,)
     queryset = Contract.living.filter(deleted=False)
     serializer_class = ContractSerializer
     pagination_class = PagePagination
@@ -199,6 +205,9 @@ def delete_contracts(request):
 
 
 class UserList(generics.ListAPIView):
+
+    permission_classes = (IsSystemUser,)
+
     queryset = UserProxy.normal_users.all()
     serializer_class = UserSerializer
     pagination_class = PagePagination
@@ -437,6 +446,23 @@ def announce(request):
     return Response({"success": True,
                      "msg": _('Announcement is sent successfully!')})
 
+class tenants_list(generics.ListAPIView):
+
+    def list(self, request):
+        datacenter = DataCenter.get_default()
+        LOG.info("****** signup get method ********")
+        rc = create_rc_by_dc(datacenter)
+        LOG.info("****** signup get method ********")
+        tenants = keystone.keystoneclient(rc).tenants.list()
+        tenants_id = [] 
+        for tenant in tenants:
+            if str(tenant.name) not in ["admin", "demo", "services"]:
+                tenants_id.append({'name': tenant.name, 'id': tenant.id})
+        LOG.info("********* tenants_id is **************" + str(tenants_id))
+        return Response(tenants_id)
+
+
+
 
 class NotificationList(generics.ListAPIView):
     queryset = Notification.objects.all()
@@ -495,10 +521,15 @@ def initialize_user(request):
 
 @require_POST
 def create_user(request):
-    user = User()
-    form = CloudUserCreateFormWithoutCapatcha(data=request.POST, instance=user)
 
+    LOG.info("****** start to create user *****")
+    LOG.info("******* data is ******" + str(request.data))
+    user = User()
+    LOG.info("ccccccccccccc")
+    form = CloudUserCreateFormWithoutCapatcha(data=request.POST, instance=user)
+    LOG.info("ddddddddddddd")
     if not form.is_valid():
+        LOG.info("form is not valid")
         return Response({"success": False, "msg": _("Data is not valid")})
 
     user = form.save()
@@ -544,12 +575,15 @@ def create_user(request):
     # If workflow is disabled, then only resrouce user can be created,
     # otherwise admin can create resource user and workflow approver user.
     if not settings.WORKFLOW_ENABLED:
-        link_user_to_dc_task(user, DataCenter.get_default())
+        tenant_id = request.data['tenant']
+        LOG.info("tennat_id is " + str(tenant_id))
+        link_user_to_dc_task.delay(user, DataCenter.get_default(), tenant_id)
     else:
 
         if 'is_resource_user' in request.data and \
                 request.data['is_resource_user'] == 'true':
-            link_user_to_dc_task(user, DataCenter.get_default())
+            tenant_id = request.data['tenant']
+            link_user_to_dc_task(user, DataCenter.get_default(), tenant_id)
 
         if 'is_approver' in request.data and \
                 request.data['is_approver'] == 'true':
