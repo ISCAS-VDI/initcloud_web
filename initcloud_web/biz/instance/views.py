@@ -385,7 +385,6 @@ def vdi_view(request):
         LOG.info("******")
         novaAdmin = get_nova_admin(request)
         LOG.info("******")
-        LOG.info("uuid is" + str(uuid))
         if not q.uuid:
             continue
         server = novaAdmin.servers.get(q.uuid)
@@ -394,6 +393,9 @@ def vdi_view(request):
         LOG.info("******")
         server_host = server_dict['OS-EXT-SRV-ATTR:host']
         server_status = server_dict['status']
+        LOG.info("******* server_status is *******" + str(server_status))
+        if server_status == "ERROR":
+            continue
         host_ip = settings.COMPUTE_HOSTS[server_host]
         LOG.info("host ip is" + str(host_ip))
         cmd="virsh -c qemu+tcp://" + host_ip + "/system vncdisplay " + q.uuid
@@ -406,14 +408,14 @@ def vdi_view(request):
         LOG.info("host_ip=" + host_ip)
         LOG.info("port=" + str(port))
         if "error" in str(port):
-            json_value[q.id] = {"vm_uuid": q.uuid, "vm_private_ip": q.private_ip, "vm_public_ip": q.public_ip, "vm_host": host_ip, "vm_status": server_status, "policy_device": 1, "vnc_port": "no port", "vm_internalid": q.id, "vm_name": q.name}
+            json_value[q.id] = {"vm_uuid": q.uuid, "vm_private_ip": q.private_ip, "vm_public_ip": q.public_ip, "vm_host": host_ip, "vm_status": server_status, "policy_device": q.policy, "vnc_port": "no port", "vm_internalid": q.id, "vm_name": q.name}
             continue
         split_port = port.split(":")
         port_1 = split_port[1]
         port_2 = port_1.split("\\")
         port_3 = port_2[0]
         vnc_port = 5900 + int(port_3)
-        json_value[q.id] = {"vm_uuid": q.uuid, "vm_private_ip": q.private_ip, "vm_public_ip": q.public_ip, "vm_host": host_ip, "vm_status": server_status, "policy_device": 1, "vnc_port": vnc_port, "vm_internalid": q.id, "vm_name": q.name}
+        json_value[q.id] = {"vm_uuid": q.uuid, "vm_private_ip": q.private_ip, "vm_public_ip": q.public_ip, "vm_host": host_ip, "vm_status": server_status, "policy_device": q.policy, "vnc_port": vnc_port, "vm_internalid": q.id, "vm_name": q.name}
 
     return Response(json_value)
 

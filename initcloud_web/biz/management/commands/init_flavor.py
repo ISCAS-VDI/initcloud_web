@@ -18,6 +18,6 @@ class Command(BaseCommand):
             }
 
         for name, values in default_inst_types.iteritems():
-            f = Flavor(name=name, memory=values["mem"], cpu=values["vcpus"], price=0)
+            f = Flavor(name=name, memory=values["mem"], cpu=values["vcpus"], price=0, flavorid=values["flavid"])
             f.save()
 

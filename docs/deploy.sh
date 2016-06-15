@@ -78,7 +78,21 @@
  -    >.venv/bin/python initcloud_web/manage.py runserver 0.0.0.0:8081
  -
  -
- -### 12. Celery worker
+
+ -### 12. staff
+      cd /var/www/initcloud_web
+ -     .venv/bin/python initcloud_web/manage.py create_audit_user_permission
+ -     .venv/bin/python initcloud_web/manage.py create_system_user_permission
+ -     .venv/bin/python initcloud_web/manage.py create_safety_user_permission
+
+ -    chmod 777 /etc/nova/policy.json
+ -    chmod 777 /etc/cinder/policy.json
+ -    chmod 777 /etc/neutron/policy.json
+
+ -    source /root/keystone_admin
+ -    openstack project create test
+
+ -### 13. Celery worker
  -
  -    >rabbitmqctl add_user initcloud_web password
  -    >rabbitmqctl add_vhost initcloud
@@ -100,13 +114,13 @@
  -    >chmod +x /etc/init.d/celerybeat 
  -    > /etc/init.d/celerybeat restart
  -    > /etc/init.d/celerybeat status
- -### 13 run_celery with auto start
+ -### 14 run_celery with auto start
  -
       >vim /etc/rc.d/rc.local
       su - initcloud -c "cd /var/www/initcloud_web/initcloud_web/;../.venv/bin/celery multi restart initcloud_worker -A cloud --pidfile=/var/log/initcloud/celery_%n.pid --logfile=/var/log/initcloud/celery_%n.log &"
       > chmod +x /etc/rc.d/rc.local
 
-  -## 14 deploy on apache (nginx in beta3)
+  -## 15 deploy on apache (nginx in beta3)
 
       > add Listen port in apache
       > vim /etc/httpd/conf/ports.conf
@@ -115,12 +129,12 @@
       > modify 16-initcloud.conf,like ServerName,ServerAlias
       > systemctl restart httpd.service
 
-  -## 15 check
+  -## 16 check
 
       > browser test.
 
-  -## 16 reboot
+  -## 17 reboot
 
-  -## 17 trouble shooting
+  -## 18 trouble shooting
 
    
