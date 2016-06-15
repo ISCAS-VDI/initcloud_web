@@ -141,27 +141,4 @@ def devicepolicyupdate(request):
         role_list = role_str.split(",")
     LOG.info("********** role_list is **********" + str(role_list))
     LOG.info("********** instance_id  is **********" + str(instance_id))
-    if "usb" in role_list:
-        for role in role_list:
-            LOG.info("*** role is ****" + str(role))
-
-
-            instance = Instance.objects.get(pk=instance_id)
-            instance.policy = 1 
-            instance.save()
-    return Response({"success": True, "msg": _(
-           'Sucess.')})
-
-@require_POST
-def devicepolicyundo(request):
-    LOG.info("*** request.data is ***"  + str(request.data))
-    instance_id = None
-    for key, value in request.data.items():
-        instance_id = value
-    LOG.info("********** instance_id  is **********" + str(instance_id))
-    instance = Instance.objects.get(pk=instance_id)
-    instance.policy = 0 
-    instance.save()
-    return Response({"success": True, "msg": _(
-           'Sucess.')})
-
+    return False

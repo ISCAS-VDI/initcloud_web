@@ -6,9 +6,6 @@
                     <a class="btn btn-icon-only btn-default" href="#" ng-click="instancemanage_table.reload();">
                         <i class="fa fa-refresh"></i>
                     </a>
-                    <a class="btn btn-primary" href="#" ng-click="openNewInstancemanageModal()">
-                        <i class="fa fa-plus"></i>{[{ 'action.add' | i18next }]}
-                    </a>
                     <!--
                     <a class="btn btn-info" href="#" ng-click="openBroadcastModal()">
                         <i class="fa  fa-bullhorn"></i> {[{ 'notification.broadcast' | i18next }]}
@@ -34,21 +31,18 @@
                                 <td data-title="'instancemanage.name' | i18next">
                                     <span> {[{ instancemanage.name }]} </span>
                                 </td>
-                                <td data-title="'instancemanage.cpu' | i18next">
-                                    <span> {[{ instancemanage.cpu }]} </span>
-                                </td>
-                                <td data-title="'instancemanage.memory' | i18next">
-                                    <span> {[{ instancemanage.memory }]} </span>
-                                </td>
                                 <td data-title="'instancemanage.public_ip' | i18next">
                                     <span> {[{ instancemanage.public_ip }]} </span>
+                                </td>
+                                <td data-title="'instancemanage.policy' | i18next">
+                                    <span> {[{ instancemanage.policy }]} </span>
                                 </td>
                                 <td data-title="'actions' | i18next">
                                     <div class="btn-group">
                                         <button class="btn btn-default"
                                                 type="button" ng-click="edit(instancemanage)">
                                             <i class="fa fa-edit"></i>
-                                            {[{ 'action.edit' | i18next }]}
+                                            {[{ 'instancemanage.edit' | i18next }]}
                                         </button>
                                         <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"
                                                 type="button" aria-expanded="false">
@@ -58,12 +52,7 @@
                                             <li>
                                                 <a href="javascript:void(0);"  ng-click="delete(instancemanage)">
                                                     <i class="fa fa-trash"></i>
-                                                    {[{ 'action.delete' | i18next }]} </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0);"  ng-click="assignrole(instancemanage)">
-                                                    <i class="fa fa-trash"></i>
-                                                    {[{ 'instancemanage.assignrole' | i18next }]} </a>
+                                                    {[{ 'instancemanage.delete' | i18next }]} </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -319,7 +308,7 @@
        <div class="modal-title"> {[{ 'instancemanage.new_instancemanage' | i18next }]}</div>
     </div>
     <div class="modal-body">
-        <form id="insancemanageForm" instancemanage="form" class="form-horizontal form-bordered">
+        <form id="instancemanageForm" instancemanage="form" class="form-horizontal form-bordered">
             <div class="form-group">
                 <label class="control-label col-md-3">
                     {[{ 'instancemanage.name' | i18next }]}
@@ -350,16 +339,17 @@
 </script>
 <!-- END TEMPLATE DETAIL-->
 
-<!-- BEGIN ASSIGNROLE UPDATE -->
-<script type="text/ng-template" id="assignrole.html">
+<!-- BEGIN TEMPLATE UPDATE -->
+<script type="text/ng-template" id="update.html">
     <div class="modal-header">
        <div id="updateTitle" class="modal-title"> {[{ 'instancemanage.update_instancemanage_title' | i18next }]}</div>
     </div>
     <div class="modal-body">
-        <form id="instancemanageForm" instancemanage="form" class="form-horizontal form-bordered">
+       <table>
+        <form id="InstancemanageForm" instancemanage="form" class="form-horizontal form-bordered">
             <input type="hidden"  name="id" data-ng-model="instancemanage.id">
             <div class="form-group">
-                <tr data-ng-repeat="role in devicepolicy">
+                <tr data-ng-repeat="role in roles">
                 <td width="30" header="'checkbox-header.html'">
                     <input type="checkbox" data-ng-model="role.checked"/>
                 </td>
@@ -370,39 +360,7 @@
             </div>
             <div class="clear"></div>
         </form>
-    </div>
-    <div class="modal-footer">
-        <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
-            {[{ 'cancel' | i18next }]}
-        </a>
-        <a class="btn btn-primary"
-           data-ng-click="submit(instancemanage)"
-           data-nap-after-click> {[{ 'submit' | i18next }]}</a>
-    </div>
-</script>
-<!-- END ASSIGNROLE UPDATE -->
-
-
-<!-- BEGIN TEMPLATE UPDATE -->
-<script type="text/ng-template" id="update.html">
-    <div class="modal-header">
-       <div id="updateTitle" class="modal-title"> {[{ 'instancemanage.update_instancemanage_title' | i18next }]}</div>
-    </div>
-    <div class="modal-body">
-        <form id="InstancemanageForm" instancemanage="form" class="form-horizontal form-bordered">
-            <input type="hidden"  name="id" data-ng-model="instancemanage.id">
-            <div class="form-group">
-                <label class="col-md-3 control-label" for="name">
-                    {[{ 'instancemanage.name' | i18next }]}
-                    <span class="required" aria-required="true"> * </span>
-                </label>
-                <div class="col-md-5">
-                    <input id="instancemanage_name" name="instancemanage_name"  data-ng-model="instancemanage.instancemanagename"  maxlength="64"
-                           class="form-control input-medium required">
-                </div>
-            </div>
-            <div class="clear"></div>
-        </form>
+       </table>
     </div>
     <div class="modal-footer">
         <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
