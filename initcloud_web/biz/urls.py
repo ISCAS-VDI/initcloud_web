@@ -70,6 +70,8 @@ urlpatterns += [
     url(r'^instances/$', instance_view.InstanceList.as_view()),
     url(r'^instancemanage/$', instancemanage_view.InstancemanageList.as_view()),
     url(r'^instancemanage/devicepolicy/$', instancemanage_view.InstancemanageDevicePolicy.as_view()),
+    url(r'^instancemanage/devicepolicy/update/$', instancemanage_view.devicepolicyupdate),
+    url(r'^instancemanage/devicepolicy/undo/$', instancemanage_view.devicepolicyundo),
     url(r'^instances/vdi/$', instance_view.vdi_view),
     url(r'^instances/(?P<pk>[0-9]+)/$', instance_view.InstanceDetail.as_view()),
     url(r'^instances/details/(?P<pk>[0-9]+)/$', instance_view.instance_detail_view),

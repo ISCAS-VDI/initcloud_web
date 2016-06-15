@@ -870,6 +870,11 @@
       "cpu": "cpu",
       "memory": "内存",
       "public_ip": "公网ip",
+      "policy": "usb重定向权限",
+      "update_instancemanage_title": "分配权限",
+      "edit": "分配权限",
+      "delete": "取消权限",
+      "confirm_delete": "确定取消吗",
       "assignrole": "分配权限"
 
 }    

@@ -34,6 +34,7 @@ class Instance(models.Model):
     create_date = models.DateTimeField(_("Create Date"), auto_now_add=True)
     terminate_date = models.DateTimeField(_("Terminate Date"), auto_now_add=True)
     cpu = models.IntegerField(_("Cpu Cores"))
+    policy = models.IntegerField(_("Policy"), null=False, default=0)
     memory = models.IntegerField(_("Memory"))
     sys_disk = models.FloatField(_("System Disk"), null=False, blank=True)
     

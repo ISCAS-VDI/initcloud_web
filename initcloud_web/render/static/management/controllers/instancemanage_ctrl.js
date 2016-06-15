@@ -37,7 +37,7 @@ CloudApp.controller('InstancemanageController',
                     ids = ids();
                 }
 
-                CommonHttpService.post("/api/instancemanage/batch-delete/", {ids: ids}).then(function(data){
+                CommonHttpService.post("/api/instancemanage/devicepolicy/undo/", {ids: ids}).then(function(data){
                     if (data.success) {
                         ToastrService.success(data.msg, $i18next("success"));
                         $scope.instancemanage_table.reload();
@@ -69,23 +69,24 @@ CloudApp.controller('InstancemanageController',
         };
 
 
-        $scope.assignrole = function(instancemanage){
+        $scope.edit = function(instancemanage){
 
             $modal.open({
-                templateUrl: 'assignrole.html',
-                controller: 'InstancemanageAssignRoleController',
+                templateUrl: 'update.html',
+                controller: 'InstancemanageUpdateController',
                 backdrop: "static",
                 size: 'lg',
                 resolve: {
                     instancemanage_table: function () {
                         return $scope.instancemanage_table;
                     },
-                    DevicePolicy: function(){return CommonHttpService.get('/api/instancemanage/devicepolicy/');},
-                    instancemanage: function() {return $scope.instancemanage;}
+                    instancemanage: function(){return instancemanage},
+                    AssignRoles: function(){
+                        return CommonHttpService.get('/api/instancemanage/devicepolicy/');
+                    }
                 }
             });
         };
-
 
         $scope.openNewInstancemanageModal = function(){
             $modal.open({
@@ -103,6 +104,7 @@ CloudApp.controller('InstancemanageController',
             });
         };
     })
+
 
     .controller('NewInstancemanageController',
         function($scope, $modalInstance, $i18next,
@@ -175,18 +177,19 @@ CloudApp.controller('InstancemanageController',
                     return ValidationTool.init('#instancemanageForm', config);
                 }
             }
-        }])
-.controller('InstancemanageAssignRoleController',
+        }]).controller('InstancemanageUpdateController',
         function($rootScope, $scope, $modalInstance, $i18next,
-                 instancemanage, instancemanage_table,DevicePolicy,
-                 Instancemanage, UserDataCenter, instancemanageForm, CheckboxGroup,
+                 instancemanage, instancemanage_table, CheckboxGroup,
+                 Instancemanage, UserDataCenter, instancemanageForm, AssignRoles,
                  CommonHttpService, ToastrService, ResourceTool){
 
             $scope.instancemanage = instancemanage = angular.copy(instancemanage);
-
-            $scope.roles = DevicePolicy;
+            $scope.roles = roles = AssignRoles;
             var checkboxGroup = $scope.checkboxGroup = CheckboxGroup.init($scope.roles);
+            $scope.cancel = $modalInstance.dismiss;
+
             $modalInstance.rendered.then(instancemanageForm.init);
+
 
             $scope.cancel = function () {
                 $modalInstance.dismiss();
@@ -199,55 +202,31 @@ CloudApp.controller('InstancemanageController',
             });
             $scope.submit = function(instancemanage){
 
+                var params_data = {"id": instancemanage.id}
                 if(!$("#InstancemanageForm").validate().form()){
                     return;
                 }
 
-                instancemanage = ResourceTool.copy_only_data(instancemanage);
+                var return_roles = function(){
 
-
-                CommonHttpService.post("/api/instancemanage/update/", instancemanage).then(function(data){
-                    if (data.success) {
-                        ToastrService.success(data.msg, $i18next("success"));
-                        instancemanage_table.reload();
-                        $modalInstance.dismiss();
-                    } else {
-                        ToastrService.error(data.msg, $i18next("op_failed"));
+                    var ids = [];
+                    var count = 0;
+                    checkboxGroup.forEachChecked(function(roles){
+                        if(roles.checked){
+                                ids.push(roles.name);
+                            }
+                    });
+                    if(count == roles.length){
+                        ids = "all"
                     }
-                });
-            };
-        }
-   )
-
-.controller('InstancemanageUpdateController',
-        function($rootScope, $scope, $modalInstance, $i18next,
-                 instancemanage, instancemanage_table,
-                 Instancemanage, UserDataCenter, instancemanageForm,
-                 CommonHttpService, ToastrService, ResourceTool){
-
-            $scope.instancemanage = instancemanage = angular.copy(instancemanage);
-
-            $modalInstance.rendered.then(instancemanageForm.init);
-
-            $scope.cancel = function () {
-                $modalInstance.dismiss();
-            };
+                    //alert(ids)
+                                        return ids;
+                                                            };
 
 
-            var form = null;
-            $modalInstance.rendered.then(function(){
-                form = instancemanageForm.init($scope.site_config.WORKFLOW_ENABLED);
-            });
-            $scope.submit = function(instancemanage){
-
-                if(!$("#InstancemanageForm").validate().form()){
-                    return;
-                }
-
-                instancemanage = ResourceTool.copy_only_data(instancemanage);
-
-
-                CommonHttpService.post("/api/instancemanage/update/", instancemanage).then(function(data){
+                params_data.role = return_roles
+ 
+                CommonHttpService.post("/api/instancemanage/devicepolicy/update/", params_data).then(function(data){
                     if (data.success) {
                         ToastrService.success(data.msg, $i18next("success"));
                         instancemanage_table.reload();
