@@ -524,6 +524,8 @@ def create_user(request):
 
     LOG.info("****** start to create user *****")
     LOG.info("******* data is ******" + str(request.data))
+    LOG.info("****** username is ******" + str(request.data['username']))
+    LOG.info("****** password is ******" + str(request.data['password1']))
     user = User()
     LOG.info("ccccccccccccc")
     form = CloudUserCreateFormWithoutCapatcha(data=request.POST, instance=user)
@@ -577,13 +579,14 @@ def create_user(request):
     if not settings.WORKFLOW_ENABLED:
         tenant_id = request.data['tenant']
         LOG.info("tennat_id is " + str(tenant_id))
-        link_user_to_dc_task.delay(user, DataCenter.get_default(), tenant_id)
+        password = request.data['password1']
+        link_user_to_dc_task.delay(user, DataCenter.get_default(), tenant_id, password)
     else:
 
         if 'is_resource_user' in request.data and \
                 request.data['is_resource_user'] == 'true':
             tenant_id = request.data['tenant']
-            link_user_to_dc_task(user, DataCenter.get_default(), tenant_id)
+            link_user_to_dc_task(user, DataCenter.get_default(), tenant_id, password)
 
         if 'is_approver' in request.data and \
                 request.data['is_approver'] == 'true':

@@ -17,13 +17,12 @@ LOG = logging.getLogger("cloud.tasks")
 
 
 @app.task
-def link_user_to_dc_task(user, datacenter, tenant_id):
+def link_user_to_dc_task(user, datacenter, tenant_id, password):
 
     LOG.info("---------start to execute link_user_to_dc_task-----------")
 
-    LOG.info("----------tenant_id is-------------" + str(tenant_id))
+    LOG.info("----------username is-------------" + str(user.username))
 
-    LOG.info("----------user is-------------" + str(user))
 
     if UserDataCenter.objects.filter(
             user=user, data_center=datacenter).exists():
@@ -56,10 +55,12 @@ def link_user_to_dc_task(user, datacenter, tenant_id):
     tenant_ = keystone.tenant_get(rc, tenant_id)
     tenant_name = tenant_.name 
     LOG.info("************ tenant_name is ************" + str(tenant_name))
-    keystone_user = "%s-%04d-%s" % (settings.OS_NAME_PREFIX, user.id,
-                                    user.username)
+    #keystone_user = "%s-%04d-%s" % (settings.OS_NAME_PREFIX, user.id,
+    #                                user.username)
 
-    pwd = "cloud!@#%s" % random.randrange(100000, 999999)
+    keystone_user = user.username 
+    #pwd = "cloud!@#%s" % random.randrange(100000, 999999)
+    pwd = password
     
     #hard coded tenant id and name for test.
     project_id = tenant_id 
