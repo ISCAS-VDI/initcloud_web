@@ -52,7 +52,7 @@ CloudApp.controller('VDStatusController',
             var msg = $i18next('vir_desktop.user') + data.user + $i18next('vir_desktop.do_offline');
             ToastrService.success(msg);
           }
-          $scope.status[i].online = data.online;
+          // $scope.status[i].online = data.online;
 
           // VM status change
           if($scope.status[i].vm == null && data.vm != null) {
@@ -62,7 +62,8 @@ CloudApp.controller('VDStatusController',
             var msg = $i18next('vir_desktop.user') + data.user + $i18next('vir_desktop.disconn_desktop') + $scope.status[i].vm;
             ToastrService.success(msg);
           }
-          $scope.status[i].vm = data.vm;
+          // $scope.status[i].vm = data.vm;
+          $scope.status[i] = data
 
           new_user = false;
           break;
@@ -87,7 +88,7 @@ CloudApp.controller('VDStatusController',
         $modal.open({
           templateUrl: 'softwareconf.html',
           backdrop: 'static',
-          controller: 'SoftwareSetupController',
+          controller: 'SoftwareController',
           size: 'lg',
           resolve: {
             userlist: function() {
@@ -106,7 +107,7 @@ CloudApp.controller('VDStatusController',
         $modal.open({
           templateUrl: 'softwareconf.html',
           backdrop: 'static',
-          controller: 'SoftwareSetupController',
+          controller: 'SoftwareController',
           size: 'lg',
           resolve: {
             userlist: function() {
@@ -123,7 +124,7 @@ CloudApp.controller('VDStatusController',
     }
 )
 
-.controller('SoftwareSetupController', function($scope, $modalInstance, $i18next, 
+.controller('SoftwareController', function($scope, $modalInstance, $i18next, 
     CommonHttpService, ToastrService, CheckboxGroup, userlist, action) {
       $scope.userlist = userlist;
       $scope.softwares = [];
@@ -138,11 +139,13 @@ CloudApp.controller('VDStatusController',
         // TODO: call the API
         var users = [],
           vms = [],
+          ip_addrs = [],
           softwares = [],
           selected = checkboxGroup.checkedObjects();
         for(var i = 0; i < userlist.length; ++i) {
           users.push(userlist[i].user);
           vms.push(userlist[i].vm);
+          ip_addrs.push(userlist[i].ip_addr)
         }
         for(var i = 0; i < selected.length; ++i) {
           softwares.push(selected[i].name);
@@ -150,6 +153,7 @@ CloudApp.controller('VDStatusController',
         var data = {
           users: users,
           vms: vms,
+          ip_addrs: ip_addrs,
           softwares: softwares
         };
         CommonHttpService.post('/api/software/' + action + '/', data).then(function(data) {
@@ -163,19 +167,20 @@ CloudApp.controller('VDStatusController',
     }
 )
 
-.controller('SoftwareRemoveController', function($scope, $modalInstance, $i18next, 
-    CommonHttpService, ToastrService, CheckboxGroup, userlist) {
-      $scope.userlist = userlist;
-      $scope.softwares = [];
-      var checkboxGroup = $scope.checkboxGroup = CheckboxGroup.init($scope.softwares);
-      // TODO: initialize softwares
-      $scope.is_submitting = false;
-      $scope.commit = function() {
-        // TODO: call the API
-      };
-      $scope.cancel = $modalInstance.dismiss;
-    }
-)
+// TODO: Remove
+// .controller('SoftwareRemoveController', function($scope, $modalInstance, $i18next, 
+    // CommonHttpService, ToastrService, CheckboxGroup, userlist) {
+      // $scope.userlist = userlist;
+      // $scope.softwares = [];
+      // var checkboxGroup = $scope.checkboxGroup = CheckboxGroup.init($scope.softwares);
+      // // TODO: initialize softwares
+      // $scope.is_submitting = false;
+      // $scope.commit = function() {
+        // // TODO: call the API
+      // };
+      // $scope.cancel = $modalInstance.dismiss;
+    // }
+// )
 
 .factory('VDStatusWS', function($websocket) {
   var MGR_WS_ADDR = "ws://192.168.161.9:8893/ws",
