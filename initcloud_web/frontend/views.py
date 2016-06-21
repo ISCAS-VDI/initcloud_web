@@ -155,6 +155,7 @@ class SignupView(View):
 
         LOG.info("post start")
         tenant_id = request.POST.get("project")
+        password = request.POST.get("password2")
         LOG.info("post start")
         if form.is_valid():
             form.save()
@@ -166,7 +167,7 @@ class SignupView(View):
                         "activate email, please check your input box.")
             else:
                 LOG.info("start to run celery")
-                link_user_to_dc_task(user, DataCenter.get_default(), tenant_id)
+                link_user_to_dc_task(user, DataCenter.get_default(), tenant_id, password)
                 LOG.info("end")
                 msg = _("Your registration successed!")
 
