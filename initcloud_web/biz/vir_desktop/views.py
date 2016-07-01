@@ -9,7 +9,7 @@ from biz.common.decorators import require_GET, require_POST
 from biz.common.pagination import PagePagination
 from biz.vir_desktop.serializer import VDStatusSerializer
 
-# TODO: import software mgr client
+import cloud.api.software_manager.api as mgr
 
 LOG = logging.getLogger(__name__)
 
@@ -45,13 +45,16 @@ for i in range(20):
 
 @require_GET
 def software_can_setup(request):
+    # return Response(soft_list)
     # TODO: Use the API to get corresponding data
-    return Response(soft_list)
+    return Response(mgr.get_available_software())
 
 @require_GET
 def software_can_remove(request):
+    # return Response(soft_list)
     # TODO: Use the API to get corresponding data
-    return Response(soft_list)
+    rlist = [{"name": pid} for pid in mgr.get_installed_software()]
+    return Response(rlist)
 
 @require_POST
 def software_setup(request):
@@ -60,8 +63,10 @@ def software_setup(request):
         rsp = { "success": True, "msg": "Setup OK" }
         users = request.data.getlist("users[]")
         vms = request.data.getlist("vms[]")
+        ip_addrs = request.data.getlist("ip_addrs[]")
         softwares = request.data.getlist("softwares[]")
         # TODO: Use the API to setup softwares
+        mgr.install_software(softwares, ip_addrs)
     except Exception, e:
         LOG.info("---software_setup---: %s" % e)
         rsp["success"] = False
@@ -75,8 +80,10 @@ def software_remove(request):
         rsp = { "success": True, "msg": "Remove OK" }
         users = request.data.getlist("users[]")
         vms = request.data.getlist("vms[]")
+        ip_addrs = request.data.getlist("ip_addrs[]")
         softwares = request.data.getlist("softwares[]")
         # TODO: Use the API to Remove softwares
+        mgr.uninstall_software(softwares, ip_addrs)
     except Exception, e:
         LOG.info("---software_remove---: %s" % e)
         rsp["success"] = False
