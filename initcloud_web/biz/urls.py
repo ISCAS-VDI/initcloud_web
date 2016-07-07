@@ -398,6 +398,7 @@ urlpatterns += format_suffix_patterns([
   url(r'^software/selectremove/$', vir_desktop.software_can_remove),
   url(r'^software/setup/$', vir_desktop.software_setup),
   url(r'^software/remove/$', vir_desktop.software_remove),
+  url(r'^software/actionstatus/$', vir_desktop.action_status),
 ])
 
 # workflow

@@ -555,7 +555,13 @@
     "soft_remove": "Software Remove",
     "setup": "Setup",
     "remove": "Remove",
-    "soft_list": "Software List"
+    "soft_list": "Software List",
+    "action_state": "Action Status"
+    "setuping": "Installing",
+    "removing": "Uninstalling",
+    "setup_ok": "Install completed",
+    "remove_ok": "Uninstall completed",
+    "error": "Error"
   }
 
 }

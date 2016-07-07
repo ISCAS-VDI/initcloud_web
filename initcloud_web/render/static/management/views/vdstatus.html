@@ -34,6 +34,10 @@
                   <span ng-if="state.vm != null"> {[{ state.vm }]} </span>
                   <span ng-if="state.vm == null"> {[{ 'vir_desktop.null_vm' | i18next }]} </span>
                 </td>
+                <td data-title="'vir_desktop.action_state' | i18next">
+                  <span ng-if="state.action_state == null"></span>
+                  <span ng-if="state.action_state != null"> {[{ 'vir_desktop.'+state.action_state | i18next }]} </span>
+                </td>
                 <td data-title="'actions' | i18next">
                   <div class="btn-group">
                     <button class="btn btn-default" type="button" ng-disabled="state.vm == null" ng-click="takeAction(state.user, state.vm, 'disconnect')"> {[{ 'vir_desktop.disconn_desktop' | i18next }]} </button>
@@ -105,6 +109,11 @@
               <div class="form-body">
                 <h4>{[{ 'vir_desktop.soft_list' | i18next }]}</h4>
                 <div style="height:294px;overflow-y:scroll;padding:15px">
+                  <div class="page-spinner-bar" ng-show="loading">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                  </div>
                   <ul class="list-unstyled">
                     <li style="font-size:large;" ng-repeat="software in softwares">
                       <input type="checkbox" data-ng-model="software.checked"/> {[{software.name}]}

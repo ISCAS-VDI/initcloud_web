@@ -124,19 +124,21 @@ CloudApp.controller('VDStatusController',
     }
 )
 
-.controller('SoftwareController', function($scope, $modalInstance, $i18next, 
+.controller('SoftwareController', function($scope, $modalInstance, $i18next, $interval,
     CommonHttpService, ToastrService, CheckboxGroup, userlist, action) {
       $scope.userlist = userlist;
       $scope.softwares = [];
       var checkboxGroup = $scope.checkboxGroup = CheckboxGroup.init($scope.softwares);
-      CommonHttpService.get('/api/software/select' + action + '/').then(function(data) {
+      CommonHttpService.get('/api/software/select' + action + '/?addr=' + userlist[0].ip_addr)
+          .then(function(data) {
+        $scope.loading = false;
         $scope.softwares = data;
         checkboxGroup.syncObjects($scope.softwares);
       });
+      $scope.loading = true;
 
       $scope.is_submitting = false;
       $scope.commit = function() {
-        // TODO: call the API
         var users = [],
           vms = [],
           ip_addrs = [],
@@ -148,7 +150,7 @@ CloudApp.controller('VDStatusController',
           ip_addrs.push(userlist[i].ip_addr)
         }
         for(var i = 0; i < selected.length; ++i) {
-          softwares.push(selected[i].name);
+          softwares.push(selected[i].Product_Id);
         }
         var data = {
           users: users,
@@ -159,6 +161,20 @@ CloudApp.controller('VDStatusController',
         CommonHttpService.post('/api/software/' + action + '/', data).then(function(data) {
           if(data.success) {
             ToastrService.success(data.msg, $i18next('success'));
+            // TODO: trace status
+            var trace_status = function (vm, user, pro) {
+              CommonHttpService.get('/api/software/actionstatus?vm='+vm).then(function(data) {
+                if(data.status == (action+'_ok') || data.status == 'error')
+                  $interval.cancel(pro)
+                user.action_state = data.status
+              })
+            }
+            for(var i = 0; i < vms.length; ++i) {
+              var x = i;
+              var pro = $interval(function() {
+                trace_status(vms[x], userlist[x], pro)
+              }, 2000)
+            }
           }
         });
         $modalInstance.close();
