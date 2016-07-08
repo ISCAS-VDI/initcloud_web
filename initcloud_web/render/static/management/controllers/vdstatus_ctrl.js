@@ -161,7 +161,6 @@ CloudApp.controller('VDStatusController',
         CommonHttpService.post('/api/software/' + action + '/', data).then(function(data) {
           if(data.success) {
             ToastrService.success(data.msg, $i18next('success'));
-            // TODO: trace status
             var trace_status = function (vm, user, pro) {
               CommonHttpService.get('/api/software/actionstatus?vm='+vm).then(function(data) {
                 if(data.status == (action+'_ok') || data.status == 'error')
@@ -169,11 +168,12 @@ CloudApp.controller('VDStatusController',
                 user.action_state = data.status
               })
             }
-            for(var i = 0; i < vms.length; ++i) {
-              var x = i;
-              var pro = $interval(function() {
-                trace_status(vms[x], userlist[x], pro)
-              }, 2000)
+            for(var i = 0; i < data.ids.length; ++i) {
+              (function(x) {
+                var pro = $interval(function() {
+                  trace_status(data.ids[x], userlist[x], pro)
+                }, 2000)
+              })(i);
             }
           }
         });
