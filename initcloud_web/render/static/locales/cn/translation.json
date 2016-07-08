@@ -810,7 +810,13 @@
     "soft_remove": "软件卸载",
     "setup": "安装",
     "remove": "卸载",
-    "soft_list": "软件列表"
+    "soft_list": "软件列表",
+    "action_state": "动作执行状态",
+    "setuping": "正在安装",
+    "removing": "正在卸载",
+    "setup_ok": "安装完成",
+    "remove_ok": "卸载完成",
+    "error": "错误"
   },
 
   "policy_cinder": {
