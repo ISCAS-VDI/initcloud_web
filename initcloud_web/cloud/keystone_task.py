@@ -182,3 +182,22 @@ def add_user_role(keystone_user, role, user_tenant_id):
     except:
         pass
     return False
+
+@app.task
+def delete_keystone_user(tenant_id, username):
+    datacenter = DataCenter.get_default()
+    rc = create_rc_by_dc(datacenter)
+    users = keystone.user_list(rc, project=tenant_id)
+    LOG.info("*** rc is ***" + str(rc))
+    LOG.info("******* users are ******" + str(users))
+    user_id = None
+    for u in users:
+        if u.username == username:
+            user_id = u.id
+    LOG.info("**** user_id is ****" + str(user_id))
+    try:
+        keystone.user_delete(rc, user_id)
+        LOG.info("**** user deleted ****")
+    except:
+        raise 
+    return True

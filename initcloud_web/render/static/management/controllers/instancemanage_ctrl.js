@@ -28,6 +28,27 @@ CloudApp.controller('InstancemanageController',
             });
 
 
+        var delete_Instancemanages = function(ids){
+
+            $ngBootbox.confirm($i18next("instancemanage.confirm_delete")).then(function(){
+
+                if(typeof ids == 'function'){
+                    ids = ids();
+                }
+
+                CommonHttpService.post("/api/instancemanage/delete_instance/", {ids: ids}).then(function(data){
+                    if (data.success) {
+                        ToastrService.success(data.msg, $i18next("success"));
+                        $scope.instancemanage_table.reload();
+                        checkboxGroup.uncheck()
+                    } else {
+                        ToastrService.error(data.msg, $i18next("op_failed"));
+                    }
+                });
+            });
+        };
+
+
 
         var deleteInstancemanages = function(ids){
 
@@ -66,6 +87,11 @@ CloudApp.controller('InstancemanageController',
 
         $scope.delete = function(instancemanage){
             deleteInstancemanages([instancemanage.id]);
+        };
+
+
+        $scope.delete_instance = function(instancemanage){
+            delete_Instancemanages([instancemanage.id]);
         };
 
 

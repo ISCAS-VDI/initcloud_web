@@ -190,11 +190,10 @@ def delete_network(network):
     LOG.info("Start to delete network, id:[%s], name[%s]",
              network.id, network.name)
     try:
-
+ 
         subnet_set = Subnet.objects.filter(network_id=network.id, deleted=False)
         for subnet in subnet_set:
             delete_subnet(subnet)
-
         neutron.network_delete(rc, network.network_id)
 
         network.network_id = None
@@ -244,6 +243,7 @@ def create_subnet(subnet=None):
         raise ex
 
     return subnet
+
 
 
 @app.task
@@ -299,12 +299,36 @@ def router_create_task(router=None):
     return router
 
 
+def router_remove_gateway_(router=None):
+    if not router:
+        return
+    rc = create_rc_by_router(router)
+    LOG.info("Begin clean gateway [Router:%s][%s]", router.id, router.name)
+    try:
+        neutron.router_remove_gateway(rc, router.router_id)
+        router.gateway = None
+        router.status = NETWORK_STATE_ACTIVE
+        router.is_gateway = False
+        router.save()
+    except Exception as ex:
+        router.status = NETWORK_STATE_ACTIVE
+        router.save()
+        LOG.exception(ex)
+
+    LOG.info("End clean gateway [Router:%s][%s]", router.id, router.name)
+
+
 @app.task
 def router_delete_task(router=None):
     rc = create_rc_by_router(router)
 
+    
+    router_remove_gateway_(router)
+   
+    time.sleep(1)
     LOG.info("delete router,id:[%s],name[%s]" % (router.id, router.name))
     try:
+      
         neutron.router_delete(rc, router.router_id)
         router.router_id = None
         router.deleted = True
@@ -434,9 +458,14 @@ def attach_network_to_router(network_id, router_id, subnet_id):
 @app.task
 def detach_network_from_router(network_id):
 
+    LOG.info(" start to detach network ")
+    LOG.info("network_id is" + str(network_id))
     network = Network.objects.get(pk=network_id)
+    LOG.info(" start to detach network ")
     subnet = network.subnet_set.filter(deleted=False)[0]
+    LOG.info(" start to detach network ")
     rc = create_rc_by_network(network)
+    LOG.info(" start to detach network ")
     interface_set = RouterInterface.objects.filter(network_id=network.id,
                                                    subnet=subnet, deleted=False)
 
@@ -767,3 +796,28 @@ def edit_default_security_group(user, udc):
                         user=user,
                         user_data_center=udc,
                         deleted=False)
+
+@app.task
+def delete_user_router_interface(router=None):
+    rc = create_rc_by_router(router)
+
+    
+    router_remove_gateway_(router)
+   
+    time.sleep(1)
+    LOG.info("delete router,id:[%s],name[%s]" % (router.id, router.name))
+    try:
+      
+        neutron.router_delete(rc, router.router_id)
+        router.router_id = None
+        router.deleted = True
+        router.save()
+    except Exception as ex:
+        router.status = NETWORK_STATE_ERROR
+        router.save()
+        LOG.info("delete router error,id:[%s],name[%s],msg:[%s]" % (network.id, network.name, ex))
+        raise ex
+
+    return network
+
+
