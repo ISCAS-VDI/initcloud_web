@@ -106,6 +106,22 @@ CloudApp.controller('UserController',
 
 
 
+        $scope.resetpassword = function(user){
+            $modal.open({
+                templateUrl: 'resetpassword.html',
+                controller: 'ResetPasswordController',
+                backdrop: "static",
+                size: 'lg',
+                resolve: {
+                    user: function(){
+                        return user;
+                    }
+                }
+            }).result.then(function(){
+                   checkboxGroup.uncheck();
+            });
+        };
+
 
         var openBroadcastModal = function(users){
             $modal.open({
@@ -160,6 +176,46 @@ CloudApp.controller('UserController',
                     }
                 }
             });
+        };
+
+
+        var deleteUsers = function(ids){
+
+            $ngBootbox.confirm($i18next("user.confirm_delete")).then(function(){
+
+                if(typeof ids == 'function'){
+                    ids = ids();
+                }
+
+                CommonHttpService.post("/api/users/batchdelete/", {ids: ids}).then(function(data){
+                    if (data.success) {
+                        ToastrService.success(data.msg, $i18next("success"));
+                        $scope.user_table.reload();
+                        checkboxGroup.uncheck()
+                    } else {
+                        ToastrService.error(data.msg, $i18next("op_failed"));
+                    }
+                });
+            });
+        };
+
+        $scope.batchDelete = function(){
+
+            deleteUsers(function(){
+                var ids = [];
+
+                checkboxGroup.forEachChecked(function(user){
+                    if(user.checked){
+                        ids.push(user.id);
+                    }
+                });
+
+                return ids;
+            });
+        };
+
+        $scope.delete = function(user){
+            deleteUsers([user.id]);
         };
 
         $scope.assignDataCenter = function(user){
@@ -334,6 +390,49 @@ CloudApp.controller('UserController',
                 params.roles = return_roles
 
                 CommonHttpService.post('/api/policy_nova/assignrole/', params).then(function(result){
+                    if(result.success){
+                        ToastrService.success(result.msg, $i18next("success"));
+                        $modalInstance.close();
+                    } else {
+                        ToastrService.error(result.msg, $i18next("op_failed"));
+                    }
+                });
+            }
+    })
+
+    .controller('ResetPasswordController',
+        function($scope, $modalInstance, $i18next, ngTableParams,
+                 CommonHttpService, ValidationTool, ToastrService,CheckboxGroup, Nova_Role, 
+                 user){
+
+
+            $scope.user = user;
+            $scope.cancel = $modalInstance.dismiss;
+            $scope.role_user_param = {"userid": user.id};
+
+            $modalInstance.rendered.then(function(){
+                form = ValidationTool.init('#resetPasswordForm');
+            });
+
+
+            $scope.params = {old_password: '', new_password: '', confirm_password: '', user_id:user.id};
+
+            $scope.cancel = $modalInstance.dismiss;
+
+
+            $modalInstance.rendered.then(function(){
+                form = ValidationTool.init('#resetPasswordForm');
+            });
+
+
+            $scope.submit = function(user){
+
+                if(!form.valid()){
+                    return;
+                }
+
+
+                CommonHttpService.post('/api/users/resetuserpassword/', $scope.params).then(function(result){
                     if(result.success){
                         ToastrService.success(result.msg, $i18next("success"));
                         $modalInstance.close();

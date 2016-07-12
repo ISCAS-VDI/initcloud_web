@@ -34,8 +34,14 @@
                                 <td data-title="'instancemanage.public_ip' | i18next">
                                     <span> {[{ instancemanage.public_ip }]} </span>
                                 </td>
-                                <td data-title="'instancemanage.policy' | i18next">
-                                    <span> {[{ instancemanage.policy }]} </span>
+                                <td data-title="'instancemanage.cpu' | i18next">
+                                    <span> {[{ instancemanage.cpu }]} </span>
+                                </td>
+                                <td data-title="'instancemanage.memory' | i18next">
+                                    <span> {[{ instancemanage.memory }]} </span>
+                                </td>
+                                <td data-title="'instancemanage.sys_disk' | i18next">
+                                    <span> {[{ instancemanage.sys_disk }]} </span>
                                 </td>
                                 <td data-title="'actions' | i18next">
                                     <div class="btn-group">
@@ -49,10 +55,29 @@
                                             <i class="fa fa-angle-down"></i>
                                         </button>
                                         <ul instancemanage="menu" class="dropdown-menu">
+                                        <li data-ng-if="(instance.is_poweroff || instance.is_error) && is_available(instance)">
+                                            <a href="#" ng-click="instance_action(instance, 'power_on')">
+                                                <i class="fa fa-play"></i>
+                                                {[{ 'instance.power_on' | i18next }]}
+                                            </a>
+                                        </li>
+                                        <li data-ng-if="instance.is_running">
+                                            <a href="#" data-ng-click="instance_action(instance, 'power_off')">
+                                                <span class="text-danger">
+                                                <i class="fa fa-stop"></i>
+                                                {[{ 'instance.power_off' | i18next }]}
+                                                </span>
+                                            </a>
+                                        </li>
                                             <li>
                                                 <a href="javascript:void(0);"  ng-click="delete(instancemanage)">
                                                     <i class="fa fa-trash"></i>
                                                     {[{ 'instancemanage.delete' | i18next }]} </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0);"  ng-click="delete_instance(instancemanage)">
+                                                    <i class="fa fa-trash"></i>
+                                                    {[{ 'instancemanage.deleteinstance' | i18next }]} </a>
                                             </li>
                                         </ul>
                                     </div>
