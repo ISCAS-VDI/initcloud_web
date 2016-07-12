@@ -27,7 +27,7 @@ from biz.common.pagination import PagePagination
 from biz.common.decorators import require_POST, require_GET
 from biz.common.utils import retrieve_params, fail
 from biz.workflow.models import Step
-from cloud.tasks import (link_user_to_dc_task, send_notifications,
+from cloud.tasks import (link_user_to_dc_task, send_notifications, delete_user_instance_network, 
                          send_notifications_by_data_center)
 from frontend.forms import CloudUserCreateFormWithoutCapatcha
 
@@ -165,3 +165,21 @@ def devicepolicyundo(request):
     return Response({"success": True, "msg": _(
            'Sucess.')})
 
+@require_POST
+def delete_instance(request):
+    LOG.info("*** request.data is ***"  + str(request.data))
+    instance_id = None
+    for key, value in request.data.items():
+        instance_id = value
+    LOG.info("********** instance_id  is **********" + str(instance_id))
+    instance = Instance.objects.get(pk=instance_id)
+    instance_id = instance.uuid
+    LOG.info("********** instance_id  is **********" + str(instance_id))
+    try:
+        delete_user_instance_network(request, instance_id)
+    except:
+        pass
+    instance.deleted = True
+    instance.save()
+    return Response({"success": True, "msg": _(
+           'Sucess.')})

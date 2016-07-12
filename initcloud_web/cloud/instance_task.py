@@ -658,4 +658,18 @@ def instance_get_port(instance):
     except nova.nova_exceptions.NotFound:
         return None
 
+@app.task
+def delete_user_instance_network(request, instance_id):
+
+    #
+    LOG.info("*** instance_id is ***" + str(instance_id))
+    novaAdmin = get_nova_admin(request)
+    try:
+        server_deleted = novaAdmin.servers.delete(str(instance_id))
+        LOG.info("*** delete success ***")
+    except Exception:
+        server_deleted = []
+        LOG.info("*** server delete failed ***")
+        pass
+    return True
 
