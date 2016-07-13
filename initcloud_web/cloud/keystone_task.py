@@ -201,3 +201,24 @@ def delete_keystone_user(tenant_id, username):
     except:
         raise 
     return True
+
+
+@app.task
+def change_user_keystone_passwd(username, tenant_id, new_passwd):
+
+    datacenter = DataCenter.get_default()
+    rc = create_rc_by_dc(datacenter)
+    users = keystone.user_list(rc, project=tenant_id)
+    LOG.info("*** rc is ***" + str(rc))
+    LOG.info("******* users are ******" + str(users))
+    user_id = None
+    for u in users:
+        if u.username == username:
+            user_id = u.id
+    LOG.info("**** user_id is ****" + str(user_id))
+    try:
+        keystone.user_update_password(rc, user_id, new_passwd, admin=True)
+        LOG.info("**** user password updated ****")
+    except:
+        raise
+    return True
