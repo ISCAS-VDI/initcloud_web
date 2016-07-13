@@ -205,6 +205,7 @@ urlpatterns += format_suffix_patterns([
     url(r'^users/revoke-workflow-approve/$', account_view.revoke_workflow_approve),
     url(r'^users/workflow-approvers/$', account_view.workflow_approvers),
     url(r'^users/batchdelete/$', account_view.batchdelete),
+    url(r'^users/resetuserpassword/$', account_view.resetuserpassword),
     url(r'^quotas/$', account_view.QuotaList.as_view()),
     url(r'^quotas/(?P<pk>[0-9]+)/$', account_view.QuotaDetail.as_view()),
     url(r'^quotas/batch-create/$', account_view.create_quotas),

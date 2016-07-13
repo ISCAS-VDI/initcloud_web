@@ -513,6 +513,8 @@
     "name": "用户名",
     "email": "邮箱",
     "tenants": "租户",
+    "delete": "删除用户",
+    "resetpassword": "重置密码",
     "mobile": "手机号",
     "is_active": "活跃用户",
     "assignrole": "分配用户角色",
@@ -894,12 +896,14 @@
       "name": "虚拟机名称",
       "cpu": "cpu",
       "memory": "内存",
+      "sys_disk": "系统盘",
       "public_ip": "公网ip",
       "policy": "usb重定向权限",
       "update_instancemanage_title": "分配权限",
       "edit": "分配权限",
       "delete": "取消权限",
       "confirm_delete": "确定取消吗",
+      "deleteinstance": "删除虚拟机",
       "assignrole": "分配权限"
 
 }    
