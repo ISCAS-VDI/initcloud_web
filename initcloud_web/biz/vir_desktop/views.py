@@ -9,6 +9,7 @@ from biz.common.decorators import require_GET, require_POST
 from biz.common.pagination import PagePagination
 from biz.vir_desktop.serializer import VDStatusSerializer
 from biz.vir_desktop.models import VirDesktopAction
+from biz.common.views import IsSystemUser
 
 import cloud.software_mgr_task as mgr
 
@@ -21,6 +22,7 @@ for i in range(25):
 
 class VDStatusList(generics.ListAPIView):
     # queryset = data
+    permission_classes = (IsSystemUser,)
     serializer_class = VDStatusSerializer
     pagination_class = PagePagination
     
