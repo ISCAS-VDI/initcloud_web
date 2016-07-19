@@ -35,7 +35,7 @@ from cloud.api import keystone
 from biz.common.views import IsSystemUser, IsAuditUser
 from biz.workflow.models import Step
 from cloud.tasks import (link_user_to_dc_task, send_notifications,
-                         send_notifications_by_data_center, delete_user_instance_network, delete_network, router_delete_task, delete_subnet, detach_network_from_router, delete_keystone_user)
+                         send_notifications_by_data_center, delete_user_instance_network, delete_network, router_delete_task, delete_subnet, detach_network_from_router, delete_keystone_user, change_user_keystone_passwd)
 from frontend.forms import CloudUserCreateFormWithoutCapatcha
 
 LOG = logging.getLogger(__name__)
@@ -441,6 +441,18 @@ def resetuserpassword(request):
     user.set_password(new_password)
     user.save()
 
+    LOG.info("************* CHANGE PASSWORD !!!!!!!!!!!!!!!!!!")
+
+    try:
+        user_id = user.id
+        user_keystone = UserDataCenter.objects.get(user_id=user_id)
+        LOG.info("**** user_keystone is ***" + str(user_keystone))
+        username = user_keystone.keystone_user
+        tenant_id = user_keystone.tenant_uuid
+        change_user_keystone_passwd(user_id, username, tenant_id, new_password)
+    except:
+        raise 
+
     return Response({"success": True, "msg": _(
         "Password has been changed! Please login in again.")})
 
@@ -465,6 +477,18 @@ def change_password(request):
     user.set_password(new_password)
     user.save()
 
+    LOG.info("************* CHANGE PASSWORD !!!!!!!!!!!!!!!!!!")
+
+    if not request.user.is_superuser or not request.user.has_perm("workflow.audit_user") or not request.user.has_perm("workflow.system_user") or not request.user.has_perm("workflow.safety_user"):
+        try:
+            user_id = user.id
+            user_keystone = UserDataCenter.objects.get(user_id=user_id)
+            LOG.info("**** user_keystone is ***" + str(user_keystone))
+            username = user_keystone.keystone_user
+            tenant_id = user_keystone.tenant_uuid
+            change_user_keystone_passwd(user_id, username, tenant_id, new_password)
+        except:
+            raise 
     return Response({"success": True, "msg": _(
         "Password has been changed! Please login in again.")})
 
