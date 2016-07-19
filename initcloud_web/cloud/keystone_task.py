@@ -188,29 +188,27 @@ def delete_keystone_user(tenant_id, username):
     datacenter = DataCenter.get_default()
     rc = create_rc_by_dc(datacenter)
     users = keystone.user_list(rc, project=tenant_id)
-    LOG.info("*** rc is ***" + str(rc))
     LOG.info("******* users are ******" + str(users))
     user_id = None
     for u in users:
         if u.username == username:
             user_id = u.id
-    LOG.info("**** user_id is ****" + str(user_id))
     try:
         keystone.user_delete(rc, user_id)
-        LOG.info("**** user deleted ****")
     except:
-        raise 
+        pass
     return True
 
-
 @app.task
-def change_user_keystone_passwd(username, tenant_id, new_passwd):
+def change_user_keystone_passwd(user_id, username, tenant_id, new_passwd):
 
     datacenter = DataCenter.get_default()
     rc = create_rc_by_dc(datacenter)
     users = keystone.user_list(rc, project=tenant_id)
     LOG.info("*** rc is ***" + str(rc))
     LOG.info("******* users are ******" + str(users))
+    udc_user_id = user_id
+    LOG.info("*** udc_user_id is ***" + str(udc_user_id))
     user_id = None
     for u in users:
         if u.username == username:
@@ -219,6 +217,13 @@ def change_user_keystone_passwd(username, tenant_id, new_passwd):
     try:
         keystone.user_update_password(rc, user_id, new_passwd, admin=True)
         LOG.info("**** user password updated ****")
+        udc = UserDataCenter.objects.get(user_id=udc_user_id)
+        LOG.info("**** user password updated ****")
+        udc.keystone_password = new_passwd 
+        LOG.info("**** user password updated ****")
+        udc.save()
+        LOG.info("**** user password updated ****")
+
     except:
         raise
     return True
