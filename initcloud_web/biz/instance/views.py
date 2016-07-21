@@ -3,6 +3,7 @@
 import re
 import logging
 import os
+from bson import json_util
 import subprocess
 import uuid
 from djproxy.views import HttpProxy
@@ -11,6 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.contrib.auth import authenticate, login
 
 from rest_framework import generics
 from rest_framework import status
@@ -23,6 +25,7 @@ from biz.volume.models import Volume
 from biz.volume.serializer import VolumeSerializer
 from biz.firewall.models import Firewall
 from biz.firewall.serializer import FirewallSerializer
+from biz.idc.models import UserDataCenter, DataCenter
 
 from biz.instance.models import Instance, Flavor
 from biz.instance.serializer import InstanceSerializer, FlavorSerializer
@@ -36,7 +39,8 @@ from biz.workflow.models import Workflow, FlowInstance
 from biz.workflow.settings import ResourceType
 from biz.network.models import Network
 
-from biz.common.decorators import require_GET
+from biz.common.decorators import require_GET, require_POST
+from django.views.decorators.http import require_POST as django_POST
 from cloud.instance_task import (instance_create_task,
                                 instance_get_console_log,
                                 instance_get, instance_get_port)
@@ -190,6 +194,13 @@ def instance_create_view(request):
     except:
         count = 1
 
+    user_id = request.user.id
+    LOG.info("** user_id is ***" + str(user_id))
+    user_data_center = UserDataCenter.objects.filter(user__id=request.user.id)[0]
+    LOG.info("*** user_data_center ***" + str(user_data_center))
+    user_tenant_uuid = user_data_center.tenant_uuid
+    LOG.info("*** user_tenant_uuid is ***" + str(user_tenant_uuid))
+
     pay_type = request.data['pay_type']
     pay_num = int(request.data['pay_num'])
 
@@ -203,10 +214,13 @@ def instance_create_view(request):
     except Network.DoesNotExist:
         pass
     else:
-        if not network.router:
-            msg = _("Your selected network has not linked to any router.")
-            return Response({"OPERATION_STATUS": OPERATION_FAILED,
-                            "msg": msg}, status=status.HTTP_409_CONFLICT)
+        # VLAN mode: we do not have to add router to network.
+        if settings.VLAN_ENABLED == False:
+            if not network.router:
+                msg = _("Your selected network has not linked to any router.")
+                return Response({"OPERATION_STATUS": OPERATION_FAILED,
+                               "msg": msg}, status=status.HTTP_409_CONFLICT)
+
 
     has_error, msg = False, None
     for i in range(count):
@@ -228,7 +242,7 @@ def instance_create_view(request):
                 msg = _("Your application for instance \"%(instance_name)s\" is successful, "
                         "please waiting for approval result!") % {'instance_name': ins.name}
             else:
-                instance_create_task.delay(ins, password=request.DATA["password"])
+                instance_create_task.delay(ins, password=request.DATA["password"],user_tenant_uuid=user_tenant_uuid)
                 Order.for_instance(ins, pay_type=pay_type, pay_num=pay_num)
                 msg = _("Your instance is created, please wait for instance booting.")
         else:
@@ -381,6 +395,10 @@ def vdi_view(request):
 
     queryset = Instance.objects.all().filter(deleted=False, user_id=request.user.id)
     json_value = {}
+    count = 0 
+    method = "responseUserCheck"
+    retvalue = "0"
+    vminfo = []
     for q in queryset:
         LOG.info("******")
         novaAdmin = get_nova_admin(request)
@@ -408,15 +426,22 @@ def vdi_view(request):
         LOG.info("host_ip=" + host_ip)
         LOG.info("port=" + str(port))
         if "error" in str(port):
-            json_value[q.id] = {"vm_uuid": q.uuid, "vm_private_ip": q.private_ip, "vm_public_ip": q.public_ip, "vm_host": host_ip, "vm_status": server_status, "policy_device": q.policy, "vnc_port": "no port", "vm_internalid": q.id, "vm_name": q.name}
+            vminfo.append({"vm_uuid": q.uuid, "vm_public_ip": q.public_ip, "vm_serverip": host_ip, "vm_status": server_status, "vnc_port": "no port", "vm_internalid": str(q.id), "vm_name": q.name})
+            count = count + 1
             continue
         split_port = port.split(":")
         port_1 = split_port[1]
         port_2 = port_1.split("\\")
         port_3 = port_2[0]
         vnc_port = 5900 + int(port_3)
-        json_value[q.id] = {"vm_uuid": q.uuid, "vm_private_ip": q.private_ip, "vm_public_ip": q.public_ip, "vm_host": host_ip, "vm_status": server_status, "policy_device": q.policy, "vnc_port": vnc_port, "vm_internalid": q.id, "vm_name": q.name}
+        vminfo.append({"vm_uuid": q.uuid, "vm_public_ip": q.public_ip, "vm_serverip": host_ip, "vm_status": server_status, "vnc_port": vnc_port, "vm_internalid": str(q.id), "vm_name": q.name})
+        LOG.info("*** count is ***" + str(count))
+        count = count + 1
 
+    json_value = {"method": method, "retvalue": retvalue, "vmnum": count, "vminfo": vminfo}
+    if not json_value:
+        json_value = {"retval": 1, "message": "auth success"}
+    
     return Response(json_value)
 
 @api_view(["POST"])
@@ -463,5 +488,122 @@ class MonitorProxy(HttpProxy):
             return HttpResponse('', status=status.HTTP_403_FORBIDDEN)
 
         return super(MonitorProxy, self).proxy()
+
+@csrf_exempt
+@api_view(["GET"])
+def new_vdi_test(request):
+
+    LOG.info("start to get data")
+    method = request.GET.get("method")
+    retval = 0 
+    if method == "requestCheckUser":
+        LOG.info("** method is ***" + str(method))
+        username = request.GET.get("username")
+        password = request.GET.get("password")
+        LOG.info("*** username is ***" + str(username))
+        LOG.info("*** user password is ***" + str(password))
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            # the password verified for the user
+            if user.is_active:
+                login(request, user)
+                LOG.info("*** user is active")
+                retval = 1
+            else:
+                retval = -1
+                LOG.info("*** user is not active")
+        else:
+            retval = -2
+            LOG.info("*** auth failed ***")
+
+ 
+    response_value = {"status": retval}
+    LOG.info("*** start to return ***")
+    username = "klkl"
+    password = "ydd1121NN"
+    user = authenticate(username=username, password=password)
+    login(request, user)
+
+    LOG.info("*** user is ***" + str(request.user))
+    if user.is_authenticated:
+        LOG.info("user is authenticated")
+    queryset = Instance.objects.all().filter(deleted=False, user_id=request.user.id)
+    json_value = {}
+    for q in queryset:
+        LOG.info("******")
+        novaAdmin = get_nova_admin(request)
+        LOG.info("******")
+        if not q.uuid:
+            continue
+        server = novaAdmin.servers.get(q.uuid)
+        LOG.info("******")
+        server_dict = server.to_dict()
+        LOG.info("******")
+        server_host = server_dict['OS-EXT-SRV-ATTR:host']
+        server_status = server_dict['status']
+        LOG.info("******* server_status is *******" + str(server_status))
+        if server_status == "ERROR":
+            continue
+        host_ip = settings.COMPUTE_HOSTS[server_host]
+        LOG.info("host ip is" + str(host_ip))
+        cmd="virsh -c qemu+tcp://" + host_ip + "/system vncdisplay " + q.uuid
+        LOG.info("cmd=" + cmd)
+        p = subprocess.Popen("virsh -c qemu+tcp://" + host_ip + "/system vncdisplay " + q.uuid, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        port = None
+        for line in p.stdout.readlines():
+            port = line
+            break
+        LOG.info("host_ip=" + host_ip)
+        LOG.info("port=" + str(port))
+        if "error" in str(port):
+            json_value[str(q.id)] = {"vm_uuid": q.uuid, "vm_private_ip": q.private_ip, "vm_public_ip": q.public_ip, "vm_host": host_ip, "vm_status": server_status, "policy_device": str(q.policy), "vnc_port": "no port", "vm_internalid": str(q.id), "vm_name": q.name}
+
+            continue
+        split_port = port.split(":")
+        port_1 = split_port[1]
+        port_2 = port_1.split("\\")
+        port_3 = port_2[0]
+        vnc_port = 5900 + int(port_3)
+        json_value[str(q.id)] = {"vm_uuid": q.uuid, "vm_private_ip": q.private_ip, "vm_public_ip": q.public_ip, "vm_host": host_ip, "vm_status": server_status, "policy_device": str(q.policy), "vnc_port": vnc_port, "vm_internalid": str(q.id), "vm_name": q.name}
+    LOG.info("*** json_value ***" + str(json_value))
+    #return json_util.loads(json_value)
+    return json_util.loads(json_value)
+
+def user_is_not_active(request):
+    return Response({"status": "-1", "message": "failed"})
+
+def user_auth_failed(request):
+    return Response({"status": "-1", "message": "failed"})
+
+def new_vdi(request):
+    LOG.info("start to get data")
+    method = request.GET.get("method")
+    retval = 0
+    if method == "requestCheckUser":
+        LOG.info("** method is ***" + str(method))
+        username = request.GET.get("username")
+        password = request.GET.get("password")
+        LOG.info("*** username is ***" + str(username))
+        LOG.info("*** user password is ***" + str(password))
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            # the password verified for the user
+            if user.is_active:
+                login(request, user)
+                LOG.info("*** user is active")
+                retval = 1
+            else:
+                retval = -1
+                LOG.info("*** user is not active")
+        else:
+            retval = -2
+            LOG.info("*** auth failed ***")
+    if retval == 1:
+        json_value = vdi_view(request)
+    if retval == -1:
+        json_value = user_is_not_active(request)
+    if retval == -2:
+        json_value = user_auth_failed(request)
+    return json_value
 
 monitor_proxy = login_required(csrf_exempt(MonitorProxy.as_view()))

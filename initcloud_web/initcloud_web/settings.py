@@ -279,3 +279,4 @@ MGR_HTTP_ADDR = "http://192.168.161.9:8893/v1/vdstatus"
 COMPUTE_HOSTS = {'libertyall': "192.168.223.108"}
 
 DEVICEPOLICY = [{"name":"usb"}]
+VLAN_ENABLED = False
