@@ -275,3 +275,4 @@ RESULT = [{"meter_name": "cpu_util"},{'meter_name':"memory.usage"},{"meter_name"
 COMPUTE_HOSTS = {'libertyall': "192.168.223.108"}
 
 DEVICEPOLICY = [{"name":"usb"}]
+VLAN_ENABLED = False
