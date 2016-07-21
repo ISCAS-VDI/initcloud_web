@@ -35,7 +35,7 @@ LOG = logging.getLogger(__name__)
 
 
 # We try to get default private netwok.
-def make_sure_default_private_network(instance):
+def make_sure_default_private_network(instance, rc, user_tenant_uuid):
     network = None
     try:
         network = Network.objects.get(pk=instance.network_id)
@@ -43,6 +43,9 @@ def make_sure_default_private_network(instance):
         LOG.info("network not exist")
         pass
 
+    default_private_network = None
+    default_private_subnet = None
+    default_router = None
 
     # Try to get default network
     default_private_networks = Network.objects.filter(deleted=False,
@@ -50,6 +53,7 @@ def make_sure_default_private_network(instance):
         user=instance.user, user_data_center=instance.user_data_center)
     
     if not default_private_networks.exists():
+        LOG.info("*** default private network not exists in initcloud. Going to confirm if it exists in neutron***")
         sleeping = random.uniform(0.4, 5.5)
         time.sleep(sleeping)
         LOG.info("No default network [%s][%s], sleep [%s] seconds",
@@ -62,54 +66,328 @@ def make_sure_default_private_network(instance):
 
         # No default network exists, create a new one.
         if not default_private_networks.exists(): 
-            LOG.info("Double check no default network [%s][%s].",
-                    instance.user_data_center.tenant_name, instance.name)
-            begin = datetime.datetime.now()
 
-            # Create Default network to initcloud
-            default_private_network = Network.objects.create(
-                name=settings.DEFAULT_NETWORK_NAME, status=NETWORK_STATE_BUILD,
-                is_default=True, user=instance.user,
-                user_data_center=instance.user_data_center)
+            LOG.info("*** no default network in initcloud. GOing to confirm if it exists in neutron ***")
+            LOG.info("*** vlan enabled or not ***" + str(settings.VLAN_ENABLED))
+            if settings.VLAN_ENABLED == True:
+                LOG.info("*** vlan enabled ***")
+                LOG.info("Double check no default vlan network [%s][%s].",
+                        instance.user_data_center.tenant_name, instance.name)
+                begin = datetime.datetime.now()
+                network_ = neutron.network_list_for_tenant(rc, tenant_id=user_tenant_uuid)
+                LOG.info("********** network is ******************" + str(network_))
+                network_id = None
+                network_name = None
+                network_status = None
+                subnet_id = None
+                subnet_name = None
+                subnet_addr = None
+                for net in network_:
+                    LOG.info("***** net is *******" + str(net))
+                    network_id = net.id
+                    network_name = net.name
+                    network_status = net.admin_state_up
+                    subnet = net.subnets
+                    for s in subnet:
+                        subnet_name = s.name
+                        subnet_id = s.id
+                        subnet_addr = s.cidr
+                LOG.info("********* network_id is *********" + str(network_id))
+                LOG.info("********* network_name is *********" + str(network_name))
+                LOG.info("********* network_status is *********" + str(network_status))
+                LOG.info("********* subnet_id is *********" + str(subnet_id))
+                LOG.info("********* subnet_name is *********" + str(subnet_name))
+                LOG.info("********* subnet_addr is *********" + str(subnet_addr))
+                # Create Default network to initcloud
+                default_private_network = Network.objects.create(
+                    name=network_name, network_id=network_id, status=network_status,
+                    is_default=True, user=instance.user,
+                    user_data_center=instance.user_data_center)
 
-            address = None
-            for i in xrange(255):
-                tmp_address = settings.TENANT_DEFAULT_NETWORK
-                if not Subnet.objects.filter(user=instance.user,
-                            deleted=False, address=tmp_address,
-                            user_data_center=instance.user_data_center).exists():
-                    address = tmp_address
-                    break
-            if not address:
-                address = settings.TENANT_DEFAULT_NETWORK 
-            # Create default private subnet to initcloud
-            default_private_subnet = Subnet.objects.create(
-                name=settings.DEFAULT_SUBNET_NAME, network=default_private_network,
-                address=address, ip_version=4, status=0, user=instance.user,
-                user_data_center=instance.user_data_center)
+                LOG.info("*** default private network create success ***")
+                address = None
+                for i in xrange(255):
+                    tmp_address = settings.TENANT_DEFAULT_NETWORK
+                    if not Subnet.objects.filter(user=instance.user,
+                                deleted=False, address=tmp_address,
+                                user_data_center=instance.user_data_center).exists():
+                        address = tmp_address
+                        break
+                if not address:
+                    address = settings.TENANT_DEFAULT_NETWORK 
+                # Create default private subnet to initcloud
+                default_private_subnet = Subnet.objects.create(
+                    name=subnet_name, network=default_private_network,
+                    address=subnet_addr, ip_version=4, status=0, user=instance.user,
+                    user_data_center=instance.user_data_center)
 
-            # Create default private router to initcloud
-            default_router = Router.objects.create(
-                name=settings.DEFAULT_ROUTER_NAME, status=0, is_default=True,
-                is_gateway=settings.DEFAULT_ROUTER_AUTO_SET_GATEWAY, user=instance.user,
-                user_data_center=instance.user_data_center)
+                LOG.info("*** default_private_subnet create success ***")
 
-            end = datetime.datetime.now()
-            LOG.info("Create network db record apply [%s] seconds.",
-                            (end-begin).seconds) 
+                end = datetime.datetime.now()
+                LOG.info("Create vlan network db record apply [%s] seconds.",
+                              (end-begin).seconds) 
 
-            # Start to create real network in neutron
-            begin = datetime.datetime.now()
-            create_network(default_private_network)
-            create_subnet(default_private_subnet)
+            # User has not default network for vxlan.
+            if settings.VLAN_ENABLED == False:
+
+                LOG.info("*** vxlan mode is enabled ***")
+                # Start check if network exists in neutron.
+
+                network_ = neutron.network_list_for_tenant(rc, tenant_id=user_tenant_uuid)
+                LOG.info("********** network is ******************" + str(network_))
+                network_id = None
+                network_name = None
+                network_status = None
+                subnet_id = None
+                subnet_name = None
+                subnet_addr = None
+                for net in network_:
+                    LOG.info("***** net is *******" + str(net))
+                    network_id = net.id
+                    network_name = net.name
+                    network_status = net.admin_state_up
+                    subnet = net.subnets
+                    for s in subnet:
+                        subnet_name = s.name
+                        subnet_id = s.id
+                        subnet_addr = s.cidr
+
+                begin = datetime.datetime.now()
+                LOG.info("********* network_status is *********" + str(network_status))
+
+                # User has network in neutron
+                if network_name and network_id:
+                    LOG.info("*** vxlan user has network in neutron ***")
+                    default_private_network = Network.objects.create(
+                        name=network_name, network_id=network_id, status=network_status,
+                        is_default=True, user=instance.user,
+                        user_data_center=instance.user_data_center)
+
+                    # If network exists, check subnet exists or not.
+                   
+                    # If subnet exists, store data in initcloud.
+                    if subnet_id and subnet_name:
+
+                        LOG.info("*** vxlan user has subnet in neutron ***")
+                        address = None
+                        for i in xrange(255):
+                            tmp_address = settings.TENANT_DEFAULT_NETWORK
+                            if not Subnet.objects.filter(user=instance.user,
+                                        deleted=False, address=tmp_address,
+                                        user_data_center=instance.user_data_center).exists():
+                                address = tmp_address
+                                break
+                        if not address:
+                            address = settings.TENANT_DEFAULT_NETWORK
+                        # Create default private subnet to initcloud
+                        default_private_subnet = Subnet.objects.create(
+                            name=subnet_name, network=default_private_network, subnet_id=subnet_id,
+                            address=subnet_addr, ip_version=4, status=1, user=instance.user,
+                            user_data_center=instance.user_data_center)
+
+                        # Check if router exists.
+
+                        neutron_subnets = neutron.subnet_list(rc, network_id=network_id)
+                        for n in neutron_subnets:
+                            LOG.info("*** n is ***" + str(n))
+                        routers = neutron.router_list(rc, tenant_id=user_tenant_uuid)
+
+                        neutron_subnet_id = None
+                        neutron_router_id = None
+                        neutron_router_name = None
+                        external_gateway_info = None
+                        external_fixed_ips = None
+                        is_router = False
+                        gateway_ip = None
+                        for r in routers:
+                            is_router = True
+                            neutron_router_id = r.id
+                            neutron_router_name = r.name
+                            LOG.info("*** router is ***" + str(r))
+                            external_gateway_info = r.external_gateway_info
+                            LOG.info("*** external_gateway_info is ***" + str(external_gateway_info))
+                            if external_gateway_info:
+                                external_fixed_ips = external_gateway_info['external_fixed_ips']
+                                if external_fixed_ips:
+                                    for fip in external_fixed_ips:
+                                        neutron_subnet_id = fip['subnet_id']
+                                        gateway_ip = fip['ip_address']
+
+                        ports = neutron.port_list(rc, network_id=network_id)
+                        p_network_id = None
+                        p_subnet_id = None
+                        p_fixed_ips = None
+                        os_port_id = None
+                        for p in ports:
+                            LOG.info("*** p is ***" + str(p))
+                            os_port_id = p.id
+                            if p.device_owner == "network:router_interface":
+                                p_network_id = p.network_id
+                                p_fixed_ips = p.fixed_ips
+                                for f in p_fixed_ips:
+                                    p_subnet_id = f['subnet_id'] 
+                        LOG.info("*** gateway_ip is ***" + str(gateway_ip))
+                        LOG.info("*** neutron_subnet_id is ***" + str(neutron_subnet_id))
+                        LOG.info("*** subnet_id is ***" + str(subnet_id))
+
+                        LOG.info("external_gateway_info is" + str(external_gateway_info))
+                        LOG.info("external_fixed_ips is " + str(external_fixed_ips))
+                        # router exists
+                        if is_router and str(p_subnet_id) == str(subnet_id):
+                            LOG.info("*** vxlan user has router exists ***")
+                            # external_gateway exists
+                            if external_gateway_info:
+                                # external_fixed_ips exists, save router info to initcloud
+                                if external_fixed_ips:
+                                    LOG.info("***** ****************************** ***********")
+                                    LOG.info("*** neutron_router_name ***" + str(neutron_router_name))
+                                    LOG.info("*** neutron_router_id ***" + str(neutron_router_id))
+                                    LOG.info("*** gateway_ip ***" + str(gateway_ip))
+                                    default_router = Router.objects.create(
+                                        name=str(neutron_router_name), status=1, 
+                                        is_default=True,router_id=str(neutron_router_id), gateway=str(gateway_ip),
+                                        is_gateway=settings.DEFAULT_ROUTER_AUTO_SET_GATEWAY, user=instance.user,
+                                        user_data_center=instance.user_data_center)
+                                    LOG.info("*** router create success ***")
+
+                                    RouterInterface.objects.create(
+                                    network_id=default_private_network.id, router_id=default_router.id, 
+                                    subnet_id=default_private_subnet.id,
+                                    user=instance.user, user_data_center=instance.user_data_center,
+                                    os_port_id=str(os_port_id))
+
+                                # external_fixed_ips does not exist
+                                else:
+                                    router_add_interface(rc, router_id=neutron_router_id, subnet_id=neutron_subnet_id)
+                                    default_router = Router.objects.create(
+                                        name=str(neutron_router_name), status=1,
+                                        is_default=True,router_id=str(neutron_router_id), gateway=str(gateway_ip),
+                                        is_gateway=settings.DEFAULT_ROUTER_AUTO_SET_GATEWAY, user=instance.user,
+                                        user_data_center=instance.user_data_center)
+
+                            # external_gateway does not exist
+                            else:
+                                router_gateway = neutron.router_add_gateway(rc, router_id=neutron_router_id, network_id=network_id)
+                                router_add_interface(rc, router_id=neutron_router_id, subnet_id=neutron_subnet_id)
+
+                                default_router = Router.objects.create(
+                                        name=str(neutron_router_name), status=1,
+                                        is_default=True,router_id=str(neutron_router_id), gateway=str(gateway_ip),
+                                        is_gateway=settings.DEFAULT_ROUTER_AUTO_SET_GATEWAY, user=instance.user,
+                                        user_data_center=instance.user_data_center)
+
+                        # Router does not exist
+                        else:
+                            LOG.info("*** router does not exist ***")
+                            default_router = Router.objects.create(
+                                name=settings.DEFAULT_ROUTER_NAME, status=1, is_default=True,
+                                is_gateway=settings.DEFAULT_ROUTER_AUTO_SET_GATEWAY, user=instance.user,
+                                user_data_center=instance.user_data_center)
+
+                            # Start to create real network in neutron
+                            #begin = datetime.datetime.now()
+                            #create_network(default_private_network)
+                            #create_subnet(default_private_subnet)
+
+                            router_create_task(default_router)
+                            attach_network_to_router(default_private_network.id,
+                                     default_router.id, default_private_subnet.id)
+
+                    # Subnet not exists in neutron, create a subnet in neutron and store in the initcloud.
+                    else:
+                        LOG.info("*** vxlan subnet does not exists ***")
+                        address = None
+                        for i in xrange(255):
+                            tmp_address = settings.TENANT_DEFAULT_NETWORK
+                            if not Subnet.objects.filter(user=instance.user,
+                                        deleted=False, address=tmp_address,
+                                        user_data_center=instance.user_data_center).exists():
+                                address = tmp_address
+                                break
+                        if not address:
+                            address = settings.TENANT_DEFAULT_NETWORK
+                        # Create default private subnet to initcloud
+                        default_private_subnet = Subnet.objects.create(
+                            name=settings.DEFAULT_SUBNET_NAME, network=default_private_network,
+                            address=address, ip_version=4, status=0, user=instance.user,
+                            user_data_center=instance.user_data_center)
+
+
+                        """
+                        create_subnet(default_private_subnet)
+
+                        routers = neutron.router_list(rc, tenant_id=user_tenant_uuid)
+                        
+
+                        neutron_subnet_id = None
+                        for r in routers:
+                            LOG.info("*** router is ***" + str(r))
+                            external_gateway_info = r.external_gateway_info
+                            LOG.info("*** external_gateway_info is ***" + str(external_gateway_info))
+                            if external_gateway_info:
+                                external_fixed_ips = external_gateway_info['external_fixed_ips']
+                                if external_fixed_ips:
+                                    for fip in external_fixed_ips:
+                                        neutron_subnet_id = fip['subnet_id']
+                        LOG.info("*** neutron_subnet_id is ***" + str(neutron_subnet_id))
+
+                        """
+                        default_router = Router.objects.create(
+                            name=settings.DEFAULT_ROUTER_NAME, status=0, is_default=True,
+                            is_gateway=settings.DEFAULT_ROUTER_AUTO_SET_GATEWAY, user=instance.user,
+                            user_data_center=instance.user_data_center)
+
+                        # Start to create real network in neutron
+                        begin = datetime.datetime.now()
+                        #create_network(default_private_network)
+                        create_subnet(default_private_subnet)
+
+                        router_create_task(default_router)
+                        attach_network_to_router(default_private_network.id,
+                                  default_router.id, default_private_subnet.id)
+
+                # User has not network in neutron and initcloud.
+                else:
+                    LOG.info("*** vxlan user network does not exist ***")
+                    default_private_network = Network.objects.create(
+                        name=settings.DEFAULT_NETWORK_NAME, status=NETWORK_STATE_BUILD,
+                        is_default=True, user=instance.user,
+                        user_data_center=instance.user_data_center)
+
+                    address = None
+                    for i in xrange(255):
+                        tmp_address = settings.TENANT_DEFAULT_NETWORK
+                        if not Subnet.objects.filter(user=instance.user,
+                                    deleted=False, address=tmp_address,
+                                    user_data_center=instance.user_data_center).exists():
+                            address = tmp_address
+                            break
+                    if not address:
+                        address = settings.TENANT_DEFAULT_NETWORK
+                    # Create default private subnet to initcloud
+                    default_private_subnet = Subnet.objects.create(
+                        name=settings.DEFAULT_SUBNET_NAME, network=default_private_network,
+                        address=address, ip_version=4, status=0, user=instance.user,
+                        user_data_center=instance.user_data_center)
+
+
+                    default_router = Router.objects.create(
+                        name=settings.DEFAULT_ROUTER_NAME, status=0, is_default=True,
+                        is_gateway=settings.DEFAULT_ROUTER_AUTO_SET_GATEWAY, user=instance.user,
+                        user_data_center=instance.user_data_center)
+
+                    # Start to create real network in neutron
+                    begin = datetime.datetime.now()
+                    create_network(default_private_network)
+                    create_subnet(default_private_subnet)
       
 
-            router_create_task(default_router)
-            attach_network_to_router(default_private_network.id,
-                        default_router.id, default_private_subnet.id)
-            end = datetime.datetime.now()
-            LOG.info("Prepare private network api apply [%s] seconds.",
-                            (end-begin).seconds) 
+                    router_create_task(default_router)
+                    attach_network_to_router(default_private_network.id,
+                               default_router.id, default_private_subnet.id)
+                    end = datetime.datetime.now()
+                    LOG.info("Prepare private network api apply [%s] seconds.",
+                                (end-begin).seconds) 
         else:
             LOG.info("Double check instance has default network [%s].", instance.name)
             default_private_network = default_private_networks[0]
@@ -118,6 +396,7 @@ def make_sure_default_private_network(instance):
         LOG.info("Instance has default network, [%s][%s].",
                     instance, default_private_network)
 
+    LOG.info(" *** i am two ***")
     if not network:
         network = default_private_network
     
@@ -149,6 +428,7 @@ def make_sure_default_private_network(instance):
         except:
             time.sleep(settings.INSTANCE_SYNC_INTERVAL_SECOND) 
 
+    LOG.info("*** network is ***" + str(network))
     return network
 
 
@@ -190,10 +470,11 @@ def delete_network(network):
     LOG.info("Start to delete network, id:[%s], name[%s]",
              network.id, network.name)
     try:
- 
+
         subnet_set = Subnet.objects.filter(network_id=network.id, deleted=False)
         for subnet in subnet_set:
             delete_subnet(subnet)
+
         neutron.network_delete(rc, network.network_id)
 
         network.network_id = None
@@ -243,7 +524,6 @@ def create_subnet(subnet=None):
         raise ex
 
     return subnet
-
 
 
 @app.task
@@ -299,36 +579,12 @@ def router_create_task(router=None):
     return router
 
 
-def router_remove_gateway_(router=None):
-    if not router:
-        return
-    rc = create_rc_by_router(router)
-    LOG.info("Begin clean gateway [Router:%s][%s]", router.id, router.name)
-    try:
-        neutron.router_remove_gateway(rc, router.router_id)
-        router.gateway = None
-        router.status = NETWORK_STATE_ACTIVE
-        router.is_gateway = False
-        router.save()
-    except Exception as ex:
-        router.status = NETWORK_STATE_ACTIVE
-        router.save()
-        LOG.exception(ex)
-
-    LOG.info("End clean gateway [Router:%s][%s]", router.id, router.name)
-
-
 @app.task
 def router_delete_task(router=None):
     rc = create_rc_by_router(router)
 
-    
-    router_remove_gateway_(router)
-   
-    time.sleep(1)
     LOG.info("delete router,id:[%s],name[%s]" % (router.id, router.name))
     try:
-      
         neutron.router_delete(rc, router.router_id)
         router.router_id = None
         router.deleted = True
@@ -458,14 +714,9 @@ def attach_network_to_router(network_id, router_id, subnet_id):
 @app.task
 def detach_network_from_router(network_id):
 
-    LOG.info(" start to detach network ")
-    LOG.info("network_id is" + str(network_id))
     network = Network.objects.get(pk=network_id)
-    LOG.info(" start to detach network ")
     subnet = network.subnet_set.filter(deleted=False)[0]
-    LOG.info(" start to detach network ")
     rc = create_rc_by_network(network)
-    LOG.info(" start to detach network ")
     interface_set = RouterInterface.objects.filter(network_id=network.id,
                                                    subnet=subnet, deleted=False)
 
@@ -801,13 +1052,13 @@ def edit_default_security_group(user, udc):
 def delete_user_router_interface(router=None):
     rc = create_rc_by_router(router)
 
-    
+
     router_remove_gateway_(router)
-   
+
     time.sleep(1)
     LOG.info("delete router,id:[%s],name[%s]" % (router.id, router.name))
     try:
-      
+
         neutron.router_delete(rc, router.router_id)
         router.router_id = None
         router.deleted = True
@@ -820,4 +1071,21 @@ def delete_user_router_interface(router=None):
 
     return network
 
+def router_remove_gateway_(router=None):
+    if not router:
+        return
+    rc = create_rc_by_router(router)
+    LOG.info("Begin clean gateway [Router:%s][%s]", router.id, router.name)
+    try:
+        neutron.router_remove_gateway(rc, router.router_id)
+        router.gateway = None
+        router.status = NETWORK_STATE_ACTIVE
+        router.is_gateway = False
+        router.save()
+    except Exception as ex:
+        router.status = NETWORK_STATE_ACTIVE
+        router.save()
+        LOG.exception(ex)
+
+    LOG.info("End clean gateway [Router:%s][%s]", router.id, router.name)
 

@@ -182,7 +182,7 @@ def instance_deleted_release_resource(instance):
 
 
 @app.task
-def instance_create_sync_status_task(instance, neutron_enabled,
+def instance_create_sync_status_task(instance, neutron_enabled, user_tenant_uuid, rc,
                                     retry_count=1):
     assert instance
     assert instance.uuid
@@ -191,6 +191,7 @@ def instance_create_sync_status_task(instance, neutron_enabled,
     begin = datetime.datetime.now()
     for count in xrange(settings.MAX_COUNT_SYNC):
         srv = instance_get(instance)
+        LOG.info("*** srv is ***" + str(srv.addresses))
         status = srv.status.upper() if srv else u"None"
 
         LOG.info(u"Instance create synchronize status, [Count:%s][%s], "
@@ -198,13 +199,25 @@ def instance_create_sync_status_task(instance, neutron_enabled,
 
         if status == "ACTIVE":
             instance.status = INSTANCE_STATE_RUNNING
+
+            network_ = neutron.network_list_for_tenant(rc, tenant_id=user_tenant_uuid)
+            LOG.info("********** network is ******************" + str(network_))
+            network_name = None
+            for net in network_:
+                LOG.info("***** net is *******" + str(net))
+                network_id = net.id
+                network_name = net.name
             try:
                 if neutron_enabled:
                     private_net = "network-%s" % instance.network.id
                 else:
                     private_net = "private"
-                instance.private_ip = srv.addresses.\
-                            get(private_net)[0].get("addr", "---")
+                if  settings.VLAN_ENABLED == False:
+                    instance.private_ip = srv.addresses.\
+                                get(private_net)[0].get("addr", "---")
+                else:
+                    instance.private_ip = srv.addresses.\
+                                get(network_name)[0].get("addr", "---")
             except Exception as ex:
                 LOG.info(u"Instance create succeed, "
                          "but set private network failed, "
@@ -250,6 +263,9 @@ def instance_create_task(instance, **kwargs):
     assert instance
     assert password
 
+    user_tenant_uuid = kwargs.get("user_tenant_uuid", None)
+ 
+    LOG.info("**** user_tenant_uuid in instance_create_task is ****" + str(user_tenant_uuid))
     begin = datetime.datetime.now()
     LOG.info(u"Instance create start, [%s][pwd:%s].",
                         instance, password)
@@ -274,8 +290,15 @@ def instance_create_task(instance, **kwargs):
     if neutron_enabled:
         LOG.info("********** neutron_enabled *************")
         LOG.info("********** start to make sure make_sure_default_private_network ***********")
-        network = make_sure_default_private_network(instance)
-        LOG.info("********* network is *********" + str(network))
+        network = make_sure_default_private_network(instance, rc, user_tenant_uuid)
+        #network = neutron.network_list_for_tenant(rc, tenant_id=user_tenant_uuid)
+        #LOG.info("********** network is ******************" + str(network))
+        #network_id = None
+        #for net in network:
+        #    LOG.info("***** net is *******" + str(net))
+        #    network_id = net.id
+        #LOG.info("********* network_id is *********" + str(network_id))
+        LOG.info("**** network is ****" + str(network))
         instance.network_id = network.id
         instance.save() 
         LOG.info(u"Instance create set network passed, [%s][%s].",
@@ -313,7 +336,7 @@ def instance_create_task(instance, **kwargs):
                     instance, status, (end-begin).seconds)
             time.sleep(settings.INSTANCE_SYNC_INTERVAL_SECOND)
             instance_create_sync_status_task.delay(
-                instance, neutron_enabled, retry_count=1)
+                instance, neutron_enabled, user_tenant_uuid, rc, retry_count=1)
             billing_task.charge_resource(instance.id, Instance)
 
     return instance
@@ -658,6 +681,7 @@ def instance_get_port(instance):
     except nova.nova_exceptions.NotFound:
         return None
 
+
 @app.task
 def delete_user_instance_network(request, instance_id):
 
@@ -672,4 +696,3 @@ def delete_user_instance_network(request, instance_id):
         LOG.info("*** server delete failed ***")
         pass
     return True
-
