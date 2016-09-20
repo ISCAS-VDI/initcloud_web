@@ -1,6 +1,28 @@
 # initcloud_web
 Web interface for VDI administrator.
 
-Configuration
+## Prepare
+首先启动虚拟环境：
+如果你的虚拟环境安装的地址是  /var/www/initcloud_web/.venv/ ， 那么请先运行 
+```shell
+source /var/www/initcloud_web/.venv/bin/activate
+```
+来激活虚拟环境。
+
+安装相应的软件依赖
+```shell
+sudo yum install libyaml-devel.x86_64
+pip install xmltodict  "pywinrm>=0.1.1"
+```
+
+下载ansible代码并安装
+```shell
+git clone https://github.com/ISCAS-VDI/ansible
+git submodule update --init --recursive
+cd ansible 
+python setup.py install
+```
+
+## Configuration
 1. settings: MGR_HTTP_ADDR, COMPUTE_HOST
 2. vdstatus_ctrl: VDStatusWS
