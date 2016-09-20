@@ -33,7 +33,7 @@ VARS = {
     "ansible_ssh_host": None,
     "ansible_ssh_user": config["ansible_ssh_user"],
     "ansible_ssh_pass": config["ansible_ssh_pass"],
-    "ansible_ssh_port": 5986,
+    "ansible_ssh_port": 5985,
     "ansible_connection": "winrm",
 }
 

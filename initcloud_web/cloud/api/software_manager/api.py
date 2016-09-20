@@ -71,6 +71,7 @@ class Config(object):
             "Product_Id": "{CF2BEA3C-26EA-32F8-AA9B-331F7E34BA97}",
             "InstallArguments": "/install /passive /norestart",
             "UninstallArguments": "/uninstall /passive /norestart",
+            "url": 'http://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU_4/vcredist_x64.exe',
         },
         {
             "name": "Microsoft Visual C thingy",
@@ -78,6 +79,7 @@ class Config(object):
             "Product_Id": "{BD95A8CD-1D9F-35AD-981A-3E7925026EBB}",
             "InstallArguments": "/install /passive /norestart",
             "UninstallArguments": "/uninstall /passive /norestart",
+            "url": 'http://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU_4/vcredist_x86.exe',
         }
     ]
 
