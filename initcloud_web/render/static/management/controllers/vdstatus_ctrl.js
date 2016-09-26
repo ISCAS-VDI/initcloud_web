@@ -199,9 +199,9 @@ CloudApp.controller('VDStatusController',
 // )
 
 .factory('VDStatusWS', function($websocket) {
-  var MGR_WS_ADDR = "ws://192.168.161.9:8893/ws",
-    ws = $websocket(MGR_WS_ADDR);
-  
+  var ws = $websocket(MGR_WS_ADDR);
+  /* MGR_WS_ADDR = "ws://192.168.161.9:8893/ws", */
+    
   return ws;
 });
 

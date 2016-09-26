@@ -18,10 +18,11 @@ pip install xmltodict  "pywinrm>=0.1.1"
 下载ansible代码并安装
 ```shell
 git clone https://github.com/ISCAS-VDI/ansible
-git submodule update --init --recursive
 cd ansible 
+git submodule update --init --recursive
 python setup.py install
 ```
+在initcloud_web/cloud/api/software_manager/ansible_hosts.py下有config.yml的样例
 
 ## Configuration
 1. settings: MGR_HTTP_ADDR, COMPUTE_HOST

@@ -56,7 +56,10 @@ def cloud(request):
 def management(request):
     if request.user.is_superuser or request.user.has_perm("workflow.system_user") or request.user.has_perm("workflow.safety_user") or request.user.has_perm("workflow.audit_user"):
         return render(request, 'management.html',
-                      {'inited': DataCenter.objects.exists()})
+                      {
+                        'inited': DataCenter.objects.exists(),
+                        'ws_addr': settings.MGR_WS_ADDR
+                      })
     else:
         Operation.log(request.user, obj_name="management", action="access_manage", result=0)
         return render(request, "cloud.html")
