@@ -25,5 +25,4 @@ python setup.py install
 在initcloud_web/cloud/api/software_manager/ansible_hosts.py下有config.yml的样例
 
 ## Configuration
-1. settings: MGR_HTTP_ADDR, COMPUTE_HOST
-2. vdstatus_ctrl: VDStatusWS
+1. settings: MGR_HTTP_ADDR, MGR_WS_ADDR, COMPUTE_HOST
