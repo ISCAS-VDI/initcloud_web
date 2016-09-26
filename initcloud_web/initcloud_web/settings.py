@@ -275,6 +275,7 @@ RESULT = [{"meter_name": "cpu_util"},{'meter_name':"memory.usage"},{"meter_name"
 
 # Virtural Desktop
 MGR_HTTP_ADDR = "http://192.168.161.9:8893/v1/vdstatus"
+MGR_WS_ADDR = "ws://192.168.161.9:8893/ws"
 
 COMPUTE_HOSTS = {'libertyall': "192.168.223.108"}
 

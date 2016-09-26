@@ -164,6 +164,9 @@
 <script src="{% url "site_config" %}" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}management/app.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}management/controllers/init_ctrl.js" type="text/javascript"></script>
+<script type="text/javascript">
+  var MGR_WS_ADDR = "{{ ws_addr }}";
+</script>
 <!-- END APP LEVEL ANGULARJS SCRIPTS -->
 {% include "partial_jquery.html" %}
 <!-- END JAVASCRIPTS -->
