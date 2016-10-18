@@ -1,5 +1,8 @@
 # !/bin/sh
 
+# this must sbe added, otherwise celery will comflict with ansible.
+export PYTHONOPTIMIZE=1
+
 echo "----------------- restart httpd.service ------------------------"
 systemctl restart httpd.service
 
