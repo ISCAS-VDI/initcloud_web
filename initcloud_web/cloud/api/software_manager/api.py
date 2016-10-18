@@ -83,6 +83,13 @@ class Config(object):
         }
     ]
 
+    @staticmethod
+    def get_software_from_pid(Product_Id):
+        for software in Config.package_list:
+            if software["Product_Id"] == Product_Id:
+                return software
+        return None
+
 
 # 1. 获取可安装软件的列表
 def get_available_software():
@@ -114,13 +121,14 @@ def get_installed_software(hosts):
     callback = InstallResultCallback()
     code = execute_tasks(play_name="List installed software", tasks=[{"raw": LIST_SCRIPT}],
         hosts=hosts, callback=callback)
-    return [p["Product_Id"] for p in Config.package_list if p["Product_Id"] in callback.get_result().get("stdout_lines", [])]
+    return [p for p in Config.package_list if p["Product_Id"] in callback.get_result().get("stdout_lines", [])]
 
 
 # 3. 给指定虚拟机(列表)安装指定的软件(列表)
 def install_software(software_list, hosts_list):
     for hosts in hosts_list:
-        for software in software_list:
+        for Product_Id in software_list:
+            software = Config.get_software_from_pid(Product_Id)
             execute_tasks(play_name="Installing software", tasks=[
                 dict(action=dict(module="win_file", args=dict(
                     path=Config.dest_dir,
@@ -141,7 +149,8 @@ def install_software(software_list, hosts_list):
 # 4. 卸载指定虚拟机的指定软件(列表)
 def uninstall_software(software_list, hosts_list):
     for hosts in hosts_list:
-        for software in software_list:
+        for Product_Id in software_list:
+            software = Config.get_software_from_pid(Product_Id)
             execute_tasks(play_name="Uninstalling software", tasks=[
                 dict(action=dict(module="win_file", args=dict(
                     path=Config.dest_dir,
