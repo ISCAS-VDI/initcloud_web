@@ -21,7 +21,7 @@ ps -ef | grep celery
 
 
 echo "------------------ start celery -------------------"
-su - initcloud -c "cd /var/www/initcloud_web/initcloud_web/;../.venv/bin/celery multi restart initcloud_worker -A cloud --pidfile=/var/log/initcloud/celery_%n.pid --logfile=/var/log/initcloud/celery_%n.log &"
+su - initcloud -c "cd /var/www/initcloud_web/initcloud_web/; PYTHONOPTIMIZE=1 ../.venv/bin/python -O  ../.venv/bin/celery multi restart initcloud_worker -A cloud --pidfile=/var/log/initcloud/celery_%n.pid --logfile=/var/log/initcloud/celery_%n.log &"
 
 
 /etc/init.d/celeryd restart
