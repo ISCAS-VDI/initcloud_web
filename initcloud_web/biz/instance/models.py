@@ -47,6 +47,7 @@ class Instance(models.Model):
     user_data_center = models.ForeignKey('idc.UserDataCenter')
     
     uuid = models.CharField('instance uuid', null=True, blank=True, max_length=128)
+    tenant_uuid = models.CharField('tenant uuid', null=True, blank=True, max_length=128)
     private_ip = models.CharField(_("Private IP"), max_length=255, blank=True, null=True)
     public_ip = models.CharField(_("Public IP"), max_length=255, blank=True, null=True)
 

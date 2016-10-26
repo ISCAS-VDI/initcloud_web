@@ -283,6 +283,7 @@
     "policy": "权限",
     "roles": "角色",
     "role": "角色",
+    "heat":"批量发布虚拟机",
     "Role": "角色",
     "group": "组管理",
     "Rroup": "组管理",
@@ -464,6 +465,7 @@
     "delete": "删除",
     "batch_delete": "批量删除",
     "submit": "提交",
+    "deploy":"发布",
     "query": "查询"
   },
 
@@ -906,6 +908,26 @@
       "deleteinstance": "删除虚拟机",
       "assignrole": "分配权限"
 
-}    
+},
+  "heat":{
+    "name": "租户名称",
+    "heatname": "发布名称",
+    "view": "查看已发布虚拟机",
+    "back": "后退",
+    "file_path": "模版文件",
+    "confirm_delete_heat": "确认删除吗",
+    "deploy_name": "发布名称",
+    "description": "简介",
+    "upload_file": "模板",
+    "image": "选择镜像",
+    "select_image": "请选择一个镜像",
+    "new_heat": "发布虚拟机",
+    "start_date": "开始时间",
+    "image_name": "镜像",
+    "released": "服务列表",
+    "ordered": "已申请",
+    "update_heat_title": "更新服务",
+    "confirm_delete": "确认删除服务"
+  }
 
 }

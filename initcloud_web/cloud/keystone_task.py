@@ -75,16 +75,37 @@ def link_user_to_dc_task(user, datacenter, tenant_id, password):
     LOG.info("------------------roles are----------------" + str(roles))
     #member_role = filter(lambda r: r.name.lower() == "_member_", roles)[0]
 
-    member_role = filter(lambda r: r.name.lower() == "_member_", roles)[0]
-    LOG.info("------------------ member role is ----------------" + str(member_role.id))
-    LOG.info("------------------ user id is ----------------" + str(u.id))
+    #member_role = filter(lambda r: r.name.lower() == "_member_", roles)[0]
+    #LOG.info("------------------ member role is ----------------" + str(member_role.id))
+    #LOG.info("------------------ user id is ----------------" + str(u.id))
 
 
-    try:
-        keystone.add_tenant_user_role(rc, project=project_id, user=u.id,
-                                      role=member_role.id)
-    except:
-        pass
+    #try:
+    #    keystone.add_tenant_user_role(rc, project=project_id, user=u.id,
+    #                                  role=member_role.id)
+    #except:
+    #    pass
+
+
+    # Grant basic role to user
+    roles_id = []
+    for role in roles:
+        if role.name in ['SwiftOperator', '_member_', 'heat_stack_owner']:
+            roles_id.append(role)
+
+    #member_role = filter(lambda r: r.name.lower() == "_member_", roles)[0]
+    #LOG.info("------------------ member role is ----------------" + str(member_role.id))
+    #LOG.info("------------------ user id is ----------------" + str(u.id))
+
+
+    for role in roles_id:
+
+        try:
+            keystone.add_tenant_user_role(rc, project=project_id, user=u.id,
+                                         role=role.id)
+        except:
+            pass
+
 
     udc = UserDataCenter.objects.create(
         data_center=datacenter,

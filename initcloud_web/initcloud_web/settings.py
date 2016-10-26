@@ -62,7 +62,8 @@ INSTALLED_APPS = [
     'biz.forum',
     'biz.backup',
     'biz.billing',
-    'biz.vir_desktop'
+    'biz.vir_desktop',
+    'biz.heat'
 ]
 
 MIDDLEWARE_CLASSES = (
@@ -259,9 +260,10 @@ logging.config.dictConfig(LOG_CONFIG)
 
 # Added by arthur
 
-ADMIN_TOKEN = "f14e712d84e243ca8a02dbc799e3184b"
+ADMIN_TOKEN = "3aec602b0031434492009482221ed52f"
 ADMIN_NAME = "admin"
 EDNPOINT = "http://localhost:35357/v2.0"
+HEAT_ENDPOINT = 'http://localhost:8004/v1/'
 ADMIN_TENANT_NAME = "admin"
 ADMIN_PASS = "admin"
 AUTH_URL = "http://localhost:5000/v2.0/"
@@ -270,14 +272,14 @@ TENANT_DEFAULT_NETWORK = "10.0.0.0/24"
 GATEWAY_IP = "10.0.0.1"
 TEST_TENANT_NAME = "testwork"
 TEST_TENANT_ID = "cde7d6ed392941c5b75a3079459690d4"
-ALARM_ACTIONS = "http://192.168.223.108:5998/wsgi_app.py"
+ALARM_ACTIONS = "http://192.168.223.150:5998/wsgi_app.py"
 RESULT = [{"meter_name": "cpu_util"},{'meter_name':"memory.usage"},{"meter_name": "disk.write.bytes"},{"meter_name": "network.incoming.bytes"}, {"meter_name": "network.outgoing.bytes"}]
 
 # Virtural Desktop
 MGR_HTTP_ADDR = "http://192.168.161.9:8893/v1/vdstatus"
 MGR_WS_ADDR = "ws://192.168.161.9:8893/ws"
 
-COMPUTE_HOSTS = {'libertyall': "192.168.223.108"}
+COMPUTE_HOSTS = {'libertyall': "192.168.223.150"}
 
 DEVICEPOLICY = [{"name":"usb"}]
 VLAN_ENABLED = False

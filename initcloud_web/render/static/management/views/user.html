@@ -114,6 +114,13 @@
                                                     <i class="fa fa-magic"></i> {[{ 'user.revoke_workflow_approve' | i18next }]}
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a href="javascript: void(0)"
+                                                   data-ng-click="openHeatModal(user)"
+                                                   >
+                                                    <i class="fa fa-magic"></i> {[{ 'user.heat' | i18next }]}
+                                                </a>
+                                            </li>
 
                                         </ul>
                                     </div>
@@ -447,6 +454,82 @@
     </div>
 </script>
 <!-- END TEMPLATE BROADCAST -->
+
+<!-- BEGIN TEMPLATE NEW-HEAT -->
+<script type="text/ng-template" id="new-heat.html">
+    <div class="modal-header">
+       <div class="modal-title"> {[{ 'heat.new_heat' | i18next }]}</div>
+    </div>
+    <div class="modal-body">
+        <form id="heatForm" heat="form" class="form-horizontal form-bordered">
+            <div class="form-group">
+                <label class="control-label col-md-3">
+                    {[{ 'heat.deploy_name' | i18next }]}
+                    <span class="required" aria-required="true"> * </span>
+                </label>
+                <div class="col-md-5">
+                    <input class="form-control placeholder-no-fix" type="text"
+                           placeholder="{[{ 'heat.deploy_name' | i18next }]}"
+                           name="heatname" data-ng-model="heat.heatname"
+                           data-message-remote="test"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3">
+                    {[{ 'heat.description' | i18next }]}
+                    <span class="required" aria-required="true"> * </span>
+                </label>
+                <div class="col-md-5">
+                    <input class="form-control placeholder-no-fix" type="text"
+                           placeholder="{[{ 'heat.description' | i18next }]}"
+                           name="description" data-ng-model="heat.description"
+                           data-message-remote="test"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="start_date" class="control-label col-md-3">{[{ 'heat.start_date' | i18next }]}</label>
+                <div class="col-md-5">
+                        <input id="start_date" readonly="true" size="10" data-ng-model="heat.start_date" class="form-control date-picker">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="file_upload">
+                    {[{ 'heat.upload_file' | i18next }]}
+                    <span class="required" aria-required="true"> * </span>
+                </label>
+                <div class="col-md-5">
+                    <input id="id_file" type="file" name="file" data-ng-model="heat.file_upload">
+                    </input>
+                </div>
+            </div>
+            <!--
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="image">
+                    {[{ 'heat.image' | i18next }]}</label>
+                <div class="col-md-5">
+                <select id="image" data-ng-model="heat.image">
+                    <option value="">{[{ 'heat.select_image' | i18next }]}</option>
+                    <option data-ng-repeat="image in images"
+                        value="{[{ image.id }]}"> {[{ image.name }]}</option>
+                </select>
+                </div>
+            </div>
+            -->
+            <div class="clear"></div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
+            {[{ 'cancel' | i18next }]}
+        </a>
+        <a class="btn" data-ng-show="is_submitting">
+            <img src="/static/assets/global/img/throbber.gif"/>
+        </a>
+        <a class="btn btn-primary" data-ng-click="create()" data-ng-hide="is_submitting">
+            {[{ 'submit' | i18next }]}
+        </a>
+    </div>
+</script>
 
 
 <!-- BEGIN TEMPLATE NEW-USER -->
