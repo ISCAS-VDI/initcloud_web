@@ -166,7 +166,26 @@
                 </li>
             </ul>
         </li>
-        
+
+        <!--
+        <li class="" data-ng-if="current_user.is_system_user">
+            <a href="javascript:;">
+                <i class="fa fa-signal"></i>
+                <span class="title">{[{ 'sidebar.heat' | i18next }]}</span>
+                <span class="arrow"></span>
+            </a>
+            <ul class="sub-menu">
+                <li>
+                    <a href="#/heat/">
+                        <i class="fa fa-signal"></i>
+                        <span class="title">
+                            {[{ 'sidebar.heat' | i18next }]}
+                        </span>
+                    <span class="selected"></span></a>
+                </li>
+            </ul>
+        </li>
+        -->
         <li class="" data-ng-if="current_user.is_system_user">
             <a href="javascript:;">
                 <i class="fa fa-signal"></i>
@@ -185,6 +204,25 @@
             </ul>
         </li>
         
+        <li class="" data-ng-if="current_user.is_system_user">
+            <a href="javascript:;">
+                <i class="fa fa-flag fa-circle"></i>
+                <span class="title">{[{ 'sidebar.zabbix' | i18next }]}</span>
+                <span class="arrow"></span>
+            </a>
+            <ul class="sub-menu">
+                <li>
+                    <a href="http://192.168.1.20/zabbix">
+                        <i class="fa fa-flag fa-circle"></i>
+                        <span class="title">
+                            {[{ 'sidebar.zabbix' | i18next }]}
+                        </span>
+                    <span class="selected"></span></a>
+                </li>
+            </ul>
+        </li>
+
+
         <li data-ng-if-end class="heading" data-ng-if="site_config.WORKFLOW_ENABLED">
             <h3 class="uppercase">
                 {[{ 'sidebar.workflow_management' | i18next }]}

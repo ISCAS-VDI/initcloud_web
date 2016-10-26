@@ -37,6 +37,9 @@ from cloud.cloud_utils import create_rc_by_instance, create_rc_by_dc, create_rc_
 from cloud.alarm_task import (alarm_create_task)
 
 
+from django.db.models import Q
+
+
 
 class AlarmList(generics.ListAPIView):
     LOG.info("--------------------- alarm list ------------------------")
@@ -208,8 +211,9 @@ class ResourceList(generics.ListAPIView):
     def list(self, request):
         try:
             udc_id = request.session["UDC_ID"]
-            queryset = self.get_queryset().filter(
-                user=request.user, user_data_center__pk=udc_id)
+            UDC = UserDataCenter.objects.all().filter(user=request.user)[0]
+            project_id = UDC.tenant_uuid
+            queryset = self.get_queryset().filter(Q(user=request.user, user_data_center__pk=udc_id) |Q(tenant_uuid=project_id))
             serializer = InstanceSerializer(queryset, many=True)
             LOG.info("------------------ RESOURCE  -----------------")
             LOG.info(serializer.data)

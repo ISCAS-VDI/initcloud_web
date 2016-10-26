@@ -76,7 +76,8 @@ def instance_action(user, instance_id, action):
     if action not in ALLOWED_INSTANCE_ACTIONS.keys():
         return {"OPERATION_STATUS": OPERATION_FAILED,
                 "status": "Unsupported action [%s]" % action}
-    instance = Instance.objects.get(pk=instance_id, user=user, deleted=False)
+    #instance = Instance.objects.get(pk=instance_id, user=user, deleted=False)
+    instance = Instance.objects.get(pk=instance_id, deleted=False)
     # restoring instance can't do any action!
 
     if BackupItem.is_any_restoring(instance):

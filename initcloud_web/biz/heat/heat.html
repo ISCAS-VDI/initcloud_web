@@ -1,0 +1,369 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption font-green-sharp">
+                    <a class="btn btn-icon-only btn-default" href="#" ng-click="heat_table.reload();">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                    <a class="btn btn-primary" href="#" ng-click="openNewHeatModal()">
+                        <i class="fa fa-plus"></i>{[{ 'action.add' | i18next }]}
+                    </a>
+                    <!--
+                    <a class="btn btn-info" href="#" ng-click="openBroadcastModal()">
+                        <i class="fa  fa-bullhorn"></i> {[{ 'notification.broadcast' | i18next }]}
+                    </a>
+                    <a class="btn btn-info" href="javascript:void(0)"
+                       data-ng-click="openDataCenterBroadcastModal();">
+                        <i class="fa  fa-bullhorn"></i> {[{ 'notification.data_center_broadcast' | i18next }]}
+                    </a>
+                    -->
+                </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div id="" class="dataTables_wrapper no-footer">
+                    <table ng-table="heat_table"
+                           class="table table-striped table-bordered table-advance table-hover">
+                        <tbody>
+                            <tr ng-repeat="heat in $data">
+                                 {[{ heat }]}
+                                <td width="30" header="'checkbox-header.html'">
+                                    <input type="checkbox" data-ng-model="heat.checked"/>
+                                </td>
+                                <td data-title="'heat.name' | i18next">
+                                    <span> {[{ heat.heatname }]} </span>
+                                </td>
+                                <td data-title="'actions' | i18next">
+                                    <div class="btn-group">
+                                        <button class="btn btn-default"
+                                                type="button" ng-click="edit(heat)">
+                                            <i class="fa fa-edit"></i>
+                                            {[{ 'action.edit' | i18next }]}
+                                        </button>
+                                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"
+                                                type="button" aria-expanded="false">
+                                            <i class="fa fa-angle-down"></i>
+                                        </button>
+                                        <ul heat="menu" class="dropdown-menu">
+                                            <li>
+                                                <a href="javascript:void(0);"  ng-click="delete(heat)">
+                                                    <i class="fa fa-trash"></i>
+                                                    {[{ 'action.delete' | i18next }]} </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MAIN CONTENT -->
+
+
+<!-- BEGIN TEMPLATE DETAIL -->
+<script type="text/ng-template" id="udc_list.html">
+    <div class="modal-header">
+       <div class="modal-title"> {[{ 'user.user_data_centers' | i18next }]}</div>
+    </div>
+    <div class="modal-body">
+        <table ng-table="udc_table"
+               class="table table-striped table-bordered table-advance table-hover">
+            <tbody>
+                <tr ng-repeat="udc in $data">
+                    <td data-title="'udc.data_center' | i18next">
+                        <span> {[{ udc.data_center.name }]} </span>
+                    </td>
+                    <td data-title="'udc.tenant' | i18next">
+                        <span> {[{ udc.tenant_name }]} </span>
+                    </td>
+                    <td data-title="'udc.tenant_uuid' | i18next">
+                        <span> {[{ udc.tenant_uuid }]} </span>
+                    </td>
+                    <td data-title="'udc.keystone_user' | i18next">
+                        <span> {[{ udc.keystone_user}]} </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
+            {[{ 'cancel' | i18next }]}
+        </a>
+    </div>
+</script>
+<!-- END TEMPLATE DETAIL-->
+
+<!-- BEGIN TEMPLATE BROADCAST -->
+<script type="text/ng-template" id="broadcast.html">
+    <div class="modal-header">
+       <div class="modal-title"> {[{ 'notification.notify' | i18next }]}</div>
+    </div>
+    <div class="modal-body">
+        <form id="notificationForm" heat="form" class="form-horizontal form-bordered">
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="users">
+                    {[{ 'notification.receivers' | i18next }]}
+                </label>
+                <div class="col-md-9">
+                    <ul data-ng-if="users.length > 0" class="list-inline" style="margin-top: 8px;">
+                        <li class="static-info" data-ng-repeat="user in users">{[{ user.username }]}</li>
+                    </ul>
+                    <p data-ng-if="users.length == 0" style="margin-top: 8px;">{[{ 'notification.all_users' | i18next }]}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="level">
+                    {[{ 'notification.level' | i18next }]}
+                </label>
+                <div class="col-md-5">
+                    <select id="level" name="level" data-ng-model="notification.level"
+                            class="form-control input-medium"
+                            data-ng-options="option.key as option.label for option in options">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="title">
+                    {[{ 'notification.title' | i18next }]}
+                </label>
+                <div class="col-md-5">
+                    <input id="title" name="title"
+                        data-ng-model="notification.title"
+                        class="form-control input-medium"
+                        data-rule-required="true"
+                        data-rule-maxlength="100">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="content">
+                    {[{ 'notification.content' | i18next }]}
+                </label>
+                <div class="col-md-5">
+                    <textarea id="content" name="content" rows="5" class="form-control"
+                          data-rule-required="true"
+                          data-ng-model="notification.content" >
+                    </textarea>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
+            {[{ 'cancel' | i18next }]}
+        </a>
+        <a class="btn btn-primary" data-ng-click="broadcast(notification)" data-nap-after-click>
+            {[{ 'submit' | i18next }]}
+        </a>
+    </div>
+</script>
+<!-- END TEMPLATE BROADCAST -->
+
+<!-- BEGIN TEMPLATE BROADCAST -->
+<script type="text/ng-template" id="data_center_broadcast.html">
+    <div class="modal-header">
+       <div class="modal-title"> {[{ 'notification.data_center_broadcast' | i18next }]}</div>
+    </div>
+    <div class="modal-body">
+        <form id="notificationForm" heat="form" class="form-horizontal form-bordered">
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="data_center">
+                    {[{ 'notification.data_center' | i18next }]}
+                </label>
+                <div class="col-md-9">
+                    <select id="data_center" name="data_center" multiple="true"
+                            class="form-control input-medium"
+                            data-ng-model="notification.data_centers"
+                            data-ng-options="dc.id as dc.name for dc in data_centers"
+                            data-rule-required="true">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="level">
+                    {[{ 'notification.level' | i18next }]}
+                </label>
+                <div class="col-md-5">
+                    <select id="level" name="kind"
+                            class="form-control input-medium"
+                            data-ng-model="notification.level"
+                            data-ng-options="option.key as option.label for option in options"
+                            data-rule-required="true">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="title">
+                    {[{ 'notification.title' | i18next }]}
+                </label>
+                <div class="col-md-5">
+                    <input id="title" name="title"
+                        class="form-control input-medium"
+                        data-ng-model="notification.title"
+                        data-rule-required="true"
+                        data-rule-maxlength="100">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="content">
+                    {[{ 'notification.content' | i18next }]}
+                </label>
+                <div class="col-md-5">
+                    <textarea id="content" name="content" rows="5" class="form-control"
+                          data-rule-required="true"
+                          data-ng-model="notification.content" >
+                    </textarea>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
+            {[{ 'cancel' | i18next }]}
+        </a>
+        <a class="btn btn-primary" data-ng-click="broadcast(notification)" data-nap-after-click>
+            {[{ 'submit' | i18next }]}
+        </a>
+    </div>
+</script>
+<!-- END TEMPLATE BROADCAST -->
+
+
+<!-- BEGIN TEMPLATE BROADCAST -->
+<script type="text/ng-template" id="announce.html">
+    <div class="modal-header">
+       <div class="modal-title"> {[{ 'notification.announce' | i18next }]}</div>
+    </div>
+    <div class="modal-body">
+        <form id="notificationForm" heat="form" class="form-horizontal form-bordered">
+            <div class="form-group">
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="level">
+                        {[{ 'notification.level' | i18next }]}
+                    </label>
+                    <div class="col-md-5">
+                        <select id="level" name="kind"
+                                class="form-control input-medium"
+                                data-ng-model="notification.level"
+                                data-ng-options="option.key as option.label for option in options"
+                                data-rule-required="true">
+                        </select>
+                    </div>
+                </div>
+                <label class="col-md-3 control-label" for="title">
+                    {[{ 'notification.title' | i18next }]}
+                </label>
+                <div class="col-md-5">
+                    <input id="title" name="title"
+                        data-ng-model="notification.title"
+                        class="form-control input-medium"
+                        data-rule-required="true"
+                        data-rule-maxlength="100">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="content">
+                    {[{ 'notification.content' | i18next }]}
+                </label>
+                <div class="col-md-5">
+                    <textarea id="content" name="content" rows="5" class="form-control"
+                          data-rule-required="true"
+                          data-ng-model="notification.content" >
+                    </textarea>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
+            {[{ 'cancel' | i18next }]}
+        </a>
+        <a class="btn btn-primary" data-ng-click="announce(notification)" data-nap-after-click>
+            {[{ 'submit' | i18next }]}
+        </a>
+    </div>
+</script>
+<!-- END TEMPLATE BROADCAST -->
+
+<script type="text/ng-template" id="checkbox-header.html">
+    <input type="checkbox"  data-ng-model="checkboxGroup.checked" data-ng-change="checkboxGroup.toggleAll()"/>
+</script>
+
+
+
+<!-- BEGIN TEMPLATE NEW-USER -->
+<script type="text/ng-template" id="new-heat.html">
+    <div class="modal-header">
+       <div class="modal-title"> {[{ 'heat.new_heat' | i18next }]}</div>
+    </div>
+    <div class="modal-body">
+        <form id="heatForm" heat="form" class="form-horizontal form-bordered">
+            <div class="form-group">
+                <label class="control-label col-md-3">
+                    {[{ 'heat.name' | i18next }]}
+                    <span class="required" aria-required="true"> * </span>
+                </label>
+                <div class="col-md-5">
+                    <input class="form-control placeholder-no-fix" type="text"
+                           placeholder="{[{ 'heat.name' | i18next }]}"
+                           name="heatname" data-ng-model="heat.heatname"
+                           data-message-remote="test"/>
+                </div>
+            </div>
+            </div>
+            <div class="clear"></div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
+            {[{ 'cancel' | i18next }]}
+        </a>
+        <a class="btn" data-ng-show="is_submitting">
+            <img src="/static/assets/global/img/throbber.gif"/>
+        </a>
+        <a class="btn btn-primary" data-ng-click="create()" data-ng-hide="is_submitting">
+            {[{ 'submit' | i18next }]}
+        </a>
+    </div>
+</script>
+<!-- END TEMPLATE DETAIL-->
+
+<!-- BEGIN TEMPLATE UPDATE -->
+<script type="text/ng-template" id="update.html">
+    <div class="modal-header">
+       <div id="updateTitle" class="modal-title"> {[{ 'heat.update_heat_title' | i18next }]}</div>
+    </div>
+    <div class="modal-body">
+        <form id="HeatForm" heat="form" class="form-horizontal form-bordered">
+            <input type="hidden"  name="id" data-ng-model="heat.id">
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="name">
+                    {[{ 'heat.name' | i18next }]}
+                    <span class="required" aria-required="true"> * </span>
+                </label>
+                <div class="col-md-5">
+                    <input id="heat_name" name="heat_name"  data-ng-model="heat.heatname"  maxlength="64"
+                           class="form-control input-medium required">
+                </div>
+            </div>
+            <div class="clear"></div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-default" data-ng-click="cancel()">
+            {[{ 'cancel' | i18next }]}
+        </a>
+        <a class="btn btn-primary"
+           data-ng-click="submit(heat)"
+           data-nap-after-click> {[{ 'submit' | i18next }]}</a>
+    </div>
+</script>
+<!-- END TEMPLATE UPDATE -->

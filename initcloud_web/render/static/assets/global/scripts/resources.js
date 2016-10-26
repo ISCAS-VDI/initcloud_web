@@ -187,4 +187,8 @@ angular.module('cloud.resources', [])
 
 .factory('Alarm', ['$resource', function ($resource) {
     return $resource("/api/alarm/:id", {id: '@id'});
+}])
+
+.factory('Heat', ['$resource', function ($resource) {
+    return $resource("/api/heat/:id", {id: '@id'});
 }]);

@@ -511,7 +511,7 @@ def attach_volume_to_instance(volume, instance):
     begin = datetime.datetime.now()
     try:
         nova.instance_volume_attach(rc, volume_id=volume.volume_id,
-                                    instance_id=instance.uuid, device='')
+                                    instance_id=instance.uuid, device=None)
     except Exception:
         volume.change_status(VOLUME_STATE_ERROR)
         end = datetime.datetime.now()

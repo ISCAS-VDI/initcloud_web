@@ -275,7 +275,8 @@ CloudApp.config(['$stateProvider', '$urlRouterProvider',
                             name: 'CloudApp',
                             insertBefore: '#ng_load_plugins_before',
                             files: [
-                                '/static/management/controllers/user_ctrl.js'
+                                '/static/management/controllers/user_ctrl.js',
+                                '/static/management/controllers/heat_ctrl.js'
                             ]
                         });
                     }]
@@ -459,6 +460,46 @@ CloudApp.config(['$stateProvider', '$urlRouterProvider',
                   });
                 }]
               }
+            })
+
+
+            .state("heat", {
+                url: "/heat/",
+                templateUrl: "/static/management/views/heat.html",
+                data: {pageTitle: 'Heat'},
+                controller: "HeatController",
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'CloudApp',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                '/static/management/controllers/heat_ctrl.js'
+                            ]
+                        });
+                    }]
+                }
+            })
+
+            .state("heat_detail", {
+                url: "/heat_detail/:tenant_id",
+                templateUrl: "/static/management/views/heat_detail.html",
+                data: {pageTitle: 'Heat Detail'},
+                controller: "HeatDetailController",
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'CloudApp',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                '/static/management/controllers/heat_ctrl.js'
+                            ]
+                        });
+                    }],
+                    tenant_id: function ($stateParams) {
+                        return $stateParams.tenant_id;
+                    }
+                }
             })
 
             // workflow

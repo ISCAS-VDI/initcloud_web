@@ -14,11 +14,11 @@ import logging
 
 from django.conf import settings
 from heatclient import client as heat_client
-
-from horizon.utils import functions as utils
-from horizon.utils.memoized import memoized  # noqa
-from openstack_dashboard.api import base
-
+from keystoneclient import v2_0
+#from horizon.utils import functions as utils
+#from horizon.utils.memoized import memoized  # noqa
+#from openstack_dashboard.api import base
+from biz.idc.models import UserDataCenter
 LOG = logging.getLogger(__name__)
 
 
@@ -30,6 +30,43 @@ def format_parameters(params):
     return parameters
 
 
+def heatclient(user):
+
+    LOG.info("start to execute heatclient")
+    v2_auth_url = settings.AUTH_URL 
+
+    LOG.info("*** user is ***" + str(user))
+    UDC = UserDataCenter.objects.all().filter(user=user)[0]
+    LOG.info("*** done from get udc *** ")
+    username = UDC.keystone_user
+    password = UDC.keystone_password
+    project_id = UDC.tenant_uuid
+    tenant_name = UDC.tenant_name
+    LOG.info("username" + str(username))
+    LOG.info("password" + str(password))
+    LOG.info("project_id" + str(project_id))
+    LOG.info("tenant_name" + str(tenant_name))
+    #keystone = v2_0.client.Client(username = 'admin', password = 'a3ce3f21aa784169',auth_url = 'http://192.168.0.102:5000/v2.0', tenant_name = 'admin')
+    keystone = v2_0.client.Client(username = username, password = password,auth_url = v2_auth_url, tenant_name = tenant_name)
+    LOG.info("keystone is" + str(keystone))
+    token_dict = keystone.auth_ref
+    LOG.info("token_dict is " + str(token_dict))
+    token = token_dict['token']['id']
+    LOG.info("token is" + str(token))
+    #endpoint = 'http://192.168.0.102:8004/v1/' + '4ab3fb1870e34be6b8b8f6d0c4b81034'
+    endpoint = settings.HEAT_ENDPOINT + project_id
+    #endpoint = 'http://192.168.0.102:8004/v1/'
+    api_version = "1"
+    insecure = getattr(settings, 'OPENSTACK_SSL_NO_VERIFY', False)
+    cacert = getattr(settings, 'OPENSTACK_SSL_CACERT', None)
+    
+    client = heat_client.Client(api_version, endpoint, token=token,insecure=insecure, cacert=cacert)
+    LOG.info("client" + str(client))
+    #client.format_parameters = format_parameters
+    #return client
+    return client
+
+'''
 @memoized
 def heatclient(request, password=None):
     api_version = "1"
@@ -52,12 +89,12 @@ def heatclient(request, password=None):
     client = heat_client.Client(api_version, endpoint, **kwargs)
     client.format_parameters = format_parameters
     return client
+'''
 
-
-def stacks_list(request, marker=None, sort_dir='desc', sort_key='created_at',
+def stacks_list(user, marker=None, sort_dir='desc', sort_key='created_at',
                 paginate=False):
     limit = getattr(settings, 'API_RESULT_LIMIT', 1000)
-    page_size = utils.get_page_size(request)
+    page_size = 1#utils.get_page_size(request)
 
     if paginate:
         request_size = page_size + 1
@@ -68,7 +105,7 @@ def stacks_list(request, marker=None, sort_dir='desc', sort_key='created_at',
     if marker:
         kwargs['marker'] = marker
 
-    stacks_iter = heatclient(request).stacks.list(limit=request_size,
+    stacks_iter = heatclient(user).stacks.list(limit=request_size,
                                                   **kwargs)
 
     has_prev_data = False
@@ -92,17 +129,21 @@ def stack_delete(request, stack_id):
     return heatclient(request).stacks.delete(stack_id)
 
 
-def stack_get(request, stack_id):
-    return heatclient(request).stacks.get(stack_id)
+def stack_get(user, stack_id):
+    LOG.info("*** start to get stack ***")
+    return heatclient(user).stacks.get(stack_id)
 
 
 def template_get(request, stack_id):
     return heatclient(request).stacks.template(stack_id)
 
 
-def stack_create(request, password=None, **kwargs):
-    return heatclient(request, password).stacks.create(**kwargs)
+#def stack_create(request, password=None, **kwargs):
+#    return heatclient(request, password).stacks.create(**kwargs)
 
+def stack_create(user,**kwargs):
+    LOG.info("start to create")
+    return heatclient(user).stacks.create(**kwargs)
 
 def stack_update(request, stack_id, **kwargs):
     if kwargs.get('password'):
@@ -114,8 +155,8 @@ def events_list(request, stack_name):
     return heatclient(request).events.list(stack_name)
 
 
-def resources_list(request, stack_name):
-    return heatclient(request).resources.list(stack_name)
+def resources_list(user, stack_name):
+    return heatclient(user).resources.list(stack_name)
 
 
 def resource_get(request, stack_id, resource_name):
@@ -126,5 +167,5 @@ def resource_metadata_get(request, stack_id, resource_name):
     return heatclient(request).resources.metadata(stack_id, resource_name)
 
 
-def template_validate(request, **kwargs):
-    return heatclient(request).stacks.validate(**kwargs)
+def template_validate(user, **kwargs):
+    return heatclient(user).stacks.validate(**kwargs)

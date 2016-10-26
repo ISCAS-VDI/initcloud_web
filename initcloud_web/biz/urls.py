@@ -32,6 +32,9 @@ from biz.policy_neutron import views as policy_neutron_view
 from biz.alarm import views as alarm_view
 from biz.UserGrouper import views as user_grouper_view
 
+#heat
+from biz.heat import views as heat_view
+
 # various options and configurations
 urlpatterns = [
     url(r'^settings/monitor/$', instance_view.monitor_settings),
@@ -426,4 +429,14 @@ urlpatterns += [
     url(r'^orders/$', billing_view.OrderList.as_view()),
     url(r'^bills/$', billing_view.BillList.as_view()),
     url(r'^bills/overview/$', billing_view.bill_overview),
+]
+
+#heat
+urlpatterns += [
+    url(r'^heat/$', heat_view.HeatList.as_view()),
+    url(r'^heat/create/$', heat_view.create_heat),
+    url(r'^heat/details/(?P<tenant_id>[^/]+)/$', heat_view.detail.as_view()),
+    url(r'^heat/batch-delete/$', heat_view.delete_heats),
+    url(r'^heat/deleteheat/$', heat_view.delete_heat),
+    url(r'^heat/update/$', heat_view.update_heat),
 ]

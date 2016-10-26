@@ -275,6 +275,24 @@ CloudApp.controller('UserController',
                 $scope.user_table.reload();
             });
         };
+        $scope.openHeatModal = function(user){
+            $modal.open({
+                templateUrl: 'new-heat.html',
+                backdrop: "static",
+                controller: 'newHeatController',
+                size: 'lg',
+                resolve: {
+                    dataCenters: function(){
+                        return DataCenter.query().$promise;
+                    },
+                    user_id: function(){
+                        return user.id;
+                    }
+                }
+            }).result.then(function(){
+                $scope.user_table.reload();
+            });
+        };
     })
 
     .controller('UserUdcListController',
@@ -523,7 +541,50 @@ CloudApp.controller('UserController',
                 });
             }
     })
+    .controller('newHeatController',
+        function($scope, $modalInstance, $i18next,$http,
+                 CommonHttpService, ToastrService, UserForm, dataCenters, user_id, DatePicker){
 
+            var form = null;
+            $modalInstance.rendered.then(function(){
+                DatePicker.initDatePickers();
+                form = UserForm.init($scope.site_config.WORKFLOW_ENABLED);
+            });
+            $scope.user_id = user_id
+
+            $scope.dataCenters = dataCenters;
+            $scope.heat = {is_resource_user: false, is_approver: false, user_id: user_id};
+            $scope.is_submitting = false;
+            $scope.cancel = $modalInstance.dismiss;
+            $scope.create = function(){
+
+
+                $scope.is_submitting = true;
+                $http({method:'POST',
+                        url:'/api/heat/create/',
+                        headers:{'Content-Type':undefined},
+                        transformRequest: function(data){
+                                var formData = new FormData();
+                                formData.append('heatname',$scope.heat.heatname);
+                                formData.append('user_id',$scope.heat.user_id);
+                                formData.append('description',$scope.heat.description);
+                                formData.append('start_date',$scope.heat.start_date);
+                                formData.append('file', document.getElementById('id_file').files[0]);
+                                formData.append('file_name', document.getElementById('id_file').value);
+                                return formData;
+                        }
+                }
+                ).success(function(data, status, headers, config){
+                        ToastrService.success($i18next("success"));
+                        $modalInstance.dismiss();
+                    }).error(function(data, status, headers, config) {
+                    }
+                );
+
+            };
+        }
+    )
+ 
     .controller('NewUserController',
         function($scope, $modalInstance, $i18next,
                  CommonHttpService, ToastrService, UserForm, dataCenters, Tenants){

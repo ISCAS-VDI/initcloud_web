@@ -53,6 +53,9 @@ from biz.common.views import IsSystemUser, IsAuditUser, IsSafetyUser
 from cloud.cloud_utils import get_nova_admin
 import traceback
 
+
+from django.db.models import Q
+
 LOG = logging.getLogger(__name__)
 OPERATION_SUCCESS = 1
 OPERATION_FAILED = 0
@@ -65,8 +68,10 @@ class InstanceList(generics.ListCreateAPIView):
     def list(self, request):
         try:
             udc_id = request.session["UDC_ID"]
+            UDC = UserDataCenter.objects.all().filter(user=request.user)[0]
+            project_id = UDC.tenant_uuid
             queryset = self.get_queryset().filter(
-                user=request.user, user_data_center__pk=udc_id)
+                Q(user=request.user, user_data_center__pk=udc_id) | Q(tenant_uuid=project_id))
             serializer = InstanceSerializer(queryset, many=True)
             return Response(serializer.data)
         except Exception as e:
@@ -271,9 +276,11 @@ def instance_status_view(request):
 
 @api_view(["GET"])
 def instance_search_view(request):
-    instance_set = Instance.objects.filter(
-        deleted=False, user=request.user, status=INSTANCE_STATE_RUNNING,
-        user_data_center=request.session["UDC_ID"])
+
+    UDC = UserDataCenter.objects.all().filter(user=request.user)[0]
+    project_id = UDC.tenant_uuid
+    instance_set = Instance.objects.filter(Q(deleted=False, user=request.user, status=INSTANCE_STATE_RUNNING,
+        user_data_center=request.session["UDC_ID"]) | Q(tenant_uuid=project_id))
     serializer = InstanceSerializer(instance_set, many=True)
     return Response(serializer.data)
 
@@ -348,7 +355,8 @@ def instance_detail_view_via_uuid_or_ip(request, uuid_or_ip):
 def instance_detail_view(request, pk):
     tag = request.GET.get("tag", 'instance_detail')
     try:
-        instance = Instance.objects.get(pk=pk, user=request.user)
+        #instance = Instance.objects.get(pk=pk, user=request.user)
+        instance = Instance.objects.get(pk=pk)
     except Exception as e:
         LOG.error("Get instance error, msg:%s" % e)
         return Response({"OPERATION_STATUS": 0, "MSG": "Instance no exist"}, status=status.HTTP_200_OK)
