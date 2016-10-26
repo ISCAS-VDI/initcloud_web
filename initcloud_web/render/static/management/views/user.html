@@ -9,6 +9,9 @@
                     <a class="btn btn-primary" href="#" ng-click="openNewUserModal()">
                         <i class="fa fa-plus"></i>{[{ 'action.add' | i18next }]}
                     </a>
+                    <a class="btn btn-primary" ng-click="batchHeat()" ng-class="{disabled: checkboxGroup.noneChecked()}">
+                        <i class="fa fa-plus"></i>{[{ 'action.heat' | i18next }]}
+                    </a>
                     <a class="btn btn-danger" ng-click="batchDelete()" ng-class="{disabled: checkboxGroup.noneChecked()}">
                         <i class="fa fa-trash"></i>
                         {[{ 'action.batch_delete' | i18next }]}
