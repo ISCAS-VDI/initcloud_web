@@ -91,29 +91,37 @@ def create_heat(request):
             #heat.save()
 
 
-            stack_name = request.data.get('heatname')
-            timeout_mins = 60
-            disable_rollback = True
-            parameters = []
-            template = tpl
-            user_id = request.data.get('user_id')
-            heat.user_id = user_id
-            meta = {
-               'stack_name': stack_name,
-               'timeout_mins': timeout_mins,
-               'disable_rollback': disable_rollback,
-               #'password': password,
-               'parameters': parameters,
-               'template': template,
-            }
-            LOG.info("udc is")
-            UDC = UserDataCenter.objects.all().filter(user_id=user_id)[0]
-            user = User.objects.get(pk=user_id)
-            LOG.info("*** template is ***" + str(template))
-            LOG.info("*** parameters are ***" + str(parameters))
-            password = UDC.keystone_password
-            tenant_uuid = None 
-            stack = deploy_stack.delay(user, heat, stack_name, timeout_mins, disable_rollback, password, parameters, template, tenant_uuid)
+            user_ids = request.data['ids']
+            LOG.info("user_ids are" + str(user_ids))
+            LOG.info("user_ids are" + str(type(user_ids)))
+            user_ids = str(user_ids)
+            user_ids_split = user_ids.split(',')
+            LOG.info("user_ids are" + str(user_ids_split))
+            for user_id in user_ids:
+                LOG.info("*** user_id is ***" + str(user_id))
+                stack_name = request.data.get('heatname')
+                timeout_mins = 60
+                disable_rollback = True
+                parameters = []
+                template = tpl
+                #user_id = request.data.get('user_id')
+                heat.user_id = user_id
+                meta = {
+                   'stack_name': stack_name,
+                   'timeout_mins': timeout_mins,
+                   'disable_rollback': disable_rollback,
+                   #'password': password,
+                   'parameters': parameters,
+                   'template': template,
+                }
+                LOG.info("udc is")
+                UDC = UserDataCenter.objects.all().filter(user_id=user_id)[0]
+                user = User.objects.get(pk=user_id)
+                LOG.info("*** template is ***" + str(template))
+                LOG.info("*** parameters are ***" + str(parameters))
+                password = UDC.keystone_password
+                tenant_uuid = None 
+                stack = deploy_stack.delay(user, heat, stack_name, timeout_mins, disable_rollback, password, parameters, template, tenant_uuid)
 
             LOG.info("ccccccccccccccccc")
             return Response(

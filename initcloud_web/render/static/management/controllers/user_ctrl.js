@@ -214,6 +214,40 @@ CloudApp.controller('UserController',
             });
         };
 
+        var openHeatModal = function(ids){
+            $modal.open({
+                templateUrl: 'new-heat.html',
+                backdrop: "static",
+                controller: 'newHeatController',
+                size: 'lg',
+                resolve: {
+                    dataCenters: function(){
+                        return DataCenter.query().$promise;
+                    },
+                    ids: function(){
+                        return ids;
+                    }
+                }
+            }).result.then(function(){
+                $scope.user_table.reload();
+            });
+        };
+
+        $scope.batchHeat = function(){
+
+            openHeatModal(function(){
+                var ids = [];
+
+                checkboxGroup.forEachChecked(function(user){
+                    if(user.checked){
+                        ids.push(user.id);
+                    }
+                });
+
+                return ids;
+            });
+        };
+
         $scope.delete = function(user){
             deleteUsers([user.id]);
         };
@@ -275,7 +309,7 @@ CloudApp.controller('UserController',
                 $scope.user_table.reload();
             });
         };
-        $scope.openHeatModal = function(user){
+        $scope.openHeatModal = function(ids){
             $modal.open({
                 templateUrl: 'new-heat.html',
                 backdrop: "static",
@@ -285,8 +319,8 @@ CloudApp.controller('UserController',
                     dataCenters: function(){
                         return DataCenter.query().$promise;
                     },
-                    user_id: function(){
-                        return user.id;
+                    ids: function(){
+                        return ids;
                     }
                 }
             }).result.then(function(){
@@ -543,17 +577,22 @@ CloudApp.controller('UserController',
     })
     .controller('newHeatController',
         function($scope, $modalInstance, $i18next,$http,
-                 CommonHttpService, ToastrService, UserForm, dataCenters, user_id, DatePicker){
+                 CommonHttpService, ToastrService, UserForm, dataCenters, ids, DatePicker){
 
             var form = null;
             $modalInstance.rendered.then(function(){
                 DatePicker.initDatePickers();
                 form = UserForm.init($scope.site_config.WORKFLOW_ENABLED);
             });
-            $scope.user_id = user_id
+            $scope.ids = ids 
+
+            if(typeof ids == 'function'){
+                    ids = ids();
+            }
+
 
             $scope.dataCenters = dataCenters;
-            $scope.heat = {is_resource_user: false, is_approver: false, user_id: user_id};
+            $scope.heat = {is_resource_user: false, is_approver: false, ids: ids};
             $scope.is_submitting = false;
             $scope.cancel = $modalInstance.dismiss;
             $scope.create = function(){
@@ -566,7 +605,7 @@ CloudApp.controller('UserController',
                         transformRequest: function(data){
                                 var formData = new FormData();
                                 formData.append('heatname',$scope.heat.heatname);
-                                formData.append('user_id',$scope.heat.user_id);
+                                formData.append('ids',$scope.heat.ids);
                                 formData.append('description',$scope.heat.description);
                                 formData.append('start_date',$scope.heat.start_date);
                                 formData.append('file', document.getElementById('id_file').files[0]);
