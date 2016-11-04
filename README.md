@@ -2,6 +2,8 @@
 Web interface for VDI administrator.
 
 ## Prepare
+兼容的Openstack版本为L版
+
 首先启动虚拟环境：
 如果你的虚拟环境安装的地址是  /var/www/initcloud_web/.venv/ ， 那么请先运行 
 ```shell
