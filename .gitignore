@@ -2,3 +2,7 @@
 *.swp
 .venv/*
 initcloud_web/cloud/api/software_manager/config.yml
+docs/architecture.rst
+docs/deploy.sh
+docs/deploy_ubuntu.sh
+docs/add_celery_auto.sh
