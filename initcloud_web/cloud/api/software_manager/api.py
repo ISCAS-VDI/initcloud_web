@@ -80,8 +80,24 @@ class Config(object):
             "InstallArguments": "/install /passive /norestart",
             "UninstallArguments": "/uninstall /passive /norestart",
             "url": 'http://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU_4/vcredist_x86.exe',
-        }
+        },
+        {
+            "name": "Notepad++(x86)",
+            "filename": r'npp.7.3.Installer.exe',
+            "Product_Id": "Notepad++",
+            "InstallArguments": "/S",
+            "UninstallArguments": "/S",
+            "UninstallFile": r"C:\Program Files\Notepad++\uninstall.exe",
+            "url": 'https://notepad-plus-plus.org/repository/7.x/7.3/npp.7.3.Installer.exe',
+        },
     ]
+
+    # 和桌面背景相关
+    wallpaper_path = r"C:\pic.jpg"
+    wallpaper_options = {
+        "normal": "C:\pic1.jpg",
+        "secret": "C:\pic2.jpg",
+    }
 
     @staticmethod
     def get_software_from_pid(Product_Id):
@@ -90,6 +106,11 @@ class Config(object):
                 return software
         return None
 
+    @staticmethod
+    def print_package_urls():
+        for software in Config.package_list:
+            print software['url']
+
 
 # 1. 获取可安装软件的列表
 def get_available_software():
@@ -97,7 +118,7 @@ def get_available_software():
 
 
 # 2. 获取某个虚拟机已安装软件的列表
-LIST_SCRIPT = '''$UninstallKey=”SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall”
+LIST_SCRIPT = '''$UninstallKey="SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"
 #Create an instance of the Registry Object and open the HKLM base key
 $reg=[microsoft.win32.registrykey]::OpenRemoteBaseKey(‘LocalMachine’,$computername)
 #Drill down into the Uninstall key using the OpenSubKey Method
@@ -121,6 +142,8 @@ def get_installed_software(hosts):
     callback = InstallResultCallback()
     code = execute_tasks(play_name="List installed software", tasks=[{"raw": LIST_SCRIPT}],
         hosts=hosts, callback=callback)
+    if code != 0:
+        raise RuntimeError("Error when get installed software, return code is %d." % code)
     return [p for p in Config.package_list if p["Product_Id"] in callback.get_result().get("stdout_lines", [])]
 
 
@@ -162,8 +185,48 @@ def uninstall_software(software_list, hosts_list):
                 ))),
                 dict(action=dict(module='win_package', args=dict(
                     name=software["name"],
-                    path=Config.dest_dir + software['filename'],
+                    path=(software["UninstallFile"]) if "UninstallFile" in software else (Config.dest_dir + software['filename']),
                     Product_Id=software["Product_Id"],
                     Arguments=software["UninstallArguments"],
                     state="absent",
                 )), name="Uninstalling " + software["name"])], hosts=hosts)
+
+def set_reg(host_list, key, value, data, state='present', datatype='string'):
+    for hosts in host_list:
+        if 0 != execute_tasks(play_name="Set Registry Key", tasks=[
+            {
+                "action": {
+                    "module": 'win_regedit',
+                    "args": {
+                        "key": key,
+                        "value": value,
+                        "data": data,
+                        "datatype": datatype,
+                        "state": state,
+                    }
+                },
+                "name": "Set Registry Key",
+            },
+        ], hosts=hosts):
+            # fail to set reg
+            return False
+    # set reg successfully
+    return True
+
+
+def set_wallpaper(host_list, wallpaper):
+    for hosts in host_list:
+        if 0 != execute_tasks(play_name="set_wallpaper", tasks=[
+            {
+                "action": {
+                    # "module": 'win_command',
+                    "module": 'win_shell',
+                    "args": 'copy %s %s' % (Config.wallpaper_options[wallpaper], Config.wallpaper_path),
+                },
+                "name": "copy_file",
+            },
+        ], hosts=hosts):
+            # fail to set reg
+            return False
+    # set reg successfully
+    return True
