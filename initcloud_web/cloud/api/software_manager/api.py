@@ -90,6 +90,12 @@ class Config(object):
             "UninstallFile": r"C:\Program Files\Notepad++\uninstall.exe",
             "url": 'https://notepad-plus-plus.org/repository/7.x/7.3/npp.7.3.Installer.exe',
         },
+        {
+            "name": "python2.7.13",
+            "filename": r'python-2.7.13.msi',
+            "Product_Id": "{4A656C6C-D24A-473F-9747-3A8D00907A03}",
+            "url": 'https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi',
+        },
     ]
 
     # 和桌面背景相关
@@ -152,21 +158,40 @@ def install_software(software_list, hosts_list):
     for hosts in hosts_list:
         for Product_Id in software_list:
             software = Config.get_software_from_pid(Product_Id)
+            win_package_task = {
+                'action': {
+                    'module': 'win_package',
+                    'args': {
+                        'name': software["name"],
+                        'path': Config.dest_dir + software['filename'],
+                        'Product_Id': software["Product_Id"],
+                    }
+                },
+                'name': "Installing " + software["name"]
+            }
+            if software.get("InstallArguments") is not None:
+                win_package_task['action']['args']['Arguments'] = software.get("InstallArguments")
             execute_tasks(play_name="Installing software", tasks=[
-                dict(action=dict(module="win_file", args=dict(
-                    path=Config.dest_dir,
-                    state='directory',
-                ))),
-                dict(action=dict(module="win_copy", args=dict(
-                    src=os.path.join(Config.package_dir, software['filename']),
-                    dest=Config.dest_dir,
-                ))),
-                dict(action=dict(module='win_package', args=dict(
-                    name=software["name"],
-                    path=Config.dest_dir + software['filename'],
-                    Product_Id=software["Product_Id"],
-                    Arguments=software["InstallArguments"],
-                )), name="Installing " + software["name"])], hosts=hosts)
+                {
+                    "action": {
+                        "module": "win_file",
+                        "args": {
+                            'path': Config.dest_dir,
+                            'state': 'directory',
+                        }
+                    }
+                },
+                {
+                    "action": {
+                        "module": "win_copy",
+                        "args": {
+                            "src": os.path.join(Config.package_dir, software['filename']),
+                            "dest": Config.dest_dir,
+                        }
+                    }
+                },
+                win_package_task,
+            ], hosts=hosts)
 
 
 # 4. 卸载指定虚拟机的指定软件(列表)
@@ -174,22 +199,41 @@ def uninstall_software(software_list, hosts_list):
     for hosts in hosts_list:
         for Product_Id in software_list:
             software = Config.get_software_from_pid(Product_Id)
+            win_package_task = {
+                'action': {
+                    'module': 'win_package',
+                    'args': {
+                        'name': software["name"],
+                        'path': Config.dest_dir + software['filename'],
+                        'Product_Id': software["Product_Id"],
+                        'state': "absent",
+                    }
+                },
+                'name': "Uninstalling " + software["name"]
+            }
+            if software.get("UninstallArguments") is not None:
+                win_package_task['action']['args']['Arguments'] = software.get("UninstallArguments")
             execute_tasks(play_name="Uninstalling software", tasks=[
-                dict(action=dict(module="win_file", args=dict(
-                    path=Config.dest_dir,
-                    state='directory',
-                ))),
-                dict(action=dict(module="win_copy", args=dict(
-                    src=os.path.join(Config.package_dir, software['filename']),
-                    dest=Config.dest_dir,
-                ))),
-                dict(action=dict(module='win_package', args=dict(
-                    name=software["name"],
-                    path=(software["UninstallFile"]) if "UninstallFile" in software else (Config.dest_dir + software['filename']),
-                    Product_Id=software["Product_Id"],
-                    Arguments=software["UninstallArguments"],
-                    state="absent",
-                )), name="Uninstalling " + software["name"])], hosts=hosts)
+                {
+                    "action": {
+                        "module": "win_file",
+                        "args": {
+                            'path': Config.dest_dir,
+                            'state': 'directory',
+                        }
+                    }
+                },
+                {
+                    "action": {
+                        "module": "win_copy",
+                        "args": {
+                            "src": os.path.join(Config.package_dir, software['filename']),
+                            "dest": Config.dest_dir,
+                        }
+                    }
+                },
+                win_package_task,
+            ], hosts=hosts)
 
 def set_reg(host_list, key, value, data, state='present', datatype='string'):
     for hosts in host_list:

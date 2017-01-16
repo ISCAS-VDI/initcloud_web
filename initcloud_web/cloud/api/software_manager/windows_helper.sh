@@ -12,7 +12,8 @@ wget -P $DIR 'https://download.microsoft.com/download/E/7/6/E76850B8-DA6E-4FF5-8
 
 wget -P $DIR 'https://raw.githubusercontent.com/litterbear/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'
 
-wget -P $DIR 'https://notepad-plus-plus.org/repository/7.x/7.3/npp.7.3.Installer.exe'
+# wget -P $DIR 'https://notepad-plus-plus.org/repository/7.x/7.3/npp.7.3.Installer.exe'
+# wget -P $DIR 'https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi'
 
 for url in `python -c "import api; api.Config.print_package_urls()"` ; do
     wget -P $DIR "$url"
