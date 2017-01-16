@@ -44,9 +44,9 @@ def set_wallpaper():
 
 def test_install_new_program():
     print api.get_installed_software(host)
-    api.install_software([api.Config.package_list[2]["Product_Id"]], [host])
+    api.install_software([api.Config.package_list[3]["Product_Id"]], [host])
     print api.get_installed_software(host)
-    api.uninstall_software([api.Config.package_list[2]["Product_Id"]], [host])
+    api.uninstall_software([api.Config.package_list[3]["Product_Id"]], [host])
     print api.get_installed_software(host)
 
 # test_reg()
