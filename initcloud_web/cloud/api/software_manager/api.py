@@ -99,10 +99,10 @@ class Config(object):
     ]
 
     # 和桌面背景相关
-    wallpaper_path = r"C:\pic.jpg"
+    wallpaper_path = r"C:\wallpaper\pic.jpg"
     wallpaper_options = {
-        "normal": "C:\pic1.jpg",
-        "secret": "C:\pic2.jpg",
+        "mimi": r"C:\wallpaper\pic1.jpg",
+        "jimi": r"C:\wallpaper\pic2.jpg",
     }
 
     @staticmethod

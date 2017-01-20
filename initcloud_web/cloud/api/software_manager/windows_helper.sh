@@ -2,6 +2,9 @@
 
 DIR="/root/tmp/"
 
+
+mkdir -p $DIR
+
 # .Net4
 wget -P $DIR 'https://download.microsoft.com/download/9/5/A/95A9616B-7A37-4AF6-BC36-D6EA96C8DAAE/dotNetFx40_Full_x86_x64.exe'
 
@@ -26,7 +29,10 @@ winrm set winrm/config/client/auth @{Basic="true"}
 winrm set winrm/config/client @{AllowUnencrypted="true"}
 EOF
 
+chmod a+rx /root/
+chmod a+rx /root/tmp/
+chmod a+r /root/tmp/*
 
 cd $DIR
 
-python -m SimpleHTTPServer
+# python -m SimpleHTTPServer

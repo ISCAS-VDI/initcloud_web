@@ -13,23 +13,23 @@ def test_install():
 
 def test_reg():
     # api.set_reg([host], key="HKU:\.DEFAULT\Software\MyCompany", value="Young", data="good")
-    code = api.set_reg([host], key=r"HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System", value="Wallpaper", data=r"C:\pic1.jpg")
+    code = api.set_reg([host], key=r"HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System", value="Wallpaper", data=r"C:\wallpaper\pic1.jpg")
     print "return code:", code
     code = api.set_reg([host], key=r"HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System", value="NoDispScrSavPage", data=1, datatype="dword")
     print "return code:", code
 
 def test_global_reg():
-    code = api.set_reg([host], key=r"HKU:\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Policies\System", value="Wallpaper", data=r"C:\pic1.jpg")
+    code = api.set_reg([host], key=r"HKU:\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Policies\System", value="Wallpaper", data=r"C:\wallpaper\pic1.jpg")
     code = api.set_reg([host], key=r"HKU:\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Policies\System", value="NoDispScrSavPage", data=1, datatype="dword")
 
 
 def test_global_reg2():
-    code = api.set_reg([host], key=r"HKU:\*\Software\Microsoft\Windows\CurrentVersion\Policies\System", value="Wallpaper", data=r"C:\pic1.jpg")
+    code = api.set_reg([host], key=r"HKU:\*\Software\Microsoft\Windows\CurrentVersion\Policies\System", value="Wallpaper", data=r"C:\wallpaper\pic1.jpg")
     code = api.set_reg([host], key=r"HKU:\*\Software\Microsoft\Windows\CurrentVersion\Policies\System", value="NoDispScrSavPage", data=1, datatype="dword")
 
 
 def change_defualt_user_reg():
-    code = api.set_reg([host], key=r"HKU:\default_profile\Software\Microsoft\Windows\CurrentVersion\Policies\System", value="Wallpaper", data=r"C:\pic.jpg")
+    code = api.set_reg([host], key=r"HKU:\default_profile\Software\Microsoft\Windows\CurrentVersion\Policies\System", value="Wallpaper", data=r"C:\wallpaper\pic.jpg")
     code = api.set_reg([host], key=r"HKU:\default_profile\Software\Microsoft\Windows\CurrentVersion\Policies\System", value="NoDispScrSavPage", data=1, datatype="dword")
 
 
@@ -39,8 +39,8 @@ def hide_user():
 
 
 def set_wallpaper():
-    # code = api.set_wallpaper([host], "secret")
-    code = api.set_wallpaper([host], "normal")
+    # code = api.set_wallpaper([host], "jimi")
+    code = api.set_wallpaper([host], "mimi")
 
 def test_install_new_program():
     print api.get_installed_software(host)
